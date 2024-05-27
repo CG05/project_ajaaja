@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+        if ('{{ msg }}'.length > 0) {
+            alert('{{ msg }}');
+        }
+        
+        function check() {
+            // pw1 = document.getElementById("pw1").value;
+            // pw2 = document.getElementById("pw2").value;
+            pw1 = frm1.password.value;
+            pw2 = frm1.pwdch.value;
+
+            if (pw1 == pw2) {
+                alert("암호가 일치 합니다.");
+            } else {
+                alert("암호가 불일치 합니다. 다시 입력하세요.");
+                document.getElementById("pw1").value = "";
+                document.getElementById("pw2").value = "";
+                document.getElementById("pw1").focus();
+            }
+        }
+
+        function pageSubmit() {
+            frm1.method = "post";
+            frm1.action = "/account/register/";
+            frm1.submit();
+        }
+    </script>
+</head>
+<body>
+    회원가입 페이지.<br>
+    <form name="frm1" method="post">{% csrf_token %}
+        <table>
+            <tr>
+                <th>사용자 아이디</th>
+                <td><input type="text" name="username"></td>
+            </tr>
+            <tr>
+                <th>사용자 암호</th>
+                <td><input type="password" id="pw1" name="password"></td>
+            </tr>
+            <tr>
+                <th>사용자 암호 확인</th>
+                <td><input type="password" id="pw2" name="pwdch" onchange="check()"></td>
+            </tr>
+            <tr>
+                <th>이름</th>
+                <td><input type="text" name="first_name"></td>
+            </tr>
+            <tr>
+                <th>성</th>
+                <td><input type="text" name="last_name"></td>
+            </tr>
+            <tr>
+                <th>이메일</th>
+                <td><input type="email" name="email"></td>
+            </tr>
+        </table>
+        <hr>
+        <input type="button" onclick="pageSubmit()" value="회원가입">
+    </form>
+</body>
+</html>
