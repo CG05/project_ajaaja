@@ -36,16 +36,18 @@
             background-color: aqua;
         }
     </style>
+    {% block style %}{% endblock %}
 </head>
 <body>
     <header class = "header_content">
-        {% block header %}머리{% endblock %}
+        {% block utab %}머리{% endblock %}
     </header>
     <aside class="sidebar_content">
-        {% block sidebar %}사이드바{% endblock %}
+        {% block ltab %}사이드바{% endblock %}
     </aside>
     <div class="container">
-        {% block main_content %}내용{% endblock %}
+        {% block page %}내용{% endblock %}
       </div>
+    {% block bodyscript %}{% endblock %}
 </body>
 </html>
