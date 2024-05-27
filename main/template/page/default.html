@@ -1,12 +1,20 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-  </head>
-  <body>
-    <div
+{% extends 'home.html' %}
+
+{% block title %}
+default
+{% endblock title %}
+{% block headscript %}
+{% endblock headscript %}
+{% block style %}
+{% endblock style %}
+{% block utab %}
+default
+{% endblock utab %}
+{% block ltab %}
+default
+{% endblock ltab %}
+{% block page %}
+<div
       class="lineblock"
       style="width: 100%; max-width: 100%; margin-top: 1px; margin-bottom: 1px"
     >
@@ -51,5 +59,7 @@
         </div>
       </div>
     </div>
-  </body>
-</html>
+{% endblock page %}
+{% block bodyscript %}
+{% endblock bodyscript %}
+  
