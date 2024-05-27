@@ -6,9 +6,8 @@
     <title>Document</title>
 </head>
 <body>
-    {% if user.is_active %}
-    {{ user }}님 환영 합니다. 
-    <button><a href='{% url "logout" %}'>로그아웃</a></button>
+{% if user.is_active %}
+    pass
 {% else %}
     <button><a href="{% url 'login' %}">로그인</a></button>
     <button><a href="{% url 'create' %}">회원가입</a></button>
