@@ -9,7 +9,7 @@ urlpatterns = [
     path("account/login/", views.login, name='login'),
     path("account/logout/", views.logout, name='logout'),
     path("account/register/", views.createAccount, name="create"),
-    path("page/", include("page.urls")),
-    path("utab/", include("utab.urls")),
-    path("ltab/", include("ltab.urls")),
+#     path("page/", include("page.urls")),
+#     path("utab/", include("utab.urls")),
+#     path("ltab/", include("ltab.urls")),
 ]

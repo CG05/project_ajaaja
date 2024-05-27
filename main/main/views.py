@@ -49,4 +49,7 @@ def logout(request):
     return render(request, "registration/logged_out.html");
 
 def index(request):
-    return render(request, "main.html");
+    if request.user.is_active:
+        return render(request, "home.html");
+    else:
+        return render(request, "main.html")
