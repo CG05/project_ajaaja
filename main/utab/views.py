@@ -1,7 +1,10 @@
-from django.shortcuts import render
+from django.shortcuts import render, HttpResponse
 
 def default(request):
     return render(request, "utab/utab.html")
 
-def openTab(request, tab1):
-    return
+def tab1(request):
+    return HttpResponse("tab1")
+
+def tab2(request):
+    return HttpResponse("tab2")
