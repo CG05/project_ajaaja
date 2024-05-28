@@ -16,55 +16,47 @@ default
 
 {% block ltab %}
 <form method="post" enctype="multipart/form-data"> {% csrf_token %}
-  <button type="button" style="width: 96%; height: 30px; margin-top: 4px; margin-bottom: 4px; margin-left: 2%; text-align: left;">notion</button>
+  
+  <!-- <div style="display: flex; align-items: center;">
+    <button type="button" style="width: 96%; height: 30px; margin-top: 4px; margin-bottom: 4px; margin-left: 2%; text-align: left;">
+      {{ username }}의 notion
+      <button type="button" style="margin-left: 10px;">웃</button>
+      <button type="button" style="margin-left: 10px;">글</button>
+    </button>
+  </div> -->
+  {% load static %}
+  <div style="display: flex; align-items: center; position: relative;">
+    <button id="notionBtn" type="button" style="width: 220px; height: 30px; margin-top: 4px; margin-bottom: 4px; margin-left: 5px; margin-right: 0px; text-align: left;">
+      <span>{{ username }}의 notion</span>
+    </button>
+    <button id="writeBtn" type="button" style="width: 30px; height: 30px; position: absolute; left: 160px; top: 4px;">W</button>
+    <button id="logoutBtn" type="button" style="width: 30px; height: 30px; display: flex; justify-content: center; align-items: center;  position: absolute; left: 192px; top: 4px;">out</button>
+  </div>
+  
+  <script>
+    document.getElementById("notionBtn").addEventListener("click", function() {
+      // notion 버튼을 클릭했을 때 수행할 동작
+      console.log("notion 버튼이 클릭되었습니다.");
+    });
+  
+    document.getElementById("writeBtn").addEventListener("click", function() {
+      // 웃 버튼을 클릭했을 때 수행할 동작
+      console.log("1 버튼이 클릭되었습니다.");
+    });
+  
+    document.getElementById("logoutBtn").addEventListener("click", function() {
+      // 글 버튼을 클릭했을 때 수행할 동작
+      console.log("2 버튼이 클릭되었습니다.");
+    });
+  </script>
+    
   
   <table class="table table-bordered border-primary text-align">
-    <button type="button" style="width: 96%; margin-left: 2%; margin-top: 2px; text-align: left;">검색</button>
-    <button type="button" style="width: 96%; margin-left: 2%; margin-top: 2px; text-align: left;">홈</button>
+    <button type="button" style="width: 220px; margin-left: 5px; margin-top: 5px; margin-top: 2px; text-align: left;">검색</button>
+    <button type="button" style="width: 220px; margin-left: 5px; margin-top: 5px; margin-top: 2px; text-align: left;">홈</button>
   </table>
 </form>
 
-<!-- <div class="lineblock" style="width: 100%; max-width: 100%; margin-top: 1px; margin-bottom: 1px">
-<div style="
-        display: flex;
-        align-items: flex-start;
-        width: 100%;
-        padding-left: 2px;
-        fill: inherit;
-        "
-      >
-        </div>
-        <div
-          style="
-            flex: 1 1 0px;
-            min-width: 1px;
-            display: flex;
-            flex-direction: column;
-          "
-        >
-          <div style="display: flex">
-            <div
-              spellcheck="true"
-              placeholder="텍스트를 입력하세요."
-              data-content-editable-leaf="true"
-              contenteditable="true"
-              style="
-                max-width: 100%;
-                width: 100%;
-                white-space: pre-wrap;
-                word-break: break-word;
-                caret-color: rgb(55, 53, 47);
-                padding: 3px 2px;
-                text-align: left;
-              "
-            >
-              개인페이지 버튼:page/&lt;pagepath&gt;
-            </div>
-            <div style="position: relative; left: 0px"></div>
-          </div>
-        </div>
-      </div>
-    </div> -->
 {% endblock ltab %}
 
 

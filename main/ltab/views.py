@@ -1,4 +1,12 @@
 from django.shortcuts import render
 
 def default(request):
-    return render(request, "ltab/default.html")
+    user = request.user;
+    username = user.username;
+    content={
+        "username":username
+    }
+    return render(request, "ltab/default.html", content)
+
+
+
