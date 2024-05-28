@@ -1,4 +1,4 @@
 from django.shortcuts import render
 
 def default(request):
-    return render(request, "ltab")
+    return render(request, "ltab/default.html")
