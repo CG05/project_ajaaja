@@ -1,0 +1,81 @@
+{% extends "home.html" %}
+{% block title %}
+탭 메뉴 만들기
+{% endblock %}
+{% block style %}
+<style>
+/* CSS 스타일링 */
+.tab-menu {
+    overflow: hidden;
+    border-bottom: 1px solid #ccc;
+}
+
+.tab-menu button {
+    background-color: inherit;
+    float: left;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 14px 16px;
+    transition: 0.3s;
+}
+
+.tab-menu button:hover {
+    background-color: #ddd;
+}
+
+.tab-menu button.active {
+    background-color: #fff;
+    border-bottom: 2px solid #000;
+}
+
+.tab-content {
+    display: none;
+    padding: 20px;
+}
+
+.tab-content.active {
+    display: block;
+}
+</style>
+{% endblock style %}
+
+{% block utab %}
+<div class="tab-menu">
+  <button class="tablinks" onclick="openTab(event, 'Tab1')">페이지위치</button>
+  <button class="tablinks" onclick="openTab(event, 'Tab2')">공유(url)</button>
+</div>
+
+<div id="Tab1" class="tab-content active">
+  <h3>탭 1</h3>
+  <p>페이지위치</p>
+</div>
+
+<div id="Tab2" class="tab-content">
+  <h3>탭 2</h3>
+  <p>공유(url생성)</p>
+</div>
+{% endblock utab %}
+
+{% block bodyscript %}
+<script>
+    function openTab(event, tabName) {
+        var i, tabcontent, tablinks;
+        tabcontent = document.getElementsByClassName("tab-content");
+        for (i = 0; i < tabcontent.length; i++) {
+            tabcontent[i].style.display = "none";
+        }
+        tablinks = document.getElementsByClassName("tablinks");
+        for (i = 0; i < tablinks.length; i++) {
+            tablinks[i].classList.remove("active");
+        }
+        document.getElementById(tabName).style.display = "block";
+        event.currentTarget.classList.add("active");
+    
+        // 클릭한 탭의 페이지 위치 출력
+        var tabPosition = Array.from(tablinks).indexOf(event.currentTarget) + 1;
+        console.log("클릭한 탭의 페이지 위치: " + tabPosition);
+    }
+</script>
+{% endblock bodyscript %}
+
