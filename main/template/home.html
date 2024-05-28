@@ -9,7 +9,7 @@
         body {
             margin: 0;
         }
-        .sidebar_content{
+        .ltab{
             top:0px;
             position: fixed;
             width: 230px;
@@ -18,7 +18,7 @@
             clear : left;
             background-color: blanchedalmond;
         }
-        .header_content{
+        .utab{
             display: sticky;
             margin-left: 230px;
             height: 38px;
@@ -27,7 +27,7 @@
             top : 0px;
             padding: 0;
         }
-        .container{
+        .page{
             position:fixed;
             margin-left: 230px;
             width: 100%;
@@ -39,15 +39,15 @@
     {% block style %}{% endblock %}
 </head>
 <body>
-    <header class = "header_content">
+    <header class = "utab">
         {% block utab %}머리{% endblock %}
     </header>
-    <aside class="sidebar_content">
+    <aside class="ltab">
         {% block ltab %}사이드바{% endblock %}
     </aside>
-    <div class="container">
+    <main class="page">
         {% block page %}내용{% endblock %}
-      </div>
+    </main>
     {% block bodyscript %}{% endblock %}
 </body>
 </html>
