@@ -15,17 +15,22 @@ default
 {% endblock utab %}
 
 {% block ltab %}
-<div
-      class="lineblock"
-      style="width: 100%; max-width: 100%; margin-top: 1px; margin-bottom: 1px"
-    >
-      <div
-        style="
-          display: flex;
-          align-items: flex-start;
-          width: 100%;
-          padding-left: 2px;
-          fill: inherit;
+<form method="post" enctype="multipart/form-data"> {% csrf_token %}
+  <button type="button" style="width: 96%; height: 30px; margin-top: 4px; margin-bottom: 4px; margin-left: 2%; text-align: left;">notion</button>
+  
+  <table class="table table-bordered border-primary text-align">
+    <button type="button" style="width: 96%; margin-left: 2%; margin-top: 2px; text-align: left;">검색</button>
+    <button type="button" style="width: 96%; margin-left: 2%; margin-top: 2px; text-align: left;">홈</button>
+  </table>
+</form>
+
+<!-- <div class="lineblock" style="width: 100%; max-width: 100%; margin-top: 1px; margin-bottom: 1px">
+<div style="
+        display: flex;
+        align-items: flex-start;
+        width: 100%;
+        padding-left: 2px;
+        fill: inherit;
         "
       >
         </div>
@@ -59,7 +64,7 @@ default
           </div>
         </div>
       </div>
-    </div>
+    </div> -->
 {% endblock ltab %}
 
 
