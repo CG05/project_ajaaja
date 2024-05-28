@@ -4,6 +4,17 @@
 default
 {% endblock title %}
 {% block headscript %}
+<script>
+    function newLineblock(obj){
+        var newLineblock = document.createElement('div');
+        newLineblock.setAttribute('class', 'lineblock');
+        newLineblock.setAttribute('style', 'width: 100%; max-width: 700px; margin-top: 1px; margin-bottom: 1px; position: relative;');
+        newLineblock.setAttribute('onkeyup', 'if(window.event.keyCode==13){newLineblock(this)}');
+        newLineblock.innerHTML = '<div style="display: flex; align-items: flex-start; width: 100%; padding-left: 2px; fill: inherit;"></div><div style="flex: 1 1 0px; min-width: 1px; display: flex; flex-direction: column;"><div style="display: flex"><div spellcheck="true" placeholder="텍스트를 입력하세요." data-content-editable-leaf="true" contenteditable="true" style="max-width: 100%; width: 100%; white-space: pre-wrap; word-break: break-word; caret-color: rgb(55, 53, 47); padding: 3px 2px; text-align: left;">텍스트를 입력하시오</div></div></div>';
+        obj.parentNode.insertBefore(newLineblock, obj.nextSibling);
+        newLineblock.children[0].children[0].children[0].focus();
+    }
+</script>
 {% endblock headscript %}
 {% block style %}
 {% endblock style %}
@@ -15,17 +26,17 @@ default
 {% endblock ltab %}
 {% block page %}
 <div  class="layout"
-      style="display: flex; flex-direction: column; align-items: center; position: relative; padding-bottom: 300px;">
+      style="position: relative; padding-bottom: 300px; cursor: text;">
       <div  class="layout-content"
-            style="display: flex; align-items: center; width: calc(100%-0px); max-width: 700px; position: relative;">
+            style="display: flex; flex-direction: column; align-items: center; width: 100%; position: relative;">
             <div  class="headerblock"
-                  style="width: 100%; max-width: 100%; position: relative; height: 165px; align-items: center;">
+                  style="display: flex; flex-direction: column; align-items: center; width: 100%; position: relative; height: 165px;">
               <div  class="coverblock"
-                    style="width: 700px; position: relative; height: 110px;">
+                    style="max-width: 700px; width: 100%; position: relative; height: 110px;">
             
               </div>
               <div  class="htextblock"
-                    style="width: 700px; height: 55px; position: relative; font-size: large; font-weight: bold;"
+                    style="max-width: 700px; width: 100%; height: 55px; position: relative; font-size: 40px; font-weight: bolder;"
                     contenteditable="true">
                     제목 입력
               </div>
@@ -33,11 +44,13 @@ default
 
       </div>
       <div  class="layout-content"
-            style="display: flex; align-items: center; width: calc(100%-0px); max-width: 700px; position: relative;">
+            id="textarea"
+            style="display: flex; flex-direction: column; align-items: center; width: 100%; position: relative;">
 
             <div
                   class="lineblock"
-                  style="width: 100%; max-width: 100%; margin-top: 1px; margin-bottom: 1px; position: relative;"
+                  style="width: 100%; max-width: 700px; margin-top: 1px; margin-bottom: 1px; position: relative;"
+                  onkeyup="if(window.event.keyCode==13){newLineblock(this)}"
                 >
                   <div
                     style="
@@ -72,10 +85,8 @@ default
                             padding: 3px 2px;
                             text-align: left;
                           "
-                        >
-                          개인페이지 버튼:page/&lt;pagepath&gt;
-                        </div>
-                        <div style="position: relative; left: 0px"></div>
+                        >텍스트를 입력하시오</div>
+                        <!-- <div style="position: relative; left: 0px"></div> -->
                       </div>
                     </div>
                   </div>
