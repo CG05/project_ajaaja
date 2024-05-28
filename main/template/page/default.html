@@ -5,8 +5,8 @@ default
 {% endblock title %}
 {% block headscript %}
 <script>
-  
-    function newLineblock(obj, textAfterCursor){
+
+    function newLineblock(obj, textAfterCursor) {
         var newLineblock = document.createElement('div');
         newLineblock.setAttribute('class', 'lineblock');
         newLineblock.setAttribute('style', 'width: 100%; max-width: 700px; margin-top: 1px; margin-bottom: 1px; position: relative;');
@@ -19,42 +19,42 @@ default
         textNode.focus();
     }
 
-    function deleteLineblock(obj, textAfterCursor){
-      var previousLineblock = obj.previousElementSibling;  
-      obj.remove();
-      const textNode = previousLineblock.children[1].children[0].children[0];
-      textNode.focus();
-      addText(textNode, textAfterCursor);
+    function deleteLineblock(obj, textAfterCursor) {
+        var previousLineblock = obj.previousElementSibling;
+        obj.remove();
+        const textNode = previousLineblock.children[1].children[0].children[0];
+        textNode.focus();
+        addText(textNode, textAfterCursor);
     }
 
     function addText(element, textAfterCursor) {
-      element.textContent += textAfterCursor;
-      const text = element.firstChild;
-      const addedlength = textAfterCursor.length
-      const position = text.length;
+        element.textContent += textAfterCursor;
+        const text = element.firstChild;
+        const addedlength = textAfterCursor.length
+        const position = text.length;
 
-      moveCursorToPosition(element, position- addedlength)
+        moveCursorToPosition(element, position - addedlength)
     }
 
-    function moveCursorToPosition(element, position){
-      ensureTextNode(element);
-      const range = document.createRange();
-      const selection = window.getSelection();
-      const text = element.firstChild;
-      if (position > text.length) {
-        position = text.length;
-      }
+    function moveCursorToPosition(element, position) {
+        ensureTextNode(element);
+        const range = document.createRange();
+        const selection = window.getSelection();
+        const text = element.firstChild;
+        if (position > text.length) {
+            position = text.length;
+        }
 
-      range.setStart(text, position);
-      range.collapse(true);
-      selection.removeAllRanges();
-      selection.addRange(range);
+        range.setStart(text, position);
+        range.collapse(true);
+        selection.removeAllRanges();
+        selection.addRange(range);
     }
-    function moveCursorToEnd(element){
-      ensureTextNode(element);
-      const text = element.firstChild;
-      const position = text.length;
-      moveCursorToPosition(element, position);
+    function moveCursorToEnd(element) {
+        ensureTextNode(element);
+        const text = element.firstChild;
+        const position = text.length;
+        moveCursorToPosition(element, position);
     }
 
     function ensureTextNode(element) {
@@ -63,22 +63,45 @@ default
         }
     }
 
-    function checkIfCursorIsOnLastLine(element, offset) {
-      ensureTextNode(element);
-      const textNode = element.firstChild;
-      const range = document.createRange();
-      range.setStart(textNode, offset);
-      range.setEnd(textNode, offset);
-
-      const rects = range.getClientRects();
-      const lastRect = rects[rects.length - 1];
-
-      if (lastRect) {
-          const parentRect = element.getBoundingClientRect();
-          return lastRect.bottom === parentRect.bottom;
-      }
-      return false;
+    function getCursorCoordinates(element) {
+        const selection = window.getSelection();
+        const cursorRange = selection.getRangeAt(0);
+        const cursorRect = cursorRange.getBoundingClientRect();
+        
+        const rects = getTextNodes(element);
+        console.log(rects)
+        const firstLineY = rects[0].top;
+        const lastLineY = rects[(rects.length-1)].bottom;
+        const lineheight = rects[0].height;
+        const y = cursorRect.y;
+        const lineNum = Math.floor((y - firstLineY) / lineheight) + 1;
+        const lastLine = Math.floor((lastLineY - firstLineY) / lineheight);
+        console.log((lastLineY - firstLineY) / lineheight)
+        return { lineNum, lastLine };
     }
+
+    function getTextNodes(element) {
+        const textNodes = [];
+        const treeWalker = document.createTreeWalker(
+            element,
+            NodeFilter.SHOW_TEXT,
+            null,
+            false
+        );
+
+        let node;
+        while (node = treeWalker.nextNode()) {
+            const range = document.createRange();
+            range.selectNodeContents(node);
+
+            const rects = range.getClientRects();
+            const nodeRects = [...rects];
+            textNodes.push(nodeRects[0]);
+        }
+
+        return textNodes;
+    }
+
 </script>
 {% endblock headscript %}
 {% block style %}
@@ -90,57 +113,44 @@ default
 default
 {% endblock ltab %}
 {% block page %}
-<div  class="layout"
-      style="position: relative; padding-bottom: 300px; cursor: text;">
-      <div  class="layout-content"
-            style="display: flex; flex-direction: column; align-items: center; width: 100%; position: relative;">
-            <div  class="headerblock"
-                  style="display: flex; flex-direction: column; align-items: center; width: 100%; position: relative; height: 165px;">
-              <div  class="coverblock"
-                    style="max-width: 700px; width: 100%; position: relative; height: 110px;">
-            
-              </div>
-              <div  class="htextblock"
-                    style="max-width: 700px; width: 100%; height: 55px; position: relative; font-size: 40px; font-weight: bolder;"
-                    contenteditable="true">
-                    제목 입력
-              </div>
+<div class="layout" style="position: relative; padding-bottom: 300px; cursor: text;">
+    <div class="layout-content"
+        style="display: flex; flex-direction: column; align-items: center; width: 100%; position: relative;">
+        <div class="headerblock"
+            style="display: flex; flex-direction: column; align-items: center; width: 100%; position: relative; height: 165px;">
+            <div class="coverblock" style="max-width: 700px; width: 100%; position: relative; height: 110px;">
+
             </div>
+            <div class="htextblock"
+                style="max-width: 700px; width: 100%; height: 55px; position: relative; font-size: 40px; font-weight: bolder;"
+                contenteditable="true">
+                제목 입력
+            </div>
+        </div>
 
-      </div>
-      <div  class="layout-content"
-            id="textarea"
-            style="display: flex; flex-direction: column; align-items: center; width: 100%; position: relative;">
+    </div>
+    <div class="layout-content" id="textarea"
+        style="display: flex; flex-direction: column; align-items: center; width: 100%; position: relative;">
 
-            <div
-                  class="lineblock"
-                  style="width: 100%; max-width: 700px; margin-top: 1px; margin-bottom: 1px; position: relative;"
-                >
-                  <div
-                    style="
+        <div class="lineblock"
+            style="width: 100%; max-width: 700px; margin-top: 1px; margin-bottom: 1px; position: relative;">
+            <div style="
                       display: flex;
                       align-items: flex-start;
                       width: 100%;
                       padding-left: 2px;
                       fill: inherit;
-                    "
-                  >
-                    </div>
-                    <div
-                      style="
+                    ">
+            </div>
+            <div style="
                         flex: 1 1 0px;
                         min-width: 1px;
                         display: flex;
                         flex-direction: column;
-                      "
-                    >
-                      <div style="display: flex">
-                        <div
-                          spellcheck="true"
-                          placeholder="텍스트를 입력하세요."
-                          data-content-editable-leaf="true"
-                          contenteditable="true"
-                          style="
+                      ">
+                <div style="display: flex">
+                    <div spellcheck="true" placeholder="텍스트를 입력하세요." data-content-editable-leaf="true"
+                        contenteditable="true" style="
                             max-width: 100%;
                             width: 100%;
                             white-space: pre-wrap;
@@ -148,109 +158,117 @@ default
                             caret-color: rgb(55, 53, 47);
                             padding: 3px 2px;
                             text-align: left;
-                          "
-                        >텍스트를 입력하시오</div>
-                        <!-- <div style="position: relative; left: 0px"></div> -->
-                      </div>
-                    </div>
-                  </div>
+                          ">텍스트를 입력하시오</div>
+                    <!-- <div style="position: relative; left: 0px"></div> -->
                 </div>
-      </div>
+            </div>
+        </div>
+    </div>
+</div>
 </div>
 {% endblock page %}
 {% block bodyscript %}
 <script>
-  document.addEventListener('DOMContentLoaded', (event) => {
-    const textarea = document.getElementById('textarea');
-    
-    textarea.addEventListener('keydown', function(event) {
-      const activeElement = document.activeElement;
-      const textNode = event.target;
-      if (activeElement === textNode) {
-        if (event.key === 'Enter') {
-            if (event.shiftKey) {
-                // Shift+Enter 입력 시 줄바꿈 처리 (기본 동작)
-            } else {
-                event.preventDefault(); // 기본 Enter 동작을 막음
-                const selection = window.getSelection();
-                const range = selection.getRangeAt(0);
-                const cursorPosition = range.endOffset;
-                const textAfterCursor = textNode.textContent.substring(cursorPosition);
-                textNode.textContent = textNode.textContent.slice(0, cursorPosition);
-                curLineblock = textNode.parentNode.parentNode.parentNode;
-                newLineblock(curLineblock, textAfterCursor);
-            }
-        }
-        if (event.key === 'Backspace') {
-          const selection = window.getSelection();
-          const range = selection.getRangeAt(0);
-          const cursorPosition = range.endOffset;
-          const textBeforeCursor = textNode.textContent.substring(0,cursorPosition);
-            if (textBeforeCursor === '') {
-                event.preventDefault(); // 기본 Backspace 동작을 막음
-                curLineblock = textNode.parentNode.parentNode.parentNode;
-                deleteLineblock(curLineblock, textNode.textContent);
-            }
-        }
-        else if (event.key === 'ArrowLeft') {
-                const selection = window.getSelection();
-                const range = selection.getRangeAt(0);
-                if (range.startOffset === 0 && range.endOffset === 0) {
-                    const curLineblock = textNode.parentNode.parentNode.parentNode;
-                    const previousLineblock = curLineblock.previousElementSibling;
-                    const previousTextNode = previousLineblock.children[1].children[0].children[0];
-                    if (previousTextNode && previousLineblock.classList.contains('lineblock')) {
-                        event.preventDefault();
-                        moveCursorToEnd(previousTextNode);
-                    }
-                }
-            }
-            else if (event.key === 'ArrowRight') {
-                const selection = window.getSelection();
-                const range = selection.getRangeAt(0);
-                const curLineblock = textNode.parentNode.parentNode.parentNode;
-                if (range.startOffset === textNode.firstChild.length && range.endOffset === textNode.firstChild.length) {
-                    const nextLineblock = curLineblock.nextElementSibling;
-                    const nextTextNode = nextLineblock.children[1].children[0].children[0];
-                    if (nextTextNode && nextLineblock.classList.contains('lineblock')) {
-                        event.preventDefault();
-                        moveCursorToPosition(nextTextNode, 0);
-                    }
-                }
-            }
-            else if (event.key === 'ArrowDown') {
-                const selection = window.getSelection();
-                const range = selection.getRangeAt(0);
-                const curLineblock = textNode.parentNode.parentNode.parentNode;
-          
-                    const nextLineblock = curLineblock.nextElementSibling;
-                    const nextTextNode = nextLineblock.children[1].children[0].children[0];
-                    if (nextTextNode && nextLineblock.classList.contains('lineblock')) {
-                        event.preventDefault();
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const textarea = document.getElementById('textarea');
+
+        textarea.addEventListener('keydown', function (event) {
+            
+
+            const activeElement = document.activeElement;
+            const textNode = event.target;
+            if (activeElement === textNode) {
+                if (event.key === 'Enter') {
+                    if (event.shiftKey) {
+                        // Shift+Enter 입력 시 줄바꿈 처리 (기본 동작)
+                    } else {
+                        event.preventDefault(); // 기본 Enter 동작을 막음
                         const selection = window.getSelection();
                         const range = selection.getRangeAt(0);
                         const cursorPosition = range.endOffset;
-                        moveCursorToPosition(nextTextNode, cursorPosition);
-                    
+                        const textAfterCursor = textNode.textContent.substring(cursorPosition);
+                        textNode.textContent = textNode.textContent.slice(0, cursorPosition);
+                        curLineblock = textNode.parentNode.parentNode.parentNode;
+                        newLineblock(curLineblock, textAfterCursor);
+                    }
                 }
-            }
-            else if (event.key === 'ArrowUp') {
-                const selection = window.getSelection();
-                const range = selection.getRangeAt(0);
+                if (event.key === 'Backspace') {
+                    const selection = window.getSelection();
+                    const range = selection.getRangeAt(0);
+                    const cursorPosition = range.endOffset;
+                    const textBeforeCursor = textNode.textContent.substring(0, cursorPosition);
+                    if (textBeforeCursor === '') {
+                        event.preventDefault(); // 기본 Backspace 동작을 막음
+                        curLineblock = textNode.parentNode.parentNode.parentNode;
+                        deleteLineblock(curLineblock, textNode.textContent);
+                    }
+                }
+                else if (event.key === 'ArrowLeft') {
+                    const selection = window.getSelection();
+                    const range = selection.getRangeAt(0);
+                    if (range.startOffset === 0 && range.endOffset === 0) {
+                        const curLineblock = textNode.parentNode.parentNode.parentNode;
+                        const previousLineblock = curLineblock.previousElementSibling;
+                        const previousTextNode = previousLineblock.children[1].children[0].children[0];
+                        if (previousTextNode && previousLineblock.classList.contains('lineblock')) {
+                            event.preventDefault();
+                            moveCursorToEnd(previousTextNode);
+                        }
+                    }
+                }
+                else if (event.key === 'ArrowRight') {
+                    const selection = window.getSelection();
+                    const range = selection.getRangeAt(0);
+                    const curLineblock = textNode.parentNode.parentNode.parentNode;
+                    if (range.startOffset === textNode.firstChild.length && range.endOffset === textNode.firstChild.length) {
+                        const nextLineblock = curLineblock.nextElementSibling;
+                        const nextTextNode = nextLineblock.children[1].children[0].children[0];
+                        if (nextTextNode && nextLineblock.classList.contains('lineblock')) {
+                            event.preventDefault();
+                            moveCursorToPosition(nextTextNode, 0);
+                        }
+                    }
+                }
+                else if (event.key === 'ArrowDown') {
+                    const selection = window.getSelection();
+                    const range = selection.getRangeAt(0);
+                    const curLineblock = textNode.parentNode.parentNode.parentNode;
+
+                    const nextLineblock = curLineblock.nextElementSibling;
+                    const nextTextNode = nextLineblock.children[1].children[0].children[0];
+                    if (nextTextNode && nextLineblock.classList.contains('lineblock')) {
+                        const coordinates = getCursorCoordinates(textNode);
+                        console.log(coordinates);
+                        if(coordinates.lineNum === coordinates.lastLine){
+                            event.preventDefault();
+                            const selection = window.getSelection();
+                            const range = selection.getRangeAt(0);
+                            const cursorPosition = range.endOffset;
+                            moveCursorToPosition(nextTextNode, cursorPosition);
+                        }
+
+                    }
+                }
+                else if (event.key === 'ArrowUp') {
+                    const selection = window.getSelection();
+                    const range = selection.getRangeAt(0);
                     const curLineblock = textNode.parentNode.parentNode.parentNode;
                     const previousLineblock = curLineblock.previousElementSibling;
                     const previousTextNode = previousLineblock.children[1].children[0].children[0];
                     if (previousTextNode && previousLineblock.classList.contains('lineblock')) {
+                        const coordinates = getCursorCoordinates(textNode);
+                        console.log(coordinates);
+                        if(coordinates.lineNum === 1){
                         event.preventDefault();
                         const selection = window.getSelection();
                         const range = selection.getRangeAt(0);
                         const cursorPosition = range.endOffset;
                         moveCursorToPosition(previousTextNode, cursorPosition);
+                        }
                     }
                 }
-      }
+            }
+        });
     });
-  });
 </script>
 {% endblock bodyscript %}
-  
