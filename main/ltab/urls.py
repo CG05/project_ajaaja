@@ -3,4 +3,7 @@ from . import views
 
 urlpatterns = [
     path("", views.default),
+    path("/pagePM/", views.pagePM),
+
+
 ]
