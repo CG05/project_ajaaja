@@ -8,6 +8,7 @@ default
 {% endblock headscript %}
 
 {% block style %}
+
 {% endblock style %}
 
 {% block utab %}
@@ -15,24 +16,60 @@ default
 {% endblock utab %}
 
 {% block ltab %}
+<style>
+  /* 모든 버튼에 적용될 스타일 */
+  button {
+    border: none; /* 테두리 없음 */
+    background-color: rgb(247, 247, 245); /* 배경색 설정 */
+  }
+  button:hover {
+    background-color: rgb(239, 239, 237); /* 마우스를 올렸을 때 배경색 변경 */
+  }
+  #popup {
+    width: 500px;
+    height: 500px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    border: 1px solid #ccc;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+    display: none; /* 기본적으로는 숨겨진 상태 */
+  }
+</style>
+
 <form method="post" enctype="multipart/form-data"> {% csrf_token %}
 
   <div style="display: flex; align-items: center; position: relative;">
-    <button id="notionBtn" type="button" style="width: 220px; height: 30px; margin-top: 4px; margin-bottom: 4px; margin-left: 5px; margin-right: 0px; text-align: left;"><span>{{ username }}의 notion</span></button>
+    <button id="notionBtn" type="button" style="width: 220px; height: 30px; margin-top: 4px; margin-bottom: 4px; margin-left: 5px; margin-right: 0px; text-align: left;" onclick="toggleButton()"><span>{{ username }}의 notion</span></button>
 
     <!-- 페이지 생성되야함 /newpage/ -->
-    <button id="newpage" type="button" style="width: 30px; height: 30px; position: absolute; left: 160px; top: 4px;" onclick="document.location.href='/ltab/'">W</button>
-    <!-- 로그아웃 -->
-    <button id="logoutBtn" type="button" style="width: 30px; height: 30px; display: flex; justify-content: center; align-items: center;  position: absolute; left: 192px; top: 4px;" onclick="document.location.href='/account/logout/'">out</button>
+    {% load static %}
+    <button id="newpage" type="button" style="width: 28px; height: 28px; position: absolute; left: 160px; top: 5px;" onclick="document.location.href='/ltab/'">
+      <img src="{% static 'writeBtn.png' %}" alt="Logout" style="width: 100%; height: 100%;">
+    </button>
+    
+    <!-- 로그아웃 / 로그인 -->
+    {% if user.is_active %}
+    <button id="logoutBtn" type="button" style="width: 28px; height: 28px; display: flex; justify-content: center; align-items: center;  position: absolute; left: 192px; top: 5px;" onclick="document.location.href='/account/logout/'">logout</button>
+    {% else %}  
+    <button id="loginBtn" type="button" style="width: 28px; height: 28px; display: flex; justify-content: center; align-items: center;  position: absolute; left: 192px; top: 5px;" onclick="document.location.href='/account/login/'">login</button>
+    {% endif %}
   </div>
 
+  
+  <!-- 검색 -->
 
-  <table class="table table-bordered border-primary text-align">
-    <!-- 검색 -->
-    <button type="button" style="width: 220px; margin-left: 5px; margin-top: 5px; margin-top: 2px; text-align: left;" onclick="document.location.href='/research/'">검색</button>
-    <!-- 홈 -->
-    <button type="button" style="width: 220px; margin-left: 5px; margin-top: 5px; margin-top: 2px; text-align: left;" onclick="document.location.href='/'">홈</button>
-  </table>
+  <button type="button" style="width: 220px; height: 30px; margin-left: 5px; margin-top: 2px; text-align: left;" onclick="openPopup()">검색</button>
+  <div id="popup">
+    <iframe src="search.html" width="100%" height="100%" frameborder="0"></iframe>
+  </div>
+  <!-- 홈 -->
+  <button type="button" style="width: 220px; height: 30px; margin-left: 5px; margin-top: 5px; margin-top: 2px; text-align: left;" onclick="document.location.href='/'">홈</button>
+  
 
 
   <div style="display: flex; align-items: center; position: relative; margin-top: 20px;">
@@ -42,9 +79,26 @@ default
     <!-- 개인페이지 추가 버튼 / 로케이션 변경 -->
     <button id="userpage" type="button" style="width: 22px; height: 22px; display: flex; justify-content: center; align-items: center;  position: absolute; left: 196px; top: 8px;" onclick="document.location.href='/account/logout/'">+</button>
   </div>
+
 </form>
 
+<script>
+  function openPopup() {
+    document.getElementById('popup').style.display = 'block';
+  }
+  function toggleButton() {
+    var newpageBtn = document.getElementById("newpage");
+    if (newpageBtn.style.display === "none") {
+      newpageBtn.style.display = "block";
+    } else {
+      newpageBtn.style.display = "none";
+    }
+  }
+
+
+  </script>
 {% endblock ltab %}
+
 
 
 {% block page %}
