@@ -1,0 +1,60 @@
+{% extends "home.html" %}
+{% block title %}
+탭 메뉴 만들기
+{% endblock %}
+{% block style %}
+<style>
+/* CSS 스타일링 */
+.tab-menu {
+    overflow: hidden;
+    border-bottom: 1px solid #ccc;
+}
+
+.tab-menu button {
+    background-color: inherit;
+    float: left;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 14px 16px;
+    transition: 0.3s;
+}
+
+.tab-menu button:hover {
+    background-color: #ddd;
+}
+
+.tab-menu button.active {
+    background-color: #fff;
+    border-bottom: 2px solid #000;
+}
+
+.tab-content {
+    display: none;
+    padding: 20px;
+}
+
+.tab-content.active {
+    display: block;
+}
+</style>
+{% endblock style %}
+
+{% block utab %}
+<div class="tab-menu">
+  <button class="tablinks" onclick="openTab('tab1')">페이지위치</button>
+  <button class="tablinks" onclick="openTab('tab2')">공유(url)</button>
+</div>
+
+
+{% endblock utab %}
+
+{% block bodyscript %}
+<script>
+    function openTab(tabId) {
+        document.location.href = "/utab/"+tabId +"/";
+    }
+    
+</script>
+{% endblock bodyscript %}
+

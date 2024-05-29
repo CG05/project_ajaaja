@@ -1,0 +1,55 @@
+{% extends 'home.html' %}
+
+{% block title %}
+default
+{% endblock title %}
+
+{% block headscript %}
+{% endblock headscript %}
+
+{% block style %}
+{% endblock style %}
+
+{% block utab %}
+default
+{% endblock utab %}
+
+{% block ltab %}
+<form method="post" enctype="multipart/form-data"> {% csrf_token %}
+
+  <div style="display: flex; align-items: center; position: relative;">
+    <button id="notionBtn" type="button" style="width: 220px; height: 30px; margin-top: 4px; margin-bottom: 4px; margin-left: 5px; margin-right: 0px; text-align: left;"><span>{{ username }}의 notion</span></button>
+
+    <!-- 페이지 생성되야함 /newpage/ -->
+    <button id="newpage" type="button" style="width: 30px; height: 30px; position: absolute; left: 160px; top: 4px;" onclick="document.location.href='/ltab/'">W</button>
+    <!-- 로그아웃 -->
+    <button id="logoutBtn" type="button" style="width: 30px; height: 30px; display: flex; justify-content: center; align-items: center;  position: absolute; left: 192px; top: 4px;" onclick="document.location.href='/account/logout/'">out</button>
+  </div>
+
+
+  <table class="table table-bordered border-primary text-align">
+    <!-- 검색 -->
+    <button type="button" style="width: 220px; margin-left: 5px; margin-top: 5px; margin-top: 2px; text-align: left;" onclick="document.location.href='/research/'">검색</button>
+    <!-- 홈 -->
+    <button type="button" style="width: 220px; margin-left: 5px; margin-top: 5px; margin-top: 2px; text-align: left;" onclick="document.location.href='/'">홈</button>
+  </table>
+
+
+  <div style="display: flex; align-items: center; position: relative; margin-top: 20px;">
+    <!-- 개인페이지 상세 열고닫기 -->
+    <button id="userpagePM" type="button" style="width: 220px; height: 30px; margin-top: 4px; margin-bottom: 4px; margin-left: 5px; margin-right: 0px; text-align: left;" onclick="document.location.href='/pagePM/'"><span>개인페이지</span></button>
+
+    <!-- 개인페이지 추가 버튼 / 로케이션 변경 -->
+    <button id="userpage" type="button" style="width: 22px; height: 22px; display: flex; justify-content: center; align-items: center;  position: absolute; left: 196px; top: 8px;" onclick="document.location.href='/account/logout/'">+</button>
+  </div>
+</form>
+
+{% endblock ltab %}
+
+
+{% block page %}
+default
+{% endblock page %}
+{% block bodyscript %}
+{% endblock bodyscript %}
+  
