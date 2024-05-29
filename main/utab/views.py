@@ -7,4 +7,4 @@ def tab1(request):
     return HttpResponse("tab1")
 
 def tab3(request):
-    return HttpResponse("tab3")
+    return HttpResponse("pagepath")
