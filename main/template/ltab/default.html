@@ -8,7 +8,47 @@ default
 {% endblock headscript %}
 
 {% block style %}
+<style>
+  form{
+    z-index: 111;
+  }
+  .modal {
+  display: none; /* 모달 창 초기에는 숨김 */
+  position: fixed; /* 고정 위치 */
+  z-index: inherit;
+   /* 다른 요소 위에 표시 */
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto; /* 화면 크기를 벗어날 경우 스크롤 가능 */
+  background-color: rgba(0,0,0,0.4); /* 배경 어둡게 처리 */
+}
 
+/* 모달 내용 스타일 */
+.modal-content {
+  background-color: #fefefe;
+  margin: 15% auto; /* 모달 창을 수직 가운데로 정렬 */
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%; /* 모달 창 너비 */
+}
+
+/* 닫기 버튼 스타일 */
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+</style>
 {% endblock style %}
 
 {% block utab %}
@@ -42,33 +82,40 @@ default
 </style>
 
 <form method="post" enctype="multipart/form-data"> {% csrf_token %}
+  <div id="myModal" class="modal">
+    <!-- 모달 내용 -->
+    <div class="modal-content">
+      <span class="close" onclick="closeModal()">&times;</span>
+      <p>여기에 모달 내용을 입력하세요.</p>
+    </div>
+  </div>
+</form>
 
   <div style="display: flex; align-items: center; position: relative;">
     <button id="notionBtn" type="button" style="width: 220px; height: 30px; margin-top: 4px; margin-bottom: 4px; margin-left: 5px; margin-right: 0px; text-align: left;" onclick="toggleButton()"><span>{{ username }}의 notion</span></button>
 
     <!-- 페이지 생성되야함 /newpage/ -->
     {% load static %}
-    <button id="newpage" type="button" style="width: 28px; height: 28px; position: absolute; left: 160px; top: 5px;" onclick="document.location.href='/ltab/'">
+    <button id="newpage" type="button" style="width: 28px; height: 28px; position: absolute; left: 192px; top: 5px;" onclick="document.location.href='/ltab/'">
       <img src="{% static 'writeBtn.png' %}" alt="Logout" style="width: 100%; height: 100%;">
     </button>
     
     <!-- 로그아웃 / 로그인 -->
     {% if user.is_active %}
-    <button id="logoutBtn" type="button" style="width: 28px; height: 28px; display: flex; justify-content: center; align-items: center;  position: absolute; left: 192px; top: 5px;" onclick="document.location.href='/account/logout/'">logout</button>
+    <button id="logBtn" type="button" style="width: 28px; height: 28px; display: flex; justify-content: center; align-items: center;  position: absolute; left: 160px; top: 5px;" onclick="document.location.href='/account/logout/'">logout</button>
     {% else %}  
-    <button id="loginBtn" type="button" style="width: 28px; height: 28px; display: flex; justify-content: center; align-items: center;  position: absolute; left: 192px; top: 5px;" onclick="document.location.href='/account/login/'">login</button>
+    <button id="logBtn" type="button" style="width: 28px; height: 28px; display: flex; justify-content: center; align-items: center;  position: absolute; left: 160px; top: 5px;" onclick="document.location.href='/account/login/'">login</button>
     {% endif %}
   </div>
 
   
   <!-- 검색 -->
+  <button id="search" type="button" style="width: 220px; height: 30px; margin-left: 5px; margin-top: 2px; text-align: left;" onclick="openModal()">검색</button>
+  
+  
 
-  <button type="button" style="width: 220px; height: 30px; margin-left: 5px; margin-top: 2px; text-align: left;" onclick="openPopup()">검색</button>
-  <div id="popup">
-    <iframe src="search.html" width="100%" height="100%" frameborder="0"></iframe>
-  </div>
   <!-- 홈 -->
-  <button type="button" style="width: 220px; height: 30px; margin-left: 5px; margin-top: 5px; margin-top: 2px; text-align: left;" onclick="document.location.href='/'">홈</button>
+  <button type="button" style="width: 220px; height: 30px; margin-left: 5px; margin-top: 5px; margin-top: 2px; text-align: left;" onclick="document.location.href='/page/'">홈</button>
   
 
 
@@ -80,20 +127,39 @@ default
     <button id="userpage" type="button" style="width: 22px; height: 22px; display: flex; justify-content: center; align-items: center;  position: absolute; left: 196px; top: 8px;" onclick="document.location.href='/account/logout/'">+</button>
   </div>
 
-</form>
-
 <script>
   function openPopup() {
-    document.getElementById('popup').style.display = 'block';
+    // 팝업 창의 크기와 위치를 설정합니다.
+    var width = 300;
+    var height = 200;
+    var left = (window.innerWidth - width) / 2;
+    var top = (window.innerHeight - height) / 2;
+  
+    // 팝업 창을 엽니다.
+    var popupWindow = window.open('', '_blank', 'width=' + width + ', height=' + height + ', left=' + left + ', top=' + top);
+    
+    // 팝업 창에 표시될 내용을 설정합니다.
+    popupWindow.document.write('<h2>팝업 창</h2>');
+    popupWindow.document.write('<p>팝업 창에 표시될 내용입니다.</p>');
+    popupWindow.document.write('<button onclick="window.close()">닫기</button>');
   }
-  function toggleButton() {
-    var newpageBtn = document.getElementById("newpage");
-    if (newpageBtn.style.display === "none") {
-      newpageBtn.style.display = "block";
-    } else {
-      newpageBtn.style.display = "none";
-    }
+
+  function openModal() {
+  document.getElementById("myModal").style.display = "block";
+}
+
+// 모달 닫기 함수
+function closeModal() {
+  document.getElementById("myModal").style.display = "none";
+}
+
+// 모달 외부 클릭 시 모달 닫기
+window.onclick = function(event) {
+  var modal = document.getElementById("myModal");
+  if (event.target == modal) {
+    closeModal();
   }
+}
 
 
   </script>
