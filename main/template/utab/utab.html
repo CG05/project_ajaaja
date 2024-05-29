@@ -9,6 +9,7 @@
     overflow: hidden;
     border-bottom: 1px solid #ccc;
     position: relative;
+    margin-left: 230px;
 }
 
 .tab-menu button {
@@ -46,6 +47,43 @@
     background-color: #ddd;
 }
 
+.share-button {
+    /* 오른쪽에 위치하도록 설정 */
+    position: absolute;
+    top: 0;
+    right: 0;
+    /* 나머지 스타일은 이전과 동일하게 사용 */
+    background-color: inherit;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 14px 16px;
+    transition: 0.3s;
+}
+
+.share-box {
+    /* 공유 탭 아래에 위치하도록 설정 */
+    position: absolute;
+    top: 50px; /* 공유 탭 아래에 위치하도록 조절 */
+    right: 0;
+    min-width: 200px; /* 박스의 최소 너비 설정 */
+    max-width: 400px; /* 박스의 최대 너비 설정 */
+    padding: 10px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    z-index: 1;
+    display: none; /* 초기에는 숨겨진 상태로 설정 */
+    text-align: right; /* 내용을 오른쪽으로 정렬합니다. */
+    white-space: nowrap; /* 텍스트가 줄 바꿈되지 않도록 설정 */
+    overflow: hidden; /* 텍스트가 넘치는 경우 숨김 처리 */
+    text-overflow: ellipsis; /* 텍스트가 넘칠 때 말줄임표(...)로 처리 */
+}
+.show {
+    display: block; /* show 클래스가 적용되면 박스를 보이게 합니다. */
+}
+
 </style>
 {% endblock style %}
 
@@ -53,23 +91,26 @@
 <div class="tab-menu">
   <button class="tablinks" onclick="openTab('tab1')">아자아자 3조!</button>
   <button class="tablinks" onclick="openTab('tab2')">KG프로젝트</button>
-  <button class="tablinks" onclick="openSite()">요구사항 분석</button>
-  <button class="share-button" onclick="openTab('tab4')">공유(url)</button>
+  <button class="tablinks" onclick="openTab('tab3')">요구사항 분석</button>
+    <!-- 공유 탭 -->
+    <button id="shareButton" class="tablinks share-button" onclick="toggleShareMenu()">공유</button>
 </div>
-
-
+<div id="shareBox" class="share-box">
+    <!-- 공유 탭 클릭시 나타날 박스 내용 -->
+    <div id="shareContent">https://www.notion.so/c5d4ac256188454c9a6eb780385e9f7e</div>
+</div>
 {% endblock utab %}
 
 {% block bodyscript %}
 <script>
-    function openTab(tabId) {
-        document.location.href = "/utab/"+tabId +"/";
+    function toggleShareMenu() {
+        var shareBox = document.getElementById("shareBox");
+        console.log(shareBox.style.display); // 확인용
+        if (shareBox.style.display === "none") {
+            shareBox.style.display = "block";
+        } else {
+            shareBox.style.display = "none";
+        }
     }
-    
-    function openSite() {
-        window.location.href = "https://www.notion.so/c5d4ac256188454c9a6eb780385e9f7e";
-    }
-
 </script>
 {% endblock bodyscript %}
-
