@@ -9,6 +9,9 @@
 {% if user.is_active %}
     pass
 {% else %}
+    <header class="header">
+        <a href = "/"><img src="../image/notion.png"></a>
+    </header>
     <button><a href="{% url 'login' %}">로그인</a></button>
     <button><a href="{% url 'create' %}">회원가입</a></button>
 {% endif %}
