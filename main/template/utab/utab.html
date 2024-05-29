@@ -6,8 +6,6 @@
 <style>
 /* CSS 스타일링 */
 .tab-menu {
-    overflow: hidden;
-    border-bottom: 1px solid #ccc;
     position: relative;
     margin-left: 230px;
 }
@@ -31,8 +29,9 @@
     border-bottom: 2px solid #000;
 }
 
-.tab-menu .share-button {
-    position: fixed; /* 화면의 오른쪽에 고정 */
+/* 오른쪽 정렬 스타일 */
+.share-button {
+    position: absolute;
     top: 0;
     right: 0;
     background-color: inherit;
@@ -43,47 +42,31 @@
     transition: 0.3s;
 }
 
-.tab-menu .share-button:hover {
+.share-button:hover {
     background-color: #ddd;
 }
 
-.share-button {
-    /* 오른쪽에 위치하도록 설정 */
-    position: absolute;
-    top: 0;
-    right: 0;
-    /* 나머지 스타일은 이전과 동일하게 사용 */
-    background-color: inherit;
-    border: none;
-    outline: none;
-    cursor: pointer;
-    padding: 14px 16px;
-    transition: 0.3s;
-}
-
 .share-box {
-    /* 공유 탭 아래에 위치하도록 설정 */
     position: absolute;
-    top: 50px; /* 공유 탭 아래에 위치하도록 조절 */
+    top: calc(100% + 40px); /* 박스를 공유 탭 아래로 위치시킵니다. */
     right: 0;
-    min-width: 200px; /* 박스의 최소 너비 설정 */
-    max-width: 400px; /* 박스의 최대 너비 설정 */
-    padding: 10px;
+    min-width: 200px;
     background-color: #fff;
     border: 1px solid #ccc;
     border-radius: 5px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     z-index: 1;
-    display: none; /* 초기에는 숨겨진 상태로 설정 */
-    text-align: right; /* 내용을 오른쪽으로 정렬합니다. */
-    white-space: nowrap; /* 텍스트가 줄 바꿈되지 않도록 설정 */
-    overflow: hidden; /* 텍스트가 넘치는 경우 숨김 처리 */
-    text-overflow: ellipsis; /* 텍스트가 넘칠 때 말줄임표(...)로 처리 */
-}
-.show {
-    display: block; /* show 클래스가 적용되면 박스를 보이게 합니다. */
+    opacity: 0; /* 초기에는 투명하게 설정 */
+    pointer-events: none; /* 클릭 이벤트를 비활성화합니다. */
+    transition: opacity 0.3s ease-in-out; /* 부드러운 나타나기/사라지기 효과를 추가합니다. */
+    padding: 10px;
 }
 
+/* 공유 박스가 나타날 때 */
+.share-box.show {
+    opacity: 1; /* 투명도를 1로 설정하여 나타나게 합니다. */
+    pointer-events: auto; /* 클릭 이벤트를 활성화합니다. */
+}
 </style>
 {% endblock style %}
 
@@ -92,25 +75,20 @@
   <button class="tablinks" onclick="openTab('tab1')">아자아자 3조!</button>
   <button class="tablinks" onclick="openTab('tab2')">KG프로젝트</button>
   <button class="tablinks" onclick="openTab('tab3')">요구사항 분석</button>
-    <!-- 공유 탭 -->
-    <button id="shareButton" class="tablinks share-button" onclick="toggleShareMenu()">공유</button>
-</div>
-<div id="shareBox" class="share-box">
-    <!-- 공유 탭 클릭시 나타날 박스 내용 -->
-    <div id="shareContent">https://www.notion.so/c5d4ac256188454c9a6eb780385e9f7e</div>
+  <!-- 공유 탭 -->
+  <button id="shareButton" class="tablinks share-button" onclick="toggleShareBox()">공유</button>
+  <!-- 박스 -->
+  <div id="shareBox" class="share-box">
+    <p>https://www.notion.so/3-066abf1ec70245c1abe0b5f65ccd381c</p>
+  </div>
 </div>
 {% endblock utab %}
 
 {% block bodyscript %}
 <script>
-    function toggleShareMenu() {
-        var shareBox = document.getElementById("shareBox");
-        console.log(shareBox.style.display); // 확인용
-        if (shareBox.style.display === "none") {
-            shareBox.style.display = "block";
-        } else {
-            shareBox.style.display = "none";
-        }
-    }
+function toggleShareBox() {
+    var shareBox = document.getElementById("shareBox");
+    shareBox.classList.toggle("show"); // 'show' 클래스를 토글하여 나타내거나 숨깁니다.
+}
 </script>
 {% endblock bodyscript %}

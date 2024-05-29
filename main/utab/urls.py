@@ -6,5 +6,4 @@ urlpatterns = [
     path("tab1/", views.tab1),
     path("tab2/",views.tab2),
     path("tab3/",views.tab3),
-    path("tab4/", views.tab4),
 ]

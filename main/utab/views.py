@@ -11,6 +11,3 @@ def tab2(request):
 
 def tab3(request):
     return HttpResponse("https://www.notion.so/c5d4ac256188454c9a6eb780385e9f7e")
-
-def tab4(request):
-    return HttpResponse("pagepath")
