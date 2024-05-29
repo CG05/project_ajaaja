@@ -67,6 +67,21 @@
     opacity: 1; /* 투명도를 1로 설정하여 나타나게 합니다. */
     pointer-events: auto; /* 클릭 이벤트를 활성화합니다. */
 }
+
+/* 박스 내부의 글자가 일정 길이를 초과할 때 말줄임표 표시 */
+.share-box p {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.copy-button {
+    background-color: #bbb;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 8px 10px;
+    margin-left: 5px;
+}
 </style>
 {% endblock style %}
 
@@ -79,7 +94,8 @@
   <button id="shareButton" class="tablinks share-button" onclick="toggleShareBox()">공유</button>
   <!-- 박스 -->
   <div id="shareBox" class="share-box">
-    <p>https://www.notion.so/3-066abf1ec70245c1abe0b5f65ccd381c</p>
+    <p id="shareContent"></p>
+    <button class="copy-button" onclick="copyURL()">카피</button>
   </div>
 </div>
 {% endblock utab %}
@@ -89,6 +105,47 @@
 function toggleShareBox() {
     var shareBox = document.getElementById("shareBox");
     shareBox.classList.toggle("show"); // 'show' 클래스를 토글하여 나타내거나 숨깁니다.
+}
+
+// 박스 내의 텍스트를 제한 길이로 자르고 말줄임표를 추가하는 함수
+function truncateText() {
+    var shareContent = document.getElementById("shareContent");
+    var maxLength = 35; // 최대 길이 설정
+    var content = shareContent.textContent; // 현재 텍스트 가져오기
+    if (content.length > maxLength) {
+        content = content.substring(0, maxLength) + '...'; // 길이 초과 시 자르고 말줄임표 추가
+    }
+    shareContent.textContent = content; // 변경된 내용으로 설정
+}
+
+// 페이지 로드시 텍스트 자르기 함수 호출
+window.onload = function() {
+    truncateText();
+};
+
+function toggleShareBox() {
+    var shareBox = document.getElementById("shareBox");
+    shareBox.classList.toggle("show"); // 'show' 클래스를 토글하여 나타내거나 숨깁니다.
+}
+
+// 현재 페이지 URL을 박스 내에 표시하는 함수
+function setCurrentPageURL() {
+    var shareContent = document.getElementById("shareContent");
+    shareContent.textContent = window.location.href; // 현재 페이지 URL을 설정합니다.
+}
+
+// 페이지 로드시 현재 페이지 URL 표시 함수 호출
+window.onload = function() {
+    setCurrentPageURL();
+};
+
+function copyURL() {
+    var url = window.location.href; // 현재 페이지 URL을 가져옵니다.
+    navigator.clipboard.writeText(url); // 클립보드에 URL을 복사합니다.
+}
+
+function openTab(tabId) {
+    document.location.href = "/utab/" + tabId + "/";
 }
 </script>
 {% endblock bodyscript %}
