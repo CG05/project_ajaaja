@@ -33,10 +33,10 @@ default
         const addedlength = textAfterCursor.length
         const position = text.length;
 
-        moveCursorToPosition(element, position - addedlength)
+        moveCursorToPositionTop(element, position - addedlength)
     }
 
-    function moveCursorToPosition(element, position) {
+    function moveCursorToPositionTop(element, position) {
         ensureTextNode(element);
         const range = document.createRange();
         const selection = window.getSelection();
@@ -54,7 +54,23 @@ default
         ensureTextNode(element);
         const text = element.firstChild;
         const position = text.length;
-        moveCursorToPosition(element, position);
+        moveCursorToPositionTop(element, position);
+    }
+    function moveCursorToPositionBottom(element, position) {
+        ensureTextNode(element);
+        const range = document.createRange();
+        const selection = window.getSelection();
+        const text = element.firstChild;
+        if (position > text.length) {
+            position = text.length;
+        }
+
+        range.selectNodeContents(element);
+        range.collapse(false);
+
+        selection.removeAllRanges();
+        selection.addRange(range);
+
     }
 
     function ensureTextNode(element) {
@@ -68,15 +84,22 @@ default
         const cursorRange = selection.getRangeAt(0);
         const cursorRect = cursorRange.getBoundingClientRect();
         
-        const rects = getTextNodes(element);
+        const textNodes = getTextNodes(element);
+        console.log(textNodes)
+        const rects = textNodes.map(node => {
+            const range = document.createRange();
+            range.selectNodeContents(node);
+            return range.getBoundingClientRect();
+        });
         console.log(rects)
+        console.log(rects[0])
         const firstLineY = rects[0].top;
         const lastLineY = rects[(rects.length-1)].bottom;
         const lineheight = rects[0].height;
         const y = cursorRect.y;
         const lineNum = Math.floor((y - firstLineY) / lineheight) + 1;
         const lastLine = Math.floor((lastLineY - firstLineY) / lineheight);
-        console.log((lastLineY - firstLineY) / lineheight)
+        console.log(y, firstLineY);
         return { lineNum, lastLine };
     }
 
@@ -91,15 +114,26 @@ default
 
         let node;
         while (node = treeWalker.nextNode()) {
-            const range = document.createRange();
-            range.selectNodeContents(node);
-
-            const rects = range.getClientRects();
-            const nodeRects = [...rects];
-            textNodes.push(nodeRects[0]);
+            textNodes.push(node);
         }
 
         return textNodes;
+    }
+
+    function moveCursorToTextNodeStart(textNode) {
+        const range = document.createRange();
+        const selection = window.getSelection();
+
+        range.setStart(textNode, 0);
+        range.collapse(true);
+
+        selection.removeAllRanges();
+        selection.addRange(range);
+
+        const parentElement = textNode.parentElement;
+        if (parentElement) {
+            parentElement.focus();
+        }
     }
 
 </script>
@@ -225,7 +259,7 @@ default
                         const nextTextNode = nextLineblock.children[1].children[0].children[0];
                         if (nextTextNode && nextLineblock.classList.contains('lineblock')) {
                             event.preventDefault();
-                            moveCursorToPosition(nextTextNode, 0);
+                            moveCursorToPositionTop(nextTextNode, 0);
                         }
                     }
                 }
@@ -244,7 +278,7 @@ default
                             const selection = window.getSelection();
                             const range = selection.getRangeAt(0);
                             const cursorPosition = range.endOffset;
-                            moveCursorToPosition(nextTextNode, cursorPosition);
+                            moveCursorToPositionTop(nextTextNode, cursorPosition);
                         }
 
                     }
@@ -263,7 +297,7 @@ default
                         const selection = window.getSelection();
                         const range = selection.getRangeAt(0);
                         const cursorPosition = range.endOffset;
-                        moveCursorToPosition(previousTextNode, cursorPosition);
+                        moveCursorToPositionBottom(previousTextNode, cursorPosition);
                         }
                     }
                 }
