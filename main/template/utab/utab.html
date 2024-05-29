@@ -51,9 +51,10 @@
 
 {% block utab %}
 <div class="tab-menu">
-  <button class="tablinks" onclick="openTab('tab1')">페이지위치</button>
-  <button class="tablinks" onclick="openTab('tab2')">페이지위치2</button>
-  <button class="share-button" onclick="openTab('tab3')">공유(url)</button>
+  <button class="tablinks" onclick="openTab('tab1')">아자아자 3조!</button>
+  <button class="tablinks" onclick="openTab('tab2')">KG프로젝트</button>
+  <button class="tablinks" onclick="openSite()">요구사항 분석</button>
+  <button class="share-button" onclick="openTab('tab4')">공유(url)</button>
 </div>
 
 
@@ -65,9 +66,10 @@
         document.location.href = "/utab/"+tabId +"/";
     }
     
-    function openShare() {
-        // 공유 버튼을 클릭할 때 수행할 동작 추가
+    function openSite() {
+        window.location.href = "https://www.notion.so/c5d4ac256188454c9a6eb780385e9f7e";
     }
+
 </script>
 {% endblock bodyscript %}
 
