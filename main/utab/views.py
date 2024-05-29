@@ -6,5 +6,5 @@ def default(request):
 def tab1(request):
     return HttpResponse("tab1")
 
-def tab2(request):
-    return HttpResponse("tab2")
+def tab3(request):
+    return HttpResponse("tab3")
