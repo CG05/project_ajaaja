@@ -46,7 +46,11 @@ def login(request):
 
 def logout(request):
     auth.logout(request);
-    return render(request, "registration/logged_out.html");
+    msg = "<script>";
+    msg += "alert('로그아웃 되었습니다.');";
+    msg += "location.href='/';";
+    msg += "</script>";
+    return HttpResponse(msg);
 
 def index(request):
     if request.user.is_active:

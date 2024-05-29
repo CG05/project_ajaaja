@@ -1,34 +1,113 @@
+{%load static%}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>로그인</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+    <style>
+        body{
+            margin:0;
+        }
+        .nav{
+            display:flex;
+            align-items: center;
+            justify-content: start;
+            width: 100%;
+            max-width: 1300px;
+            padding-left: 20px;
+            padding-right: 20px;
+            transition: height 250ms ease 0s;
+            height: 80px;
+            position: fixed;
+            overflow: hidden;
+            box-shadow: none;
+        }
+        a{
+            margin-left: 10px;
+        }
+        .nav img{
+            max-width: 100%;
+            height: auto;
+        }
+        .gray{
+            color: rgb(172, 171, 169);
+            font-family: "Roboto", sans-serif;
+            font-weight: 500;
+        }
+
+    </style>
 </head>
 <body>
-    <h3 class="text-center">로그인 페이지</h3>
-    <form method="post">{% csrf_token %}
-        <table class="table table-bordered border-primary text-center" style='width:40%' align="center">
-            <tr>
-                <th>로그인 아이디</th>
-                <td><input type="text" name="username"></td>
-            </tr>
-            <tr>
-                <th>로그인 암호</th>
-                <td><input type="password" name="password"></td>
-            </tr>
-            <tr>
-                <td colspan="2">
-                    <input type="submit" class='btn btn-success btn-lg' 
-                        style="width:120px" value="로그인">
-                    <input type="reset" class="btn btn-danger btn-lg" 
-                        style="width:120px" value="다시입력">
-                    <input type="button" class="btn btn-primary btn-lg" 
-                        style="width:120px" value="목록으로" 
-                            onclick="document.location.href='/'">
-                </td>
-            </tr>
-        </table>
-    </form>
+    <nav class="nav">
+        <a href = "/"><img src="{% static 'notionsmall.png' %}" width="50.5px" height=42.5px"></a>
+    </nav>
+    <div style="display:flex; 
+    flex-direction:column;
+    align-items:center;
+    padding-top:80px;
+    width:100%;">
+        <div style="display: flex; flex-direction: column; text-align:left; font-weight:bold; font-size:22px;
+            letter-spacing:-0.264px; line-height:26px; width:320px; margin-bottom : 23px; margin-top:10vh">
+            <div style="color:#040404;">Think it.Make it.</div>
+            <div class="gray">Log in to your Notion account</div>
+        </div>
+        <div style="width:100%; display:flex; flex-direction:column; align-items:center; max-width:320px;
+            margin-bottom: 16vh;">
+            <div style="display:flex; align-items: center; justify-content: center; pointer-events: none;
+                width:100%; height:41px; flex:0 0 auto;">
+                <div role="seperator" style="width:100%; height:1px; visibility: visible;
+                        border-bottom: 1px solid rgba(227,226,224,0.5);"></div>
+            </div>
+            <div style="width:100%; display:flex; flex-direction:column; align-items:center; max-width:320px; text-align:left;">
+                <form method="post" 
+                style="width:100%; display:flex; flex-direction:column; align-items:center; max-width:320px; text-align:left;">{% csrf_token %}
+                    <label for="username" style="width:100%; display:block; margin-bottom: 4px; font-size:12px;
+                     color:rgb(120,119,116); font-weight:500;">ID
+                    </label>
+                    <div style="display:flex; align-items:center; width:100%;font-size:15px; line-height: 26px; position: relative;
+                    border-radius:6px; box-shadow:rgba(15,15,15,0.1) 0px 0px 0px 1px inset; background:transparent;
+                    cursor:text; padding: 4px 10px; margin-top:4px; margin-bottom:17px;">
+                    <input type="text" name="username" placeholder="Enter your ID..."
+                    style="font-size: inherit; line-height:inherit; border:none; background:none; width:100%; display:block;
+                    resize:none; padding:0px;"></div>
+                    <label for="password" style="width:100%; display:block; margin-bottom: 4px; font-size:12px;
+                     color:rgb(120,119,116); font-weight:500;">PASSWORD
+                    </label>
+                    <div style="display:flex; align-items:center; width:100%;font-size:15px; line-height: 26px; position: relative;
+                    border-radius:6px; box-shadow:rgba(15,15,15,0.1) 0px 0px 0px 1px inset; background:transparent;
+                    cursor:text; padding: 4px 10px; margin-top:4px; margin-bottom:8px;">
+                    <input type="password" name="password" placeholder="Enter your PASSWORD..."
+                    style="font-size: inherit; line-height:inherit; border:none; background:none; width:100%; display:block;
+                        resize:none; padding:0px;">
+                    </div>
+                    <div style="color: rgb(172, 171, 169); font-size: 12px; line-height: 16px; margin-top: 6px;
+                     margin-bottom: 18px; text-align: left; display: flex;">
+                     Use an organization email to easily collaborate with teammates</div>
+                     <input type="submit" style="transition: background 20ms ease-in 0s; cursor: pointer; display: inline-grid;
+                      align-items: center; justify-content: center; white-space: nowrap; height: 36px; border-radius: 4px;
+                       font-size: 14px; line-height: 1; padding-left: 12px; border:0;
+                     padding-right: 12px; font-weight: 500; background: rgb(35, 131, 226); 
+                     color: white; margin-top: 6px; margin-bottom: 12px; width: 100%; width: max 320px;  font-family: 'Roboto', sans-serif;" value="Continue">
+                
+                </form>
+                <div style="width: 100%; margin-top: 64px; margin-bottom: 0px; font-size: 12px; line-height: 16px; color: rgb(120, 119, 116); text-align: center; text-wrap: balance;">
+                    <p style="margin-bottom: 0px;">
+                        Your name and photo are displayed to users who invite you to a workspace using your email.
+                         By continuing, you acknowledge that you understand and agree to the 
+                         <a href="https://www.notion.so/Personal-Use-Terms-of-Service-00e4e5d0f2b9411cbee6493f15779500"
+                          rel="noopener noreferrer" class="notion-link-blue" style="display: inline; color: rgb(172, 171, 169); 
+                          text-decoration: none; user-select: none; cursor: pointer;">Terms &amp; Conditions</a> and
+                           <a href="https://www.notion.so/3468d120cf614d4c9014c09f6adc9091" rel="noopener noreferrer"
+                            class="notion-link-blue" style="display: inline; color: rgb(172, 171, 169); text-decoration: none;
+                             user-select: none; cursor: pointer;">Privacy Policy</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
