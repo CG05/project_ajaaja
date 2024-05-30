@@ -6,8 +6,8 @@
 <style>
 /* CSS 스타일링 */
 .tab-menu {
-    overflow: hidden;
-    border-bottom: 1px solid #ccc;
+    position: relative;
+    margin-left: 230px;
 }
 
 .tab-menu button {
@@ -29,32 +29,123 @@
     border-bottom: 2px solid #000;
 }
 
-.tab-content {
-    display: none;
-    padding: 20px;
+/* 오른쪽 정렬 스타일 */
+.share-button {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background-color: inherit;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 14px 16px;
+    transition: 0.3s;
 }
 
-.tab-content.active {
-    display: block;
+.share-button:hover {
+    background-color: #ddd;
+}
+
+.share-box {
+    position: absolute;
+    top: calc(100% + 40px); /* 박스를 공유 탭 아래로 위치시킵니다. */
+    right: 0;
+    min-width: 200px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    z-index: 1;
+    opacity: 0; /* 초기에는 투명하게 설정 */
+    pointer-events: none; /* 클릭 이벤트를 비활성화합니다. */
+    transition: opacity 0.3s ease-in-out; /* 부드러운 나타나기/사라지기 효과를 추가합니다. */
+    padding: 10px;
+}
+
+/* 공유 박스가 나타날 때 */
+.share-box.show {
+    opacity: 1; /* 투명도를 1로 설정하여 나타나게 합니다. */
+    pointer-events: auto; /* 클릭 이벤트를 활성화합니다. */
+}
+
+/* 박스 내부의 글자가 일정 길이를 초과할 때 말줄임표 표시 */
+.share-box p {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.copy-button {
+    background-color: #bbb;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 8px 10px;
+    margin-left: 5px;
 }
 </style>
 {% endblock style %}
 
 {% block utab %}
 <div class="tab-menu">
-  <button class="tablinks" onclick="openTab('tab1')">페이지위치</button>
-  <button class="tablinks" onclick="openTab('tab2')">공유(url)</button>
+  <button class="tablinks" onclick="openTab('tab1')">아자아자 3조!</button>
+  <button class="tablinks" onclick="openTab('tab2')">KG프로젝트</button>
+  <button class="tablinks" onclick="openTab('tab3')">요구사항 분석</button>
+  <!-- 공유 탭 -->
+  <button id="shareButton" class="tablinks share-button" onclick="toggleShareBox()">공유</button>
+  <!-- 박스 -->
+  <div id="shareBox" class="share-box">
+    <p id="shareContent"></p>
+    <button class="copy-button" onclick="copyURL()">카피</button>
+  </div>
 </div>
-
-
 {% endblock utab %}
 
 {% block bodyscript %}
 <script>
-    function openTab(tabId) {
-        document.location.href = "/utab/"+tabId +"/";
+function toggleShareBox() {
+    var shareBox = document.getElementById("shareBox");
+    shareBox.classList.toggle("show"); // 'show' 클래스를 토글하여 나타내거나 숨깁니다.
+}
+
+// 박스 내의 텍스트를 제한 길이로 자르고 말줄임표를 추가하는 함수
+function truncateText() {
+    var shareContent = document.getElementById("shareContent");
+    var maxLength = 35; // 최대 길이 설정
+    var content = shareContent.textContent; // 현재 텍스트 가져오기
+    if (content.length > maxLength) {
+        content = content.substring(0, maxLength) + '...'; // 길이 초과 시 자르고 말줄임표 추가
     }
-    
+    shareContent.textContent = content; // 변경된 내용으로 설정
+}
+
+// 페이지 로드시 텍스트 자르기 함수 호출
+window.onload = function() {
+    truncateText();
+};
+
+function toggleShareBox() {
+    var shareBox = document.getElementById("shareBox");
+    shareBox.classList.toggle("show"); // 'show' 클래스를 토글하여 나타내거나 숨깁니다.
+}
+
+// 현재 페이지 URL을 박스 내에 표시하는 함수
+function setCurrentPageURL() {
+    var shareContent = document.getElementById("shareContent");
+    shareContent.textContent = window.location.href; // 현재 페이지 URL을 설정합니다.
+}
+
+// 페이지 로드시 현재 페이지 URL 표시 함수 호출
+window.onload = function() {
+    setCurrentPageURL();
+};
+
+function copyURL() {
+    var url = window.location.href; // 현재 페이지 URL을 가져옵니다.
+    navigator.clipboard.writeText(url); // 클립보드에 URL을 복사합니다.
+}
+
+function openTab(tabId) {
+    document.location.href = "/utab/" + tabId + "/";
+}
 </script>
 {% endblock bodyscript %}
-
