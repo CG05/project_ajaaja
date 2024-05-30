@@ -14,6 +14,10 @@
     padding: 0;
     z-index: 1000;
 }
+/* 폰트 */
+.tablinks {
+    font-family: 'Roboto', sans-serif;
+}
 
 .tab-menu button {
     background-color: inherit;
@@ -85,6 +89,7 @@
     outline: none;
     cursor: pointer;
     padding: 8px 10px;
+    font-size: 14px;
 }
 
 /* 공유 박스가 나타날 때 */
@@ -111,10 +116,12 @@
   <!-- 공유 탭 -->
   <button id="shareButton" class="tablinks share-button">공유</button>
   <!-- 박스 -->
-  <div id="shareBox" class="share-box">
-    <p id="shareContent"></p>
-    <button id="copyButton" class="copy-button">Copy</button>
-  </div>
+  <div id="shareBox" class="share-box" style="font-family: 'Roboto', sans-serif;">
+    <div id="urlBox" style="border: 1px solid black; padding: 8px; border-radius: 5px;">
+        <span id="shareContent"></span>
+    </div>
+    <button id="copyButton" class="copy-button" style="background-color: blue; color: white; padding: 9px 12px; margin-top: 2px; margin-left: auto; display: inline-block; writing-mode: horizontal-tb;">copy</button>
+</div>
 </div>
 {% endblock utab %}
 
