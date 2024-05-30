@@ -11,7 +11,7 @@
     position: sticky;
     top: 0;
     background-color: #fff;
-    padding: 0px 0;
+    padding: 0;
     z-index: 1000;
 }
 
@@ -52,9 +52,10 @@
 }
 
 .share-box {
-    position: absolute;
-    top: calc(100% + 20px); /* 박스를 공유 탭 아래로 위치시킵니다. */
-    right: 1;
+    position: fixed; /* 페이지 스크롤에 따라 고정되도록 설정 */
+    top: 7.9%; /* 화면 상단에서 절반 높이로 설정 */
+    left: 86.7%; /* 화면 왼쪽에서 절반 너비로 설정 */
+    transform: translate(-50%, -50%); /* 상자를 정확한 중앙으로 이동 */
     min-width: 200px;
     background-color: #fff;
     border: 1px solid #ccc;
@@ -65,6 +66,25 @@
     transition: opacity 0.3s ease-in-out; /* 부드러운 나타나기/사라지기 효과를 추가합니다. */
     padding: 10px;
     pointer-events: none; /* 클릭 이벤트를 비활성화합니다. */
+    display: flex; /* Flexbox 사용하여 내부 요소를 가로로 배열합니다. */
+    justify-content: space-between; /* 내부 요소 사이의 여백을 최대한 확보하고 요소를 동일한 간격으로 배치합니다. */
+    align-items: center; /* 수직 가운데 정렬합니다. */
+}
+
+#shareContent {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    flex: 1; /* URL 텍스트가 가능한 넓은 공간을 차지할 수 있도록 설정합니다. */
+}
+
+/* 카피 버튼 스타일 */
+.copy-button {
+    background-color: #bbb;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 8px 10px;
 }
 
 /* 공유 박스가 나타날 때 */
@@ -79,14 +99,7 @@
     text-overflow: ellipsis;
     white-space: nowrap;
 }
-.copy-button {
-    background-color: #bbb;
-    border: none;
-    outline: none;
-    cursor: pointer;
-    padding: 8px 10px;
-    margin-left: 5px;
-}
+
 </style>
 {% endblock style %}
 
@@ -100,46 +113,55 @@
   <!-- 박스 -->
   <div id="shareBox" class="share-box">
     <p id="shareContent"></p>
-    <button class="copy-button" onclick="copyURL()">카피</button>
+    <button id="copyButton" class="copy-button">Copy</button>
   </div>
 </div>
 {% endblock utab %}
 
 {% block bodyscript %}
 <script>
-function toggleShareBox() {
-    var shareBox = document.getElementById("shareBox");
-    shareBox.classList.toggle("show"); // 'show' 클래스를 토글하여 나타내거나 숨깁니다.
-}
+    var shareButton = document.getElementById("shareButton");
+    shareButton.addEventListener("click", toggleShareBox); // 공유 버튼 클릭 시 토글 함수 호출
 
-function copyURL() {
-    var url = window.location.href; // 현재 페이지 URL을 가져옵니다.
-    navigator.clipboard.writeText(url); // 클립보드에 URL을 복사합니다.
-}
+    // 카피 버튼 클릭 시 URL 복사
+    var copyButton = document.getElementById("copyButton");
+    copyButton.addEventListener("click", copyURL);
 
-function openTab(tabId) {
-    document.location.href = "/utab/" + tabId + "/";
-}
-
-// 박스 내의 텍스트를 제한 길이로 자르고 말줄임표를 추가하는 함수
-function truncateText() {
-    var shareContent = document.getElementById("shareContent");
-    var maxLength = 35; // 최대 길이 설정
-    var content = shareContent.textContent; // 현재 텍스트 가져오기
-    if (content.length > maxLength) {
-        content = content.substring(0, maxLength) + '...'; // 길이 초과 시 자르고 말줄임표 추가
+    function toggleShareBox() {
+        var shareBox = document.getElementById("shareBox");
+        shareBox.classList.toggle("show"); // 'show' 클래스를 토글하여 나타내거나 숨깁니다.
+        updateShareContent(); // 공유 상자가 열릴 때마다 내용 업데이트
     }
-    shareContent.textContent = content; // 변경된 내용으로 설정
-}
+    
+    function copyURL() {
+        var url = window.location.href; // 현재 페이지 URL을 가져옵니다.
+        navigator.clipboard.writeText(url); // 클립보드에 URL을 복사합니다.
+    }
 
-// 페이지 로드시 텍스트 자르기 함수 호출
-window.onload = function() {
-    truncateText();
-};
+    function updateShareContent() {
+        var shareContent = document.getElementById("shareContent");
+        var url = window.location.href; // 현재 페이지 URL을 가져옵니다.
+        shareContent.textContent = url; // 공유 상자 내용을 현재 페이지 URL로 설정합니다.
+    }
 
-// 공유 버튼 클릭 시 박스 토글
-var shareButton = document.getElementById("shareButton");
-shareButton.addEventListener("click", toggleShareBox);
+    function openTab(tabId) {
+        document.location.href = "/utab/" + tabId + "/";
+    }
 
+    // 페이지 로드시 텍스트 자르기 함수 호출
+    window.onload = function() {
+        truncateText();
+    };
+
+    // 박스 내의 텍스트를 제한 길이로 자르고 말줄임표를 추가하는 함수
+    function truncateText() {
+        var shareContent = document.getElementById("shareContent");
+        var maxLength = 35; // 최대 길이 설정
+        var content = shareContent.textContent; // 현재 텍스트 가져오기
+        if (content.length > maxLength) {
+            content = content.substring(0, maxLength) + '...'; // 길이 초과 시 자르고 말줄임표 추가
+        }
+        shareContent.textContent = content; // 변경된 내용으로 설정
+    }
 </script>
 {% endblock bodyscript %}
