@@ -1,8 +1,5 @@
 {% extends 'home.html' %}
 
-{% block title %}
-default
-{% endblock title %}
 {% block headscript %}
 <script>
 
@@ -10,7 +7,7 @@ default
         var newLineblock = document.createElement('div');
         newLineblock.setAttribute('class', 'lineblock');
         newLineblock.setAttribute('style', 'width: 100%; max-width: 700px; margin-top: 1px; margin-bottom: 1px; position: relative;');
-        newLineblock.innerHTML = '<div style="display: flex; align-items: flex-start; width: 100%; padding-left: 2px; fill: inherit;"></div><div style="flex: 1 1 0px; min-width: 1px; display: flex; flex-direction: column;"><div style="display: flex"><div spellcheck="true" placeholder="텍스트를 입력하세요." data-content-editable-leaf="true" contenteditable="true" style="max-width: 100%; width: 100%; white-space: pre-wrap; word-break: break-word; caret-color: rgb(55, 53, 47); padding: 3px 2px; text-align: left;">텍스트를 입력하시오</div></div></div>';
+        newLineblock.innerHTML = '<div style="display: flex; align-items: flex-start; width: 100%; padding-left: 2px; fill: inherit;"></div><div style="flex: 1 1 0px; min-width: 1px; display: flex; flex-direction: column;"><div style="display: flex"><div class="textnode" spellcheck="true" placeholder="텍스트를 입력하세요." data-content-editable-leaf="true" contenteditable="true" style="max-width: 100%; width: 100%; white-space: pre-wrap; word-break: break-word; caret-color: rgb(55, 53, 47); padding: 3px 2px; text-align: left;">텍스트를 입력하시오</div></div></div>';
         obj.parentNode.insertBefore(newLineblock, obj.nextElementSibling);
         obj.children[1].children[0].children[0].firstChild = "";
         const textNode = newLineblock.children[1].children[0].children[0];
@@ -140,18 +137,6 @@ default
 </script>
 {% endblock headscript %}
 
-{% block headscript2 %}
-    
-{% endblock headscript2 %}
-    
-{% block style %}
-{% endblock style %}
-{% block utab %}
-default
-{% endblock utab %}
-{% block ltab %}
-default
-{% endblock ltab %}
 {% block page %}
 <div class="layout" style="position: relative; padding-bottom: 300px; cursor: text;">
     <div class="layout-content"
@@ -189,7 +174,7 @@ default
                         flex-direction: column;
                       ">
                 <div style="display: flex">
-                    <div spellcheck="true" placeholder="텍스트를 입력하세요." data-content-editable-leaf="true"
+                    <div class="textnode" spellcheck="true" placeholder="텍스트를 입력하세요." data-content-editable-leaf="true"
                         contenteditable="true" style="
                             max-width: 100%;
                             width: 100%;
@@ -313,6 +298,4 @@ default
 </script>
 {% endblock bodyscript %}
 
-{% block bodyscript2 %}
-{% endblock bodyscript2 %}
     

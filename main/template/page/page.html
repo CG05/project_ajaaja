@@ -1,36 +1,91 @@
-{% extends './default.html' %}
-
+{% extends 'ltab/default.html' %}
 
 {% block bodyscript2 %}
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 {% if page %}
     {{page.content | json_script:"pageContentJSON"}}
     <script>
-        window.onload = (function() {
+        document.addEventListener('DOMContentLoaded', (event) => {
             const title = document.getElementsByClassName('htextblock')[0];
             console.log(title);
             title.innerHTML = '{{page.title}}';
             var pageContent = JSON.parse(document.getElementById('pageContentJSON').textContent);
             let obj = document.getElementsByClassName('lineblock')[0];
-            if (Object.keys(pageContent).length > 1) {
+            if (Object.keys(pageContent).length > 0) {
                 for (key in pageContent){
                     const text = pageContent[key];
                     const list = text.split('\\n');
+                    obj.children[1].children[0].children[0].textContent = list[0];
                     if(list.length > 1){
-                        obj = newLineblock(obj, list[0]);
-                        element = obj.children[1].children[0].children[0];
                         for (let i = 1; i < list.length; i++){
+                            element = obj.children[1].children[0].children[0];
                             element.appendChild(document.createElement('br'));
                             element.appendChild(document.createTextNode(list[i]));
                         }
+                        obj = newLineblock(obj, "");
                     }
                 }
-            }else {
-                obj.children[1].children[0].children[0].textContent = pageContent["1"];
             }
         });
     </script>
-{% endif %}
+
+    {% endif %}
+    <script>
+        var targetNode = document.getElementsByClassName('page')[0];
+
+        var observerOptions = {
+            childList: true,
+            subtree: true,
+            characterData: true
+        };
+
+        var observer = new MutationObserver(function(mutations) {
+            sendData();
+        });
+
+        document.addEventListener('DOMContentLoaded', (event) => {
+            setTimeout(3000);
+            observer.observe(targetNode, observerOptions);
+        });
+
+        function sendData() {
+            var collected = collectText()
+            var formData = {
+                'content': {
+                    'title': collected.title,
+                    'contents':JSON.stringify(collected.contents),
+                },
+                'csrfmiddlewaretoken': '{{ csrf_token }}'
+            };
+
+            $.ajax({
+                type: 'POST',
+                url: '/page/{{pageid}}/save/',
+                data: JSON.stringify(formData),
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                success: function(response) {
+                    console.log('Data saved successfully!');
+                },
+                error: function(response) {
+                    console.log('An error occurred.');
+                }
+            });
+        }
+        function collectText() {
+            var headtext = document.querySelectorAll('.headerblock .htextblock')[0];
+            const title = headtext.innerHTML.replace('<br>', '\n');
+            var linetexts = Array.from(document.getElementsByClassName('textnode'));
+            console.log(linetexts);
+            var contents = {};
+            linetexts.forEach(function(textNode, idx) {
+                const text = textNode.innerHTML.replaceAll('<br>', '\\n');
+                contents[idx+1] = text;
+            });
+            return {title, contents};
+        }
+    </script>
     
 {% endblock bodyscript2 %}
     

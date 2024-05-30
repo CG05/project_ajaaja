@@ -1,11 +1,4 @@
-{% extends 'home.html' %}
-
-{% block title %}
-default
-{% endblock title %}
-
-{% block headscript %}
-{% endblock headscript %}
+{% extends 'page/default.html' %}
 
 {% block style %}
 <style>
@@ -44,12 +37,10 @@ default
   display: none;
 }
 
+
+
 </style>
 {% endblock style %}
-
-{% block utab %}
-default
-{% endblock utab %}
 
 {% block ltab %}
 <style>
@@ -79,14 +70,14 @@ default
 </form>
 
   <div style="display: flex; align-items: center; position: relative;">
-    <button id="notionBtn" type="button" style="width: 220px; height: 30px; margin-top: 4px; margin-bottom: 4px; margin-left: 5px; margin-right: 0px; text-align: left;" onclick="toggleButton()"><span>{{ username }}의 notion</span></button>
+    <button id="notionBtn" type="button" style="width: 220px; height: 30px; margin-top: 4px; margin-bottom: 4px; margin-left: 5px; margin-right: 0px; text-align: left;">
+      <span>{{ username }}의 notion</span>
+    </button>
 
     <!-- 페이지 생성되야함 /newpage/ -->
     {% load static %}
     <button id="newpage" type="button" style="width: 28px; height: 28px; padding: 0; position: absolute; left: 192px; top: 5px;" onclick="document.location.href='/ltab/'">
       <div role="button" tabindex="0" aria-label="새 페이지" style="user-select: none; transition: background 20ms ease-in 0s; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; border-radius: 4px; height: 28px; width: 28px; padding: 0px;"><svg role="graphics-symbol" viewBox="0 0 24 24" class="createPage" style="width: 24px; height: 24px; display: block; fill: rgb(55, 53, 47); flex-shrink: 0;"><g><path fill-rule="evenodd" d="M9.944 14.721c.104.094.216.12.336.079l1.703-.688 6.844-6.844-1.406-1.398-6.836 6.836-.711 1.68c-.052.13-.029.242.07.335zm8.102-9.484l1.414 1.406.515-.523a.917.917 0 00.282-.633.76.76 0 00-.258-.61l-.25-.25a.702.702 0 00-.578-.187.975.975 0 00-.617.297l-.508.5zm-9.453.127a3.85 3.85 0 00-3.85 3.85v6.5a3.85 3.85 0 003.85 3.85h6.5a3.85 3.85 0 003.85-3.85V12.95a.85.85 0 10-1.7 0v2.764a2.15 2.15 0 01-2.15 2.15h-6.5a2.15 2.15 0 01-2.15-2.15v-6.5a2.15 2.15 0 012.15-2.15h3.395a.85.85 0 000-1.7H8.593z" clip-rule="evenodd"></path></g></svg></div>
-      
-      <!-- <img src="{% static 'writeBtn.png' %}" alt="Logout" style="width: 100%; height: 100%;"> -->
     </button>
     
     <!-- 로그아웃 / 로그인 - 글자가 칸 벗어남, left: 160px -->
@@ -102,21 +93,63 @@ default
   <button id="search" type="button" style="width: 220px; height: 30px; margin-left: 5px; margin-top: 2px; text-align: left;" onclick="openModal()">검색</button>
   
   <!-- 홈 -->
-  <button type="button" style="width: 220px; height: 30px; margin-left: 5px; margin-top: 5px; margin-top: 2px; text-align: left;" onclick="document.location.href='/page/'">홈</button>
+  <button type="button" style="width: 220px; height: 30px; margin-left: 5px; margin-top: 2px; text-align: left;" onclick="document.location.href='/page/'">홈</button>
   
-
-
-  <div style="display: flex; align-items: center; position: relative; margin-top: 20px;">
-    <!-- 개인페이지 상세 열고닫기 -->
-    <button id="pm" type="button" style="width: 220px; height: 30px; margin-top: 4px; margin-bottom: 4px; margin-left: 5px; margin-right: 0px; text-align: left;" onclick="document.location.href='/pagePM/'"><span>개인페이지</span></button>
-
-    <button id="pp" style="position: relative; width: 220px; height: 30px; margin-top: 4px; margin-bottom: 4px; margin-left: 5px; margin-right: 0px; text-align: left;">+ 페이지 추가</button>
-
+  <div style="height: 100px;"></div>
+  <!-- 개인페이지 상세 열고닫기 -->
+  <div style="display: flex; align-items: center; position: relative;">
     <!-- 개인페이지 추가 버튼 / 로케이션 변경 -->
-    <button id="addpage" type="button" style="width: 22px; height: 22px; display: flex; justify-content: center; align-items: center;  position: absolute; left: 196px; top: 8px;" onclick="document.location.href='{{ username }}/page/'">+</button>
+    <button id="addpage" type="button" style="width: 28px; height: 28px; padding: 0; position: absolute; left: 192px; top: 5px;" 
+    onclick="addpage()">+</button>
+
+    <button id="pppage" type="button" style="width: 220px; height: 30px; margin-top: 4px; margin-bottom: 4px; margin-left: 5px; margin-right: 0px; text-align: left;" onclick="toggleButton()"><span>개인 페이지</span></button>
+
   </div>
 
+  <div style="height: 150px;">
+    <button id="pp" style="position: relative; width: 220px; height: 30px; text-align: left; display: none;" onclick="addpage()">+ 페이지 추가</button>
+    <div id="aaa"></div>
+    <table>
+      {% for page in pageList %}
+      <tr>
+        <td>
+          <button id="pppage" type="button" style="width: 220px; height: 30px; margin-top: 4px; margin-bottom: 4px; margin-left: 5px; margin-right: 0px; text-align: left;" onclick="location.href='/page/{{page.id}}/'"><span>{{page.title}}</span></button>
+        </td>
+      </tr>
+      {% endfor %}
+    </table>
+  </div>
+  
+    
+
+
+
 <script>
+  
+  function toggleButton(){
+    ppButton = document.getElementById("pp");
+    if (ppButton.style.display === "none") {
+      ppButton.style.display = "block";
+    } else {
+      ppButton.style.display = "none";
+    }
+    // 버튼입력했을때 하위 페이지가 없다면, '새 페이지 추가' 라는 버튼? 보이기
+    // 하위 페이지가 있다면, 페이지들이 보이기
+    // 페이지 정보를 불러와야하고, 
+  }
+
+  function addpage(){
+    // 새로운 div 요소 생성
+    var newDiv = document.createElement("div");
+    // newDiv.className = "sub-item";
+    // 새로운 div에 텍스트 내용 추가
+    newDiv.textContent = "새로운 하위 항목";
+    // 하위 항목을 추가할 컨테이너 가져오기
+    var container = document.getElementById("aaa");
+    // 컨테이너에 새로운 div 추가
+    container.appendChild(newDiv);
+    document.location.href='/ltab/newpage/';
+  }
 
   function openModal() {
   document.getElementById("myModal").style.display = "block";
@@ -136,11 +169,4 @@ window.onclick = function(event) {
 
 {% endblock ltab %}
 
-
-
-{% block page %}
-default
-{% endblock page %}
-{% block bodyscript %}
-{% endblock bodyscript %}
   
