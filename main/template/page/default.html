@@ -58,7 +58,7 @@
         ensureTextNode(element);
         const range = document.createRange();
         const selection = window.getSelection();
-        const text = element.firstChild;
+        const text = element.innerText;
         if (position > text.length) {
             position = text.length;
         }
@@ -67,6 +67,8 @@
         range.collapse(false);
 
         selection.removeAllRanges();
+        range.setStart(text, position);
+        range.collapse(true);
         selection.addRange(range);
 
     }
