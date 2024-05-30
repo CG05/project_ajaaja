@@ -1,9 +1,6 @@
-{% extends "home.html" %}
-{% block title %}
-탭 메뉴 만들기
-<link rel="stylesheet" href="styles.css">
-{% endblock %}
-{% block style %}
+{% extends "ltab/default.html" %}
+
+{% block utab %}
 <style>
 /* CSS 스타일링 */
 .tab-menu {
@@ -126,9 +123,7 @@
 
 
 </style>
-{% endblock style %}
 
-{% block utab %}
 <div class="tab-menu">
   <button class="tablinks" onclick="openTab('tab1')">아자아자 3조!</button>
   <button class="tablinks" onclick="openTab('tab2')">KG프로젝트</button>
@@ -147,9 +142,7 @@
 </div>
 </div>
 </div>
-{% endblock utab %}
 
-{% block bodyscript %}
 <script>
     var shareButton = document.getElementById("shareButton");
     shareButton.addEventListener("click", toggleShareBox); // 공유 버튼 클릭 시 토글 함수 호출
@@ -195,4 +188,4 @@
         shareContent.textContent = content; // 변경된 내용으로 설정
     }
 </script>
-{% endblock bodyscript %}
+{% endblock utab %}
