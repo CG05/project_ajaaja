@@ -12,7 +12,14 @@ def createAccount(request):
         first_name = request.POST.get("first_name")
         last_name = request.POST.get("last_name")
         email = request.POST.get("email")
-
+        
+        if not all([username, password, first_name, last_name, email]):
+            msg = "<script>"
+            msg += "alert('빈 칸이 있습니다. 모든 정보를 입력해주세요.');"
+            msg += "location.href='/account/register';"
+            msg += "</script>"
+            return HttpResponse(msg)
+        
         try:
             User.objects.create_user(username, email, password, 
             first_name=first_name, last_name=last_name)
