@@ -1,9 +1,11 @@
+{%load static%}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="{% static 'css/register.css' %}">
     <script>
         if ('{{ msg }}'.length > 0) {
             alert('{{ msg }}');
@@ -31,38 +33,79 @@
             frm1.submit();
         }
     </script>
+
 </head>
 <body>
-    회원가입 페이지.<br>
-    <form name="frm1" method="post">{% csrf_token %}
-        <table>
-            <tr>
-                <th>사용자 아이디</th>
-                <td><input type="text" name="username"></td>
-            </tr>
-            <tr>
-                <th>사용자 암호</th>
-                <td><input type="password" id="pw1" name="password"></td>
-            </tr>
-            <tr>
-                <th>사용자 암호 확인</th>
-                <td><input type="password" id="pw2" name="pwdch" onchange="check()"></td>
-            </tr>
-            <tr>
-                <th>이름</th>
-                <td><input type="text" name="first_name"></td>
-            </tr>
-            <tr>
-                <th>성</th>
-                <td><input type="text" name="last_name"></td>
-            </tr>
-            <tr>
-                <th>이메일</th>
-                <td><input type="email" name="email"></td>
-            </tr>
-        </table>
-        <hr>
-        <input type="button" onclick="pageSubmit()" value="회원가입">
+    <form name="frm1" method="post" class="notion-app"> {% csrf_token %}
+    <div class="notion-app">
+        <div class="verticle">
+            <div class="notion-app-inner2">
+                <div class="notion-app-inner">
+                    <div class="create">
+                        Create a Profile
+                    </div>
+                    <div class="This">
+                        This is how you'll appear in Notion
+                    </div>
+                </div>
+            </div>
+            <div class="notion-app-input">
+                <div class="notion-app-input2">
+                    <div class="letter">
+                        Preffered ID
+                    </div>
+                    <div class="notion-box">
+                        <input placeholder="Mingyu1, Sanghyeon2..." class="notion-box-inner" type="text" name="username">
+                    </div>
+                    <div class="letter">
+                        Set a password
+                    </div>
+                    <div class="notion-box">
+                        <input placeholder="Password" class="notion-box-inner" type="password" id="pw1" name="password">
+                    </div>
+                    <div class="letter">
+                        Check password
+                    </div>
+                    <div class="notion-box">
+                        <input placeholder="Check your password" class="notion-box-inner" type="password" id="pw2" name="pwdch" onchange="check()">
+                    </div>
+                    <div class="letter">
+                        Input your First name
+                    </div>
+                    <div class="notion-box">
+                        <input placeholder="First name " class="notion-box-inner" type="text" name="first_name">
+                    </div>
+                    <div class="letter">
+                        Input your Last name
+                    </div>
+                    <div class="notion-box">
+                        <input placeholder="Last name" class="notion-box-inner" type="text" name="last_name">
+                    </div>
+                    <div class="letter">
+                        Input your Email
+                    </div>
+                    <div class="notion-box">
+                        <input placeholder="Email" class="notion-box-inner" type="email" name="email">
+                    </div>
+                    <div class="notion-app-input">
+                        <input type="submit" class="Continue" value="Continue">
+                    </div>
+                </div>
+            </div>
+                <p style="margin-bottom: 0px; font-size:12px; color: rgb(120, 119, 116); width:100%">
+                    Your name and photo are displayed to users who invite you to a workspace using your email.
+                    By continuing, you acknowledge that you understand and agree to the 
+                    <a href="https://www.notion.so/Personal-Use-Terms-of-Service-00e4e5d0f2b9411cbee6493f15779500" 
+                    rel="noopener noreferrer" style="display: inline;
+                    color: rgb(172, 171, 169); text-decoration: none; user-select: none; cursor: pointer;">
+                    Terms &amp; Conditions</a> and <a href="https://www.notion.so/3468d120cf614d4c9014c09f6adc9091"
+                    rel="noopener noreferrer" style="display: inline; color: rgb(172, 171, 169);
+                        text-decoration: none; user-select: none; cursor: pointer;">Privacy Policy
+                    </a>
+                </p>
+            </div>
+        </div>    
+    </div>
     </form>
 </body>
 </html>
