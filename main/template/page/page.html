@@ -1,0 +1,36 @@
+{% extends './default.html' %}
+
+
+{% block bodyscript2 %}
+
+{% if page %}
+    {{page.content | json_script:"pageContentJSON"}}
+    <script>
+        window.onload = (function() {
+            const title = document.getElementsByClassName('htextblock')[0];
+            console.log(title);
+            title.innerHTML = '{{page.title}}';
+            var pageContent = JSON.parse(document.getElementById('pageContentJSON').textContent);
+            let obj = document.getElementsByClassName('lineblock')[0];
+            if (Object.keys(pageContent).length > 1) {
+                for (key in pageContent){
+                    const text = pageContent[key];
+                    const list = text.split('\\n');
+                    if(list.length > 1){
+                        obj = newLineblock(obj, list[0]);
+                        element = obj.children[1].children[0].children[0];
+                        for (let i = 1; i < list.length; i++){
+                            element.appendChild(document.createElement('br'));
+                            element.appendChild(document.createTextNode(list[i]));
+                        }
+                    }
+                }
+            }else {
+                obj.children[1].children[0].children[0].textContent = pageContent["1"];
+            }
+        });
+    </script>
+{% endif %}
+    
+{% endblock bodyscript2 %}
+    
