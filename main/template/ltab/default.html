@@ -111,17 +111,15 @@ default
   <div style="display: flex; align-items: center; position: relative;">
     <!-- 개인페이지 추가 버튼 / 로케이션 변경 -->
     <button id="addpage" type="button" style="width: 28px; height: 28px; padding: 0; position: absolute; left: 192px; top: 5px;" 
-    onclick="document.location.href='<pageid>/'">+</button>
+    onclick="addpage()">+</button>
 
-    <button id="pppage" type="button" style="width: 220px; height: 30px; margin-top: 4px; margin-bottom: 4px; margin-left: 5px; margin-right: 0px; text-align: left;" onclick="toggleButton()"><span>개인 페이지</span>
-      <!-- <div style="display: flex; align-items: center; position: relative;">
-        <button id="pp" style="position: relative; width: 220px; height: 30px; text-align: left;">+ 페이지 추가</button>
-      </div> -->
-    </button>
+    <button id="pppage" type="button" style="width: 220px; height: 30px; margin-top: 4px; margin-bottom: 4px; margin-left: 5px; margin-right: 0px; text-align: left;" onclick="toggleButton()"><span>개인 페이지</span></button>
 
   </div>
 
-  <div style="height: 150px;">일단
+  <div style="height: 150px;">
+    <button id="pp" style="position: relative; width: 220px; height: 30px; text-align: left; display: none;" onclick="addpage()">+ 페이지 추가</button>
+    <div id="aaa"></div>
     <table>
       {% for value in Page %}
       <tr>
@@ -136,11 +134,29 @@ default
 
 
 <script>
-
+  
   function toggleButton(){
+    ppButton = document.getElementById("pp");
+    if (ppButton.style.display === "none") {
+      ppButton.style.display = "block";
+    } else {
+      ppButton.style.display = "none";
+    }
     // 버튼입력했을때 하위 페이지가 없다면, '새 페이지 추가' 라는 버튼? 보이기
     // 하위 페이지가 있다면, 페이지들이 보이기
     // 페이지 정보를 불러와야하고, 
+  }
+
+  function addpage(){
+    // 새로운 div 요소 생성
+    var newDiv = document.createElement("div");
+    // newDiv.className = "sub-item";
+    // 새로운 div에 텍스트 내용 추가
+    newDiv.textContent = "새로운 하위 항목";
+    // 하위 항목을 추가할 컨테이너 가져오기
+    var container = document.getElementById("aaa");
+    // 컨테이너에 새로운 div 추가
+    container.appendChild(newDiv);
   }
 
   function openModal() {
