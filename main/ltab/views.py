@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect, HttpResponse
 
 def default(request):
     user = request.user
@@ -8,7 +8,3 @@ def default(request):
     }
     return render(request, "ltab/default.html", content)
 
-
-def pagePM(request):
-    
-    pass

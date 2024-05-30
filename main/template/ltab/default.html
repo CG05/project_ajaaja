@@ -8,6 +8,43 @@ default
 {% endblock headscript %}
 
 {% block style %}
+<style>
+  form{
+    z-index: 111;
+  }
+  .modal {
+  display: none; /* 모달 창 초기에는 숨김 */
+  position:fixed ; /* 고정 위치 */
+  z-index: inherit;
+   /* 다른 요소 위에 표시 */
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto; /* 화면 크기를 벗어날 경우 스크롤 가능 */
+  background-color: rgba(0,0,0,0.4); /* 배경 어둡게 처리 */
+}
+
+/* 모달 내용 스타일 */
+.modal-content {
+  border-radius: 16px;
+  border: 1px solid #888;
+  background-color: #fefefe;
+  margin: 90px auto; /* 모달 창을 수직 가운데로 정렬 */
+  padding-top: 8px;
+  padding-left: 1px;
+  padding-right: 1px;
+  height: 500px;
+  min-width: 100px;
+  max-width: 700px;
+}
+
+/* 닫기 버튼 스타일 */
+.close {
+  display: none;
+}
+
+</style>
 {% endblock style %}
 
 {% block utab %}
@@ -15,36 +52,90 @@ default
 {% endblock utab %}
 
 {% block ltab %}
+<style>
+  /* 모든 버튼에 적용될 스타일 */
+  button {
+    border: none; /* 테두리 없음 */
+    background-color: rgb(247, 247, 245); /* 배경색 설정 */
+  }
+  button:hover {
+    background-color: rgb(239, 239, 237); /* 마우스를 올렸을 때 배경색 변경 */
+  }
+    
+</style>
+
 <form method="post" enctype="multipart/form-data"> {% csrf_token %}
+  <div id="myModal" class="modal">
+    <!-- 모달 내용 -->
+    <div class="modal-content">
+      <span class="close" onclick="closeModal()"></span>
+      <table>
+        <tr>
+          <td><input type="text" name="searchtitle" style="font-size: 24px;"></td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</form>
 
   <div style="display: flex; align-items: center; position: relative;">
-    <button id="notionBtn" type="button" style="width: 220px; height: 30px; margin-top: 4px; margin-bottom: 4px; margin-left: 5px; margin-right: 0px; text-align: left;"><span>{{ username }}의 notion</span></button>
+    <button id="notionBtn" type="button" style="width: 220px; height: 30px; margin-top: 4px; margin-bottom: 4px; margin-left: 5px; margin-right: 0px; text-align: left;" onclick="toggleButton()"><span>{{ username }}의 notion</span></button>
 
     <!-- 페이지 생성되야함 /newpage/ -->
-    <button id="newpage" type="button" style="width: 30px; height: 30px; position: absolute; left: 160px; top: 4px;" onclick="document.location.href='/ltab/'">W</button>
-    <!-- 로그아웃 -->
-    <button id="logoutBtn" type="button" style="width: 30px; height: 30px; display: flex; justify-content: center; align-items: center;  position: absolute; left: 192px; top: 4px;" onclick="document.location.href='/account/logout/'">out</button>
+    {% load static %}
+    <button id="newpage" type="button" style="width: 28px; height: 28px; padding: 0; position: absolute; left: 192px; top: 5px;" onclick="document.location.href='/ltab/'">
+      <div role="button" tabindex="0" aria-label="새 페이지" style="user-select: none; transition: background 20ms ease-in 0s; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; border-radius: 4px; height: 28px; width: 28px; padding: 0px;"><svg role="graphics-symbol" viewBox="0 0 24 24" class="createPage" style="width: 24px; height: 24px; display: block; fill: rgb(55, 53, 47); flex-shrink: 0;"><g><path fill-rule="evenodd" d="M9.944 14.721c.104.094.216.12.336.079l1.703-.688 6.844-6.844-1.406-1.398-6.836 6.836-.711 1.68c-.052.13-.029.242.07.335zm8.102-9.484l1.414 1.406.515-.523a.917.917 0 00.282-.633.76.76 0 00-.258-.61l-.25-.25a.702.702 0 00-.578-.187.975.975 0 00-.617.297l-.508.5zm-9.453.127a3.85 3.85 0 00-3.85 3.85v6.5a3.85 3.85 0 003.85 3.85h6.5a3.85 3.85 0 003.85-3.85V12.95a.85.85 0 10-1.7 0v2.764a2.15 2.15 0 01-2.15 2.15h-6.5a2.15 2.15 0 01-2.15-2.15v-6.5a2.15 2.15 0 012.15-2.15h3.395a.85.85 0 000-1.7H8.593z" clip-rule="evenodd"></path></g></svg></div>
+      
+      <!-- <img src="{% static 'writeBtn.png' %}" alt="Logout" style="width: 100%; height: 100%;"> -->
+    </button>
+    
+    <!-- 로그아웃 / 로그인 - 글자가 칸 벗어남, left: 160px -->
+    {% if user.is_active %}
+    <button id="logBtn" type="button" style="width: 28px; height: 28px; display: flex; justify-content: center; align-items: center;  position: absolute; left: 150px; top: 5px;" onclick="document.location.href='/account/logout/'">logout</button>
+    {% else %}  
+    <button id="logBtn" type="button" style="width: 28px; height: 28px; display: flex; justify-content: center; align-items: center;  position: absolute; left: 150px; top: 5px;" onclick="document.location.href='/account/login/'">login</button>
+    {% endif %}
   </div>
 
-
-  <table class="table table-bordered border-primary text-align">
-    <!-- 검색 -->
-    <button type="button" style="width: 220px; margin-left: 5px; margin-top: 5px; margin-top: 2px; text-align: left;" onclick="document.location.href='/research/'">검색</button>
-    <!-- 홈 -->
-    <button type="button" style="width: 220px; margin-left: 5px; margin-top: 5px; margin-top: 2px; text-align: left;" onclick="document.location.href='/'">홈</button>
-  </table>
+  
+  <!-- 검색 -->
+  <button id="search" type="button" style="width: 220px; height: 30px; margin-left: 5px; margin-top: 2px; text-align: left;" onclick="openModal()">검색</button>
+  
+  <!-- 홈 -->
+  <button type="button" style="width: 220px; height: 30px; margin-left: 5px; margin-top: 5px; margin-top: 2px; text-align: left;" onclick="document.location.href='/page/'">홈</button>
+  
 
 
   <div style="display: flex; align-items: center; position: relative; margin-top: 20px;">
     <!-- 개인페이지 상세 열고닫기 -->
-    <button id="userpagePM" type="button" style="width: 220px; height: 30px; margin-top: 4px; margin-bottom: 4px; margin-left: 5px; margin-right: 0px; text-align: left;" onclick="document.location.href='/pagePM/'"><span>개인페이지</span></button>
+    <button id="pm" type="button" style="width: 220px; height: 30px; margin-top: 4px; margin-bottom: 4px; margin-left: 5px; margin-right: 0px; text-align: left;" onclick="document.location.href='/pagePM/'"><span>개인페이지</span></button>
+
+    <button id="pp" style="position: relative; width: 220px; height: 30px; margin-top: 4px; margin-bottom: 4px; margin-left: 5px; margin-right: 0px; text-align: left;">+ 페이지 추가</button>
 
     <!-- 개인페이지 추가 버튼 / 로케이션 변경 -->
-    <button id="userpage" type="button" style="width: 22px; height: 22px; display: flex; justify-content: center; align-items: center;  position: absolute; left: 196px; top: 8px;" onclick="document.location.href='/account/logout/'">+</button>
+    <button id="addpage" type="button" style="width: 22px; height: 22px; display: flex; justify-content: center; align-items: center;  position: absolute; left: 196px; top: 8px;" onclick="document.location.href='{{ username }}/page/'">+</button>
   </div>
-</form>
+
+<script>
+
+  function openModal() {
+  document.getElementById("myModal").style.display = "block";
+}
+// 모달 닫기 함수
+function closeModal() {
+  document.getElementById("myModal").style.display = "none";
+}
+// 모달 외부 클릭 시 모달 닫기
+window.onclick = function(event) {
+  var modal = document.getElementById("myModal");
+  if (event.target == modal) {
+    closeModal();
+  }
+}
+</script>
 
 {% endblock ltab %}
+
 
 
 {% block page %}
