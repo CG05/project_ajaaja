@@ -1,11 +1,4 @@
-{% extends 'home.html' %}
-
-{% block title %}
-default
-{% endblock title %}
-
-{% block headscript %}
-{% endblock headscript %}
+{% extends 'page/default.html' %}
 
 {% block style %}
 <style>
@@ -48,10 +41,6 @@ default
 
 </style>
 {% endblock style %}
-
-{% block utab %}
-default
-{% endblock utab %}
 
 {% block ltab %}
 <style>
@@ -121,9 +110,11 @@ default
     <button id="pp" style="position: relative; width: 220px; height: 30px; text-align: left; display: none;" onclick="addpage()">+ 페이지 추가</button>
     <div id="aaa"></div>
     <table>
-      {% for value in Page %}
+      {% for page in pageList %}
       <tr>
-        <td>{{ value.title }}</td>
+        <td>
+          <button id="pppage" type="button" style="width: 220px; height: 30px; margin-top: 4px; margin-bottom: 4px; margin-left: 5px; margin-right: 0px; text-align: left;" onclick="location.href='/page/{{page.id}}/'"><span>{{page.title}}</span></button>
+        </td>
       </tr>
       {% endfor %}
     </table>
@@ -157,6 +148,7 @@ default
     var container = document.getElementById("aaa");
     // 컨테이너에 새로운 div 추가
     container.appendChild(newDiv);
+    document.location.href='/ltab/newpage/';
   }
 
   function openModal() {
@@ -177,11 +169,4 @@ window.onclick = function(event) {
 
 {% endblock ltab %}
 
-
-
-{% block page %}
-default
-{% endblock page %}
-{% block bodyscript %}
-{% endblock bodyscript %}
   

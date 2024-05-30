@@ -8,9 +8,19 @@ def default(request):
     return render(request, "page/default.html")
 
 def getpage(request, pageid):
+    user = request.user
+    username = user.username
+    pages = Page.objects.filter(username=username)
+    pageList = list(pages)
     page = Page.objects.get(id=pageid)
+    content={
+        "username":username,
+        "pageList":pageList,
+        "page":page,
+        "pageid":pageid,
+    }
     
-    return render(request, "page/page.html", {"pageid": pageid, "page": page})
+    return render(request, "page/page.html", content)
 
 @csrf_exempt
 def savepage(request, pageid):

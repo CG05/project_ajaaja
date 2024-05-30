@@ -1,5 +1,4 @@
-{% extends './default.html' %}
-
+{% extends 'ltab/default.html' %}
 
 {% block bodyscript2 %}
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -7,7 +6,7 @@
 {% if page %}
     {{page.content | json_script:"pageContentJSON"}}
     <script>
-        window.onload = (function() {
+        document.addEventListener('DOMContentLoaded', (event) => {
             const title = document.getElementsByClassName('htextblock')[0];
             console.log(title);
             title.innerHTML = '{{page.title}}';
