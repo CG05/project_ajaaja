@@ -44,6 +44,8 @@ default
   display: none;
 }
 
+
+
 </style>
 {% endblock style %}
 
@@ -79,7 +81,9 @@ default
 </form>
 
   <div style="display: flex; align-items: center; position: relative;">
-    <button id="notionBtn" type="button" style="width: 220px; height: 30px; margin-top: 4px; margin-bottom: 4px; margin-left: 5px; margin-right: 0px; text-align: left;" onclick="toggleButton()"><span>{{ username }}의 notion</span></button>
+    <button id="notionBtn" type="button" style="width: 220px; height: 30px; margin-top: 4px; margin-bottom: 4px; margin-left: 5px; margin-right: 0px; text-align: left;">
+      <span>{{ username }}의 notion</span>
+    </button>
 
     <!-- 페이지 생성되야함 /newpage/ -->
     {% load static %}
@@ -100,21 +104,44 @@ default
   <button id="search" type="button" style="width: 220px; height: 30px; margin-left: 5px; margin-top: 2px; text-align: left;" onclick="openModal()">검색</button>
   
   <!-- 홈 -->
-  <button type="button" style="width: 220px; height: 30px; margin-left: 5px; margin-top: 5px; margin-top: 2px; text-align: left;" onclick="document.location.href='/page/'">홈</button>
+  <button type="button" style="width: 220px; height: 30px; margin-left: 5px; margin-top: 2px; text-align: left;" onclick="document.location.href='/page/'">홈</button>
   
-
-
-  <div style="display: flex; align-items: center; position: relative; margin-top: 20px;">
-    <!-- 개인페이지 상세 열고닫기 -->
-    <button id="pm" type="button" style="width: 220px; height: 30px; margin-top: 4px; margin-bottom: 4px; margin-left: 5px; margin-right: 0px; text-align: left;" onclick="document.location.href='/pagePM/'"><span>개인페이지</span></button>
-
-    <button id="pp" style="position: relative; width: 220px; height: 30px; margin-top: 4px; margin-bottom: 4px; margin-left: 5px; margin-right: 0px; text-align: left;">+ 페이지 추가</button>
-
+  <div style="height: 100px;"></div>
+  <!-- 개인페이지 상세 열고닫기 -->
+  <div style="display: flex; align-items: center; position: relative;">
     <!-- 개인페이지 추가 버튼 / 로케이션 변경 -->
-    <button id="addpage" type="button" style="width: 22px; height: 22px; display: flex; justify-content: center; align-items: center;  position: absolute; left: 196px; top: 8px;" onclick="document.location.href='{{ username }}/page/'">+</button>
+    <button id="addpage" type="button" style="width: 28px; height: 28px; padding: 0; position: absolute; left: 192px; top: 5px;" 
+    onclick="document.location.href='<pageid>/'">+</button>
+
+    <button id="pppage" type="button" style="width: 220px; height: 30px; margin-top: 4px; margin-bottom: 4px; margin-left: 5px; margin-right: 0px; text-align: left;" onclick="toggleButton()"><span>개인 페이지</span>
+      <!-- <div style="display: flex; align-items: center; position: relative;">
+        <button id="pp" style="position: relative; width: 220px; height: 30px; text-align: left;">+ 페이지 추가</button>
+      </div> -->
+    </button>
+
   </div>
 
+  <div style="height: 150px;">일단
+    <table>
+      {% for value in Page %}
+      <tr>
+        <td>{{ value.title }}</td>
+      </tr>
+      {% endfor %}
+    </table>
+  </div>
+  
+    
+
+
+
 <script>
+
+  function toggleButton(){
+    // 버튼입력했을때 하위 페이지가 없다면, '새 페이지 추가' 라는 버튼? 보이기
+    // 하위 페이지가 있다면, 페이지들이 보이기
+    // 페이지 정보를 불러와야하고, 
+  }
 
   function openModal() {
   document.getElementById("myModal").style.display = "block";
