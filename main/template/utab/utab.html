@@ -6,8 +6,13 @@
 <style>
 /* CSS 스타일링 */
 .tab-menu {
-    position: relative;
-    margin-left: 230px;
+    display: flex; /* 탭들을 가로로 배열하기 위해 Flexbox 사용 */
+    align-items: center; /* 세로 중앙 정렬 */
+    position: sticky;
+    top: 0;
+    background-color: #fff;
+    padding: 0px 0;
+    z-index: 1000;
 }
 
 .tab-menu button {
@@ -16,7 +21,7 @@
     border: none;
     outline: none;
     cursor: pointer;
-    padding: 14px 16px;
+    padding: 10px 16px;
     transition: 0.3s;
 }
 
@@ -31,9 +36,9 @@
 
 /* 오른쪽 정렬 스타일 */
 .share-button {
-    position: absolute;
+    position: fixed; /* 페이지 스크롤에 따라 고정되도록 설정 */
     top: 0;
-    right: 0;
+    right: 0; /* 페이지의 오른쪽에 고정 */
     background-color: inherit;
     border: none;
     outline: none;
@@ -48,8 +53,8 @@
 
 .share-box {
     position: absolute;
-    top: calc(100% + 40px); /* 박스를 공유 탭 아래로 위치시킵니다. */
-    right: 0;
+    top: calc(100% + 20px); /* 박스를 공유 탭 아래로 위치시킵니다. */
+    right: 1;
     min-width: 200px;
     background-color: #fff;
     border: 1px solid #ccc;
@@ -57,9 +62,9 @@
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     z-index: 1;
     opacity: 0; /* 초기에는 투명하게 설정 */
-    pointer-events: none; /* 클릭 이벤트를 비활성화합니다. */
     transition: opacity 0.3s ease-in-out; /* 부드러운 나타나기/사라지기 효과를 추가합니다. */
     padding: 10px;
+    pointer-events: none; /* 클릭 이벤트를 비활성화합니다. */
 }
 
 /* 공유 박스가 나타날 때 */
@@ -91,7 +96,7 @@
   <button class="tablinks" onclick="openTab('tab2')">KG프로젝트</button>
   <button class="tablinks" onclick="openTab('tab3')">요구사항 분석</button>
   <!-- 공유 탭 -->
-  <button id="shareButton" class="tablinks share-button" onclick="toggleShareBox()">공유</button>
+  <button id="shareButton" class="tablinks share-button">공유</button>
   <!-- 박스 -->
   <div id="shareBox" class="share-box">
     <p id="shareContent"></p>
@@ -105,6 +110,15 @@
 function toggleShareBox() {
     var shareBox = document.getElementById("shareBox");
     shareBox.classList.toggle("show"); // 'show' 클래스를 토글하여 나타내거나 숨깁니다.
+}
+
+function copyURL() {
+    var url = window.location.href; // 현재 페이지 URL을 가져옵니다.
+    navigator.clipboard.writeText(url); // 클립보드에 URL을 복사합니다.
+}
+
+function openTab(tabId) {
+    document.location.href = "/utab/" + tabId + "/";
 }
 
 // 박스 내의 텍스트를 제한 길이로 자르고 말줄임표를 추가하는 함수
@@ -123,29 +137,9 @@ window.onload = function() {
     truncateText();
 };
 
-function toggleShareBox() {
-    var shareBox = document.getElementById("shareBox");
-    shareBox.classList.toggle("show"); // 'show' 클래스를 토글하여 나타내거나 숨깁니다.
-}
+// 공유 버튼 클릭 시 박스 토글
+var shareButton = document.getElementById("shareButton");
+shareButton.addEventListener("click", toggleShareBox);
 
-// 현재 페이지 URL을 박스 내에 표시하는 함수
-function setCurrentPageURL() {
-    var shareContent = document.getElementById("shareContent");
-    shareContent.textContent = window.location.href; // 현재 페이지 URL을 설정합니다.
-}
-
-// 페이지 로드시 현재 페이지 URL 표시 함수 호출
-window.onload = function() {
-    setCurrentPageURL();
-};
-
-function copyURL() {
-    var url = window.location.href; // 현재 페이지 URL을 가져옵니다.
-    navigator.clipboard.writeText(url); // 클립보드에 URL을 복사합니다.
-}
-
-function openTab(tabId) {
-    document.location.href = "/utab/" + tabId + "/";
-}
 </script>
 {% endblock bodyscript %}
