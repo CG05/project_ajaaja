@@ -1,6 +1,7 @@
 {% extends "home.html" %}
 {% block title %}
 탭 메뉴 만들기
+<link rel="stylesheet" href="styles.css">
 {% endblock %}
 {% block style %}
 <style>
@@ -80,6 +81,7 @@
     text-overflow: ellipsis;
     white-space: nowrap;
     flex: 1; /* URL 텍스트가 가능한 넓은 공간을 차지할 수 있도록 설정합니다. */
+    font-size: 12px; /* URL 텍스트의 글자 크기를 줄입니다 */
 }
 
 /* 카피 버튼 스타일 */
@@ -105,6 +107,24 @@
     white-space: nowrap;
 }
 
+.url-text::placeholder {
+    color: #cccbcf;
+    font-size: 14px;
+    font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol";
+    font-weight: normal;
+}
+#copyButton {
+    display: inline-block;
+    margin-top: 8px;
+    margin-left: auto;
+}
+
+#copyButton img {
+    width: 50px; /* 이미지의 너비 조정 */
+    height: auto; /* 이미지의 높이를 자동으로 설정 */
+}
+
+
 </style>
 {% endblock style %}
 
@@ -120,7 +140,11 @@
     <div id="urlBox" style="border: 1px solid black; padding: 8px; border-radius: 5px;">
         <span id="shareContent"></span>
     </div>
-    <button id="copyButton" class="copy-button" style="background-color: blue; color: white; padding: 9px 12px; margin-top: 2px; margin-left: auto; display: inline-block; writing-mode: horizontal-tb;">copy</button>
+    <!-- 카피 버튼 이미지 -->
+    <a href="#" id="copyButton">
+        <img src="/static/copy.png" alt="카피 버튼">
+    </a>
+</div>
 </div>
 </div>
 {% endblock utab %}
