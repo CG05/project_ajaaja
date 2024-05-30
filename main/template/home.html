@@ -5,11 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}개인 페이지 HOME{% endblock %}</title>
     {% block headscript %}{% endblock %}
-    
-    {% block headscript2 %}
-    {% endblock headscript2 %}
-        
-
     <style>
         body {
             margin: 0;
@@ -21,10 +16,10 @@
             height: 100%;
             float : left;
             clear : left;
-            background-color: rgb(247, 247, 245);
+            background-color: blanchedalmond;
         }
         .utab{
-            position: fixed;
+            position: sticky;
             left: 230px;
             height: 38px;
             width: 100%;
@@ -55,9 +50,5 @@
         {% block page %}내용{% endblock %}
     </main>
     {% block bodyscript %}{% endblock %}
-    
-    {% block bodyscript2 %}
-    {% endblock bodyscript2 %}
-        
 </body>
 </html>
