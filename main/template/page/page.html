@@ -19,8 +19,8 @@
                     if(list.length > 1){
                         for (let i = 1; i < list.length; i++){
                             element = obj.children[1].children[0].children[0];
-                            element.appendChild(document.createTextNode('\n'));
-                            element.appendChild(document.createTextNode(list[i]));
+                            element.appendChild(document.createtextinput('\n'));
+                            element.appendChild(document.createtextinput(list[i]));
                         }
                         
                     }
@@ -76,10 +76,10 @@
         function collectText() {
             var headtext = document.querySelectorAll('.headerblock .htextblock')[0];
             const title = headtext.innerHTML.replace('<br>', '\n');
-            var linetexts = Array.from(document.getElementsByClassName('textnode'));
+            var linetexts = Array.from(document.getElementsByClassName('textinput'));
             var contents = {};
-            linetexts.forEach(function(textNode, idx) {
-                const text = textNode.innerHTML.replaceAll('<br>', '\\n');
+            linetexts.forEach(function(textinput, idx) {
+                const text = textinput.innerHTML.replaceAll('<br>', '\\n');
                 contents[idx+1] = text;
             });
             return {title, contents};
