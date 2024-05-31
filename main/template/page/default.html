@@ -58,16 +58,20 @@
         ensureTextNode(element);
         const range = document.createRange();
         const selection = window.getSelection();
-        const text = element.innerText;
-        if (position > text.length) {
-            position = text.length;
+        const textNodes = Array.from(getTextNodes(element));
+        const lasttext = textNodes[textNodes.length - 1];
+        if (position > lasttext.length) {
+            position = lasttext.length;
         }
-
+        let padlength = 0;
+        for(let i = 0;i<textNodes.length-1;i++){
+            padlength += textNodes[i].length;
+        }
         range.selectNodeContents(element);
         range.collapse(false);
 
         selection.removeAllRanges();
-        range.setStart(text, position);
+        range.setStart(text, position + padlength);
         range.collapse(true);
         selection.addRange(range);
 
