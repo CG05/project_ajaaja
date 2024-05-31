@@ -11,8 +11,8 @@
         obj.parentNode.insertBefore(newLineblock, obj.nextElementSibling);
         obj.children[1].children[0].children[0].firstChild = "";
         const textNode = newLineblock.children[1].children[0].children[0];
-        textNode.textContent = textAfterCursor;
-        console.log(obj.children[1].children[0].children[0]);
+        ensureTextNode(textNode);
+        textNode.firstChild = textAfterCursor;
         textNode.focus();
         return newLineblock;
     }
@@ -85,7 +85,6 @@
         const cursorRect = cursorRange.getBoundingClientRect();
         
         const textNodes = getTextNodes(element);
-        console.log(textNodes)
         const rects = textNodes.map(node => {
             const range = document.createRange();
             range.selectNodeContents(node);
@@ -140,6 +139,13 @@
 {% endblock headscript %}
 
 {% block page %}
+<style>
+    [contenteditable="true"]:empty:before {
+        content: attr(placeholder);
+        color: rgb(55, 53, 47);
+    }
+    
+</style>
 <div class="layout" style="position: relative; padding-bottom: 300px; cursor: text;">
     <div class="layout-content"
         style="display: flex; flex-direction: column; align-items: center; width: 100%; position: relative;">
@@ -185,7 +191,7 @@
                             caret-color: rgb(55, 53, 47);
                             padding: 3px 2px;
                             text-align: left;
-                          ">텍스트를 입력하시오</div>
+                          "></div>
                     <!-- <div style="position: relative; left: 0px"></div> -->
                 </div>
             </div>
