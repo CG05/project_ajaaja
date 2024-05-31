@@ -6,25 +6,25 @@
 {% if page %}
     {{page.content | json_script:"pageContentJSON"}}
     <script>
-        document.addEventListener('DOMContentLoaded', (event) => {
+        document.addEventListener('DOMContentLoaded', async (event) => {
             const title = document.getElementsByClassName('htextblock')[0];
-            console.log(title);
             title.innerHTML = '{{page.title}}';
             var pageContent = JSON.parse(document.getElementById('pageContentJSON').textContent);
             let obj = document.getElementsByClassName('lineblock')[0];
             if (Object.keys(pageContent).length > 0) {
                 for (key in pageContent){
                     const text = pageContent[key];
-                    const list = text.split('\\n');
+                    const list = text.split('\n');
                     obj.children[1].children[0].children[0].textContent = list[0];
                     if(list.length > 1){
                         for (let i = 1; i < list.length; i++){
                             element = obj.children[1].children[0].children[0];
-                            element.appendChild(document.createElement('br'));
+                            element.appendChild(document.createTextNode('\n'));
                             element.appendChild(document.createTextNode(list[i]));
                         }
-                        obj = newLineblock(obj, "");
+                        
                     }
+                    obj = await newLineblock(obj, "");
                 }
             }
         });
@@ -40,17 +40,17 @@
             characterData: true
         };
 
-        var observer = new MutationObserver(function(mutations) {
-            sendData();
+        var observer = new MutationObserver(async function(mutations) {
+            await sendData();
         });
 
-        document.addEventListener('DOMContentLoaded', (event) => {
-            setTimeout(3000);
-            observer.observe(targetNode, observerOptions);
+        document.addEventListener('DOMContentLoaded', async(event) => {
+            await setTimeout(3000);
+            await observer.observe(targetNode, observerOptions);
         });
 
-        function sendData() {
-            var collected = collectText()
+        async function sendData() {
+            var collected = await collectText()
             var formData = {
                 'content': {
                     'title': collected.title,
@@ -77,7 +77,6 @@
             var headtext = document.querySelectorAll('.headerblock .htextblock')[0];
             const title = headtext.innerHTML.replace('<br>', '\n');
             var linetexts = Array.from(document.getElementsByClassName('textnode'));
-            console.log(linetexts);
             var contents = {};
             linetexts.forEach(function(textNode, idx) {
                 const text = textNode.innerHTML.replaceAll('<br>', '\\n');

@@ -7,12 +7,12 @@
         var newLineblock = document.createElement('div');
         newLineblock.setAttribute('class', 'lineblock');
         newLineblock.setAttribute('style', 'width: 100%; max-width: 700px; margin-top: 1px; margin-bottom: 1px; position: relative;');
-        newLineblock.innerHTML = '<div style="display: flex; align-items: flex-start; width: 100%; padding-left: 2px; fill: inherit;"></div><div style="flex: 1 1 0px; min-width: 1px; display: flex; flex-direction: column;"><div style="display: flex"><div class="textnode" spellcheck="true" placeholder="텍스트를 입력하세요." data-content-editable-leaf="true" contenteditable="true" style="max-width: 100%; width: 100%; white-space: pre-wrap; word-break: break-word; caret-color: rgb(55, 53, 47); padding: 3px 2px; text-align: left;">텍스트를 입력하시오</div></div></div>';
+        newLineblock.innerHTML = '<div style="display: flex; align-items: flex-start; width: 100%; padding-left: 2px; fill: inherit;"></div><div style="flex: 1 1 0px; min-width: 1px; display: flex; flex-direction: column;"><div style="display: flex"><div class="textnode" spellcheck="true" placeholder="텍스트를 입력하세요." data-content-editable-leaf="true" contenteditable="true" style="max-width: 100%; width: 100%; white-space: pre-wrap; word-break: break-word; caret-color: rgb(55, 53, 47); padding: 3px 2px; text-align: left;"></div></div></div>';
         obj.parentNode.insertBefore(newLineblock, obj.nextElementSibling);
         obj.children[1].children[0].children[0].firstChild = "";
         const textNode = newLineblock.children[1].children[0].children[0];
-        textNode.textContent = textAfterCursor;
-        console.log(obj.children[1].children[0].children[0]);
+        ensureTextNode(textNode);
+        textNode.firstChild = textAfterCursor;
         textNode.focus();
         return newLineblock;
     }
@@ -58,16 +58,16 @@
         ensureTextNode(element);
         const range = document.createRange();
         const selection = window.getSelection();
-        const text = element.innerText;
-        if (position > text.length) {
-            position = text.length;
+        const textNodes = Array.from(getTextNodes(element));
+        const lasttext = textNodes[textNodes.length - 1];
+        if (position > lasttext.length) {
+            position = lasttext.length;
         }
-
         range.selectNodeContents(element);
         range.collapse(false);
 
         selection.removeAllRanges();
-        range.setStart(text, position);
+        range.setStart(lasttext, position);
         range.collapse(true);
         selection.addRange(range);
 
@@ -85,7 +85,6 @@
         const cursorRect = cursorRange.getBoundingClientRect();
         
         const textNodes = getTextNodes(element);
-        console.log(textNodes)
         const rects = textNodes.map(node => {
             const range = document.createRange();
             range.selectNodeContents(node);
@@ -140,6 +139,13 @@
 {% endblock headscript %}
 
 {% block page %}
+<style>
+    [contenteditable="true"]:focus:empty:before {
+        content: attr(placeholder);
+        color: #666
+    }
+    
+</style>
 <div class="layout" style="position: relative; padding-bottom: 300px; cursor: text;">
     <div class="layout-content"
         style="display: flex; flex-direction: column; align-items: center; width: 100%; position: relative;">
@@ -185,7 +191,7 @@
                             caret-color: rgb(55, 53, 47);
                             padding: 3px 2px;
                             text-align: left;
-                          ">텍스트를 입력하시오</div>
+                          "></div>
                     <!-- <div style="position: relative; left: 0px"></div> -->
                 </div>
             </div>
