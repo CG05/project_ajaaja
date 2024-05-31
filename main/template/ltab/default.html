@@ -46,10 +46,17 @@
 <style>
   /* 모든 버튼에 적용될 스타일 */
   button {
+    border: none;
+    background-color: rgb(247, 247, 245);
+  }
+  button:hover {
+    background-color: rgb(239, 239, 237);
+  }
+  div#changeBackground {
     border: none; /* 테두리 없음 */
     background-color: rgb(247, 247, 245); /* 배경색 설정 */
   }
-  button:hover {
+  div#changeBackground:hover {
     background-color: rgb(239, 239, 237); /* 마우스를 올렸을 때 배경색 변경 */
   }
     
@@ -77,20 +84,39 @@
     <!-- 페이지 생성되야함 /newpage/ -->
     {% load static %}
     <button id="newpage" type="button" style="width: 28px; height: 28px; padding: 0; position: absolute; left: 192px; top: 5px;" onclick="document.location.href='/ltab/'">
-      <div role="button" tabindex="0" aria-label="새 페이지" style="user-select: none; transition: background 20ms ease-in 0s; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; border-radius: 4px; height: 28px; width: 28px; padding: 0px;"><svg role="graphics-symbol" viewBox="0 0 24 24" class="createPage" style="width: 24px; height: 24px; display: block; fill: rgb(55, 53, 47); flex-shrink: 0;"><g><path fill-rule="evenodd" d="M9.944 14.721c.104.094.216.12.336.079l1.703-.688 6.844-6.844-1.406-1.398-6.836 6.836-.711 1.68c-.052.13-.029.242.07.335zm8.102-9.484l1.414 1.406.515-.523a.917.917 0 00.282-.633.76.76 0 00-.258-.61l-.25-.25a.702.702 0 00-.578-.187.975.975 0 00-.617.297l-.508.5zm-9.453.127a3.85 3.85 0 00-3.85 3.85v6.5a3.85 3.85 0 003.85 3.85h6.5a3.85 3.85 0 003.85-3.85V12.95a.85.85 0 10-1.7 0v2.764a2.15 2.15 0 01-2.15 2.15h-6.5a2.15 2.15 0 01-2.15-2.15v-6.5a2.15 2.15 0 012.15-2.15h3.395a.85.85 0 000-1.7H8.593z" clip-rule="evenodd"></path></g></svg></div>
+      <div role="button" tabindex="0" aria-label="새 페이지" style="user-select: none; transition: background 20ms ease-in 0s; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; border-radius: 4px; height: 28px; width: 28px; padding: 0px;">
+        <svg role="graphics-symbol" viewBox="0 0 24 24" class="createPage" style="width: 24px; height: 24px; display: block; fill: rgb(55, 53, 47); flex-shrink: 0;">
+          <g>
+            <path fill-rule="evenodd" d="M9.944 14.721c.104.094.216.12.336.079l1.703-.688 6.844-6.844-1.406-1.398-6.836 6.836-.711 1.68c-.052.13-.029.242.07.335zm8.102-9.484l1.414 1.406.515-.523a.917.917 0 00.282-.633.76.76 0 00-.258-.61l-.25-.25a.702.702 0 00-.578-.187.975.975 0 00-.617.297l-.508.5zm-9.453.127a3.85 3.85 0 00-3.85 3.85v6.5a3.85 3.85 0 003.85 3.85h6.5a3.85 3.85 0 003.85-3.85V12.95a.85.85 0 10-1.7 0v2.764a2.15 2.15 0 01-2.15 2.15h-6.5a2.15 2.15 0 01-2.15-2.15v-6.5a2.15 2.15 0 012.15-2.15h3.395a.85.85 0 000-1.7H8.593z" clip-rule="evenodd">
+            </path>
+          </g>
+        </svg>
+      </div>
     </button>
     
     <!-- 로그아웃 / 로그인 - 글자가 칸 벗어남, left: 160px -->
     {% if user.is_active %}
-    <button id="logBtn" type="button" style="width: 28px; height: 28px; display: flex; justify-content: center; align-items: center;  position: absolute; left: 150px; top: 5px;" onclick="document.location.href='/account/logout/'">logout</button>
+    <button id="logBtn" type="button" style="width: auto; height: 28px; display: flex; justify-content: center; align-items: center;  position: absolute; left: 140px; top: 5px;" onclick="document.location.href='/account/logout/'">logout</button>
     {% else %}  
-    <button id="logBtn" type="button" style="width: 28px; height: 28px; display: flex; justify-content: center; align-items: center;  position: absolute; left: 150px; top: 5px;" onclick="document.location.href='/account/login/'">login</button>
+    <button id="logBtn" type="button" style="width: auto; height: 28px; display: flex; justify-content: center; align-items: center;  position: absolute; left: 140px; top: 5px;" onclick="document.location.href='/account/login/'">login</button>
     {% endif %}
   </div>
 
   
   <!-- 검색 -->
-  <button id="search" type="button" style="width: 220px; height: 30px; margin-left: 5px; margin-top: 2px; text-align: left;" onclick="openModal()">검색</button>
+  <div role="button" tabindex="0" style="user-select: none; transition: background 150ms ease 0s; cursor: pointer; border-radius: 6px; display: flex; margin-left: 0px; margin-right: 0px; font-weight: 500;">
+    <div id="changeBackground" onclick="openModal()" style="display: flex; align-items: center; width: 100%; font-size: 14px; min-height: 27px; padding: 4px 8px; height: 30px;">
+      <div style="flex-shrink: 0; flex-grow: 0; border-radius: 4px; color: rgba(55, 53, 47, 0.65); width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; margin-right: 8px;">
+        <svg role="graphics-symbol" viewBox="0 0 24 24" class="newSidebarSearch" style="width: 24px; height: 24px; display: block; fill: rgb(145, 145, 142); flex-shrink: 0;">
+          <g><path d="M4.212 10.915a6.053 6.053 0 016.05-6.057c3.34 0 6.05 2.71 6.05 6.058 0 1.245-.38 2.394-1.04 3.34l3.157 3.17c.234.235.359.55.359.887 0 .703-.528 1.252-1.245 1.252-.337 0-.66-.117-.901-.359l-3.186-3.186a5.843 5.843 0 01-3.194.945c-3.34 0-6.05-2.71-6.05-6.05zm1.788 0a4.262 4.262 0 004.262 4.263 4.268 4.268 0 004.27-4.263 4.27 4.27 0 00-4.27-4.27A4.264 4.264 0 006 10.916z"></path></g>
+        </svg>
+      </div>
+      <div style="flex: 1 1 auto; white-space: nowrap; min-width: 0px; overflow: hidden; text-overflow: ellipsis;">검색</div>
+    </div>
+  </div>
+
+
+  <!-- <button id="search" type="button" style="width: 220px; height: 30px; margin-left: 5px; margin-top: 2px; text-align: left;" onclick="openModal()">검색</button> -->
   
   <!-- 홈 -->
   <button type="button" style="width: 220px; height: 30px; margin-left: 5px; margin-top: 2px; text-align: left;" onclick="document.location.href='/page/'">홈</button>
@@ -107,7 +133,7 @@
   </div>
 
   <div style="height: 150px;">
-    <button id="pp" style="position: relative; width: 220px; height: 30px; text-align: left; display: none;" onclick="addpage()">+ 페이지 추가</button>
+    <button id="ltabPageAddBtn" style="position: relative; width: 220px; height: 30px; text-align: left; display: none;" onclick="addpage()"> + 페이지 추가</button>
     <div id="aaa"></div>
     <table>
       {% for page in pageList %}
@@ -127,7 +153,7 @@
 <script>
   
   function toggleButton(){
-    ppButton = document.getElementById("pp");
+    ppButton = document.getElementById("ltabPageAddBtn");
     if (ppButton.style.display === "none") {
       ppButton.style.display = "block";
     } else {
