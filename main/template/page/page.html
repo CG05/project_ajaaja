@@ -8,23 +8,19 @@
     <script>
         document.addEventListener('DOMContentLoaded', async (event) => {
             const title = document.getElementsByClassName('htextblock')[0];
-            console.log(title);
             title.innerHTML = '{{page.title}}';
             var pageContent = JSON.parse(document.getElementById('pageContentJSON').textContent);
             let obj = document.getElementsByClassName('lineblock')[0];
             if (Object.keys(pageContent).length > 0) {
                 for (key in pageContent){
                     const text = pageContent[key];
-                    console.log("text : ", text);
                     const list = text.split('\n');
-                    console.log(list);
                     obj.children[1].children[0].children[0].textContent = list[0];
                     if(list.length > 1){
                         for (let i = 1; i < list.length; i++){
                             element = obj.children[1].children[0].children[0];
                             element.appendChild(document.createTextNode('\n'));
                             element.appendChild(document.createTextNode(list[i]));
-                            console.log("list[i] : ", list[i]);
                         }
                         
                     }
@@ -81,7 +77,6 @@
             var headtext = document.querySelectorAll('.headerblock .htextblock')[0];
             const title = headtext.innerHTML.replace('<br>', '\n');
             var linetexts = Array.from(document.getElementsByClassName('textnode'));
-            console.log(linetexts);
             var contents = {};
             linetexts.forEach(function(textNode, idx) {
                 const text = textNode.innerHTML.replaceAll('<br>', '\\n');
