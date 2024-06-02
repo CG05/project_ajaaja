@@ -10,6 +10,9 @@
         newBlock.innerHTML = '<div style="display: flex; align-items: flex-start; width: 100%; padding-left: 2px; fill: inherit;"></div><div style="flex: 1 1 0px; min-width: 1px; display: flex; flex-direction: column;"><div style="display: flex"><div class="textinput" spellcheck="true" placeholder="텍스트를 입력하세요." data-content-editable-leaf="true" contenteditable="true" style="max-width: 100%; width: 100%; white-space: pre-wrap; word-break: break-word; caret-color: rgb(55, 53, 47); padding: 3px 2px; text-align: left;"></div></div></div>';
         block.parentNode.insertBefore(newBlock, block.nextElementSibling);
         const textinput = newBlock.children[1].children[0].children[0];
+        if (textAfterCursor === "") {
+            return newBlock;
+        }
         const textlist = textAfterCursor.split('\n');
         if (textlist.length > 1) {
             for (let i = 0; i < textlist.length; i++) {
@@ -18,7 +21,7 @@
                     textinput.appendChild(document.createTextNode('\n'));
                 }
             }
-        } else if (textlist.length == 1 && textlist[0].length > 0) {
+        } else if (textlist.length == 1) {
             textinput.appendChild(document.createTextNode(textlist[0]));
         }
         return newBlock;
@@ -27,27 +30,28 @@
     function enterToNewLineblock(textinput, position) {
         const textNodes = getTextNodes(textinput);
         const coordinates = getCursorCoordinates(textinput);
+        console.log("coordinates:",coordinates);
         const newBlock = newLineblock(textinput.parentNode.parentNode.parentNode, "");
 
         if (textinput.firstChild == undefined || textinput.firstChild.textContent == "") {
+            console.log("textinput.firstChild:",textinput.firstChild);
+            newBlock.children[1].children[0].children[0].focus();
             return;
         }
 
         const selection = window.getSelection();
         const range = document.createRange();
-        range.selectNodeContents(textinput);
-        range.collapse(false);
-
-        selection.removeAllRanges();
 
         const newTextinput = newBlock.children[1].children[0].children[0];
         for (let i = 0; i < textNodes.length; i++) {
             if (coordinates.lineNum == i / 2 + 1) {
                 range.setStart(textNodes[i], position);
                 const cursorPosition = range.startOffset;
+                console.log("cursorPosition:",cursorPosition);
                 const textAfterCursor = textNodes[i].textContent.substring(cursorPosition);
+                console.log("textAfterCursor:",textAfterCursor);
                 textNodes[i].textContent = textNodes[i].textContent.slice(0, cursorPosition);
-                if(textAfterCursor.length == 0){
+                if(textAfterCursor.length !== 0){
                     newTextinput.appendChild(document.createTextNode(textAfterCursor));
                 }
             }
@@ -63,26 +67,34 @@
         block.remove();
         const textinput = previousLineblock.children[1].children[0].children[0];
         const textNodes = getTextNodes(textinput);
+        moveCursorToPositionBottom(textinput, 1000)
+
         let togoPosition = 0;
         if(textNodes.length > 0){
             const lastNode = textNodes[textNodes.length-1];
-            togoPosition = addText(textinput, textAfterCursor, lastNode.length);
+            togoPosition = lastNode.length;
+            addText(textinput, textAfterCursor, lastNode.length);
 
         }else{
-            togoPosition = addText(textinput, textAfterCursor, 0);
+            addText(textinput, textAfterCursor, 0);
+            togoPosition = 0;
         }
+        console.log("togoPosition:",togoPosition);
         moveCursorToPositionBottom(textinput, togoPosition)
+
     }
 
     function addText(textinput, text, position) {
         console.log("position:",position);
+        let lastTextLength = 1000;
+        let addLine = 0;
         if(text.length == 0){
-            return 1000;
+            return addLine, lastTextLength;
         }
-        let lastTextLength = 0;
         // Ctrl+V등 텍스트 외부적으로 추가시
         const textList = text.split('\n');
         console.log("textList:",textList);
+        
         const coordinates = getCursorCoordinates(textinput);
         console.log("coordinates:",coordinates);
         if (textinput.firstChild == undefined) {
@@ -92,10 +104,8 @@
         console.log("textNodes:",textNodes);
         const selection = window.getSelection();
         const range = document.createRange();
-        range.selectNodeContents(textinput);
-        range.collapse(false);
 
-        selection.removeAllRanges();
+        lastTextLength = 0;
         for (let i = 0; i < textNodes.length; i++) {
             if (coordinates.lineNum == i / 2 + 1) {
                 range.setStart(textNodes[i], position);
@@ -104,23 +114,33 @@
 
                 const textAfterCursor = textNodes[i].textContent.substring(cursorPosition);
                 textNodes[i].textContent = textNodes[i].textContent.slice(0, cursorPosition);
-                for (let j = 0; j < textList.length; j++) {
-                    if (j == 0) {
-                        textNodes[i].textContent += textList[j]
-                        console.log("첫줄:",textList[j]);
-                    } else if (j == textList.length - 1) {
-                        if (i == textNodes.length - 1) {
-                            textinput.appendChild(document.createTextNode('\n'));
-                            textinput.appendChild(document.createTextNode(textList[j]));
+                if (textList.length == 1) {
+                    textNodes[textNodes.length-1].textContent += textList[0]
+                    lastTextLength = textList[0].length;
+                } else{
+                    for (let j = 0; j < textList.length; j++) {
+                        if (j == 0) {
+                            console.log("textNodes[i]:",textNodes[i]);
+                            textNodes[i].textContent += textList[j]
+                            console.log("textNodes[i]:",textNodes[i]);
+                        } else if (j == textList.length - 1) {
+                            if (i == textNodes.length - 1) {
+                                textinput.appendChild(document.createTextNode('\n'));
+                                textinput.appendChild(document.createTextNode(textList[j]));
+                                addLine++;
+                            } else {
+                                textinput.insertBefore(document.createTextNode('\n'), textNodes[i + 1]);
+                                textNodes[i + 1].textContent = textList[j] + textNodes[i + 1].textContent;
+                                addLine++;
+                            }
+                            console.log("막줄:",textList[j]);
+                            lastTextLength = textList[j].length;
+                            
                         } else {
                             textinput.insertBefore(document.createTextNode('\n'), textNodes[i + 1]);
-                            textNodes[i + 1].textContent = textList[j] + textNodes[i + 1].textContent;
+                            textinput.insertBefore(document.createTextNode(textList[j]), textNodes[i + 1]);
                         }
-                        console.log("막줄:",textList[j]);
-                        lastTextLength = textList[j].length;
-                    } else {
-                        textinput.insertBefore(document.createTextNode('\n'), textNodes[i + 1]);
-                        textinput.insertBefore(document.createTextNode(textList[j]), textNodes[i + 1]);
+    
                     }
 
                 }
@@ -129,12 +149,11 @@
                 textinput.appendChild(textNodes[i])
             }
         }
-        return lastTextLength;
+        return addLine, lastTextLength;
     }
 
 
     function moveCursorToPositionTop(textinput, position) {
-
         const range = document.createRange();
         const selection = window.getSelection();
         const textNodes = getTextNodes(textinput);
@@ -182,7 +201,9 @@
         const selection = window.getSelection();
         const cursorRange = selection.getRangeAt(0);
         const cursorRect = cursorRange.getBoundingClientRect();
-
+        console.log("textinput:",textinput);
+        console.log("cursorRange:",cursorRange);
+        console.log("cursorRect:",cursorRect);
         const textNodes = getTextNodes(textinput);
         if (textNodes[0] == undefined) {
             return { lineNum, lastLine };
@@ -195,6 +216,7 @@
             range.selectNodeContents(node);
             return range.getBoundingClientRect();
         });
+        console.log("rects:",rects);
         const firstLineY = rects[0].top;
         const lastLineY = rects[(rects.length - 1)].bottom;
         const lineheight = rects[0].height;
@@ -304,6 +326,31 @@
 {% endblock page %}
 {% block bodyscript %}
 <script>
+    // document.addEventListener('paste', function (event) {
+    //     const activeElement = document.activeElement;
+    //     const textinput = event.target;
+    //     if (activeElement === textinput) {
+    //         event.preventDefault();
+    //         const textNodes = getTextNodes(textinput);
+    //         const coordinates = getCursorCoordinates(textinput);
+    //         const text = (event.originalEvent || event).clipboardData.getData('text/plain');
+    //         const selection = window.getSelection();
+    //         const range = selection.getRangeAt(0);
+    //         const cursorPosition = range.endOffset;
+    //         let addLine, lastTextLength = addText(textinput, text, cursorPosition);
+    //         console.log(textNodes[(coordinates.lineNum-1)*2]);
+    //         if (addLine == 0) {
+    //             range.setStart(textNodes[(coordinates.lineNum-1)*2], cursorPosition + lastTextLength);
+    //         }else{
+    //             range.setStart(textNodes[(coordinates.lineNum-1)*2 + addLine*2], lastTextLength);
+    //         }
+            
+    //         range.collapse(true);
+
+    //         selection.removeAllRanges();
+    //         selection.addRange(range);
+    //     }
+    // });
     document.addEventListener('DOMContentLoaded', (event) => {
         const textarea = document.getElementById('textarea');
 
@@ -352,8 +399,10 @@
                 else if (event.key === 'ArrowRight') {
                     const selection = window.getSelection();
                     const range = selection.getRangeAt(0);
+                    console.log("range:",range);
                     const curLineblock = textinput.parentNode.parentNode.parentNode;
-                    if (range.startOffset === textinput.textContent.length && range.endOffset === textinput.textContent.length) {
+                    const textNodes = getTextNodes(textinput);
+                    if (range.endContainer === textNodes[textNodes.length-1] && range.endOffset === textNodes[textNodes.length-1].length) {
                         const nextLineblock = curLineblock.nextElementSibling;
                         const nextTextInput = nextLineblock.children[1].children[0].children[0];
                         if (nextTextInput && nextLineblock.classList.contains('lineblock')) {
