@@ -59,6 +59,8 @@
                 'csrfmiddlewaretoken': '{{ csrf_token }}'
             };
 
+            document.getElementsByClassName(`title {{pageid}}`)[0].textContent = collected.title;
+
             $.ajax({
                 type: 'POST',
                 url: '/page/{{pageid}}/save/',

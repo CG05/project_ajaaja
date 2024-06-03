@@ -15,7 +15,7 @@ def home(request):
         "pageList":pageList,
         "listLength":listLength,
     }
-    return render(request, "home.html")
+    return render(request, "home.html", content)
 
 def getpage(request, pageid):
     user = request.user
