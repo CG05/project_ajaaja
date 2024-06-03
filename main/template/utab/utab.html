@@ -81,14 +81,16 @@ body{
 
 
 #shareContent {
+    display: flex;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
     flex: 1; /* URL 텍스트가 가능한 넓은 공간을 차지할 수 있도록 설정합니다. */
-    font-size: 12px; /* URL 텍스트의 글자 크기를 줄입니다 */
+    font-size: 13px; /* URL 텍스트의 글자 크기를 줄입니다 */
     padding-left: 0;
     text-align: left !important;
-    padding-right: 30px;
+    padding-right: 40px;
+    align-items: center;
 }
 
 /* 카피 버튼 스타일 */
@@ -117,9 +119,13 @@ body{
 
 .url-text::placeholder {
     color: #cccbcf;
-    font-size: 7px;
-    font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol";
-    font-weight: normal;    
+    font-size: 12px; /* 여기에 원하는 폰트 크기를 지정하세요 */
+    font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; /* 여기에 원하는 폰트 패밀리를 지정하세요 */
+    font-weight: normal; /* 여기에 원하는 폰트의 굵기를 지정하세요 */
+    white-space: nowrap; /* 한 줄로만 표시하도록 설정 */
+    overflow: hidden; /* 내용이 넘치는 경우 가려진 부분을 숨김 */
+    text-overflow: ellipsis; 
+    
 }
 #copyButton {
     display: inline-flex;
@@ -129,41 +135,67 @@ body{
     text-align: center;
     justify-content: center;
     color:white;
-    
-}
-
-#copyButton img {
-    width: 20px;
-    height: 20px; /* 이미지의 높이를 자동으로 설정 */
-    margin-right: 6px;
 
 }
 
+#copyButtonContainer {
+    margin-right: 9px;
+    margin-top: 32px;
+    background-color: #2383E2; /* 기본 배경색 */
+    border-radius: 4px; /* 둥근 모서리 설정 */
+    transition: background-color 0.3s; /* 배경색 변경 시 부드러운 전환 효과 */
+}
+
+#copyButtonContainer:hover {
+    background-color: #1b6fb9; /* 마우스를 올렸을 때의 배경색 */
+}
 .new-box {
     padding: 10px;
-    background-color: #fff;
+    box-shadow: rgba(55, 53, 47, 0.09) 0px -1px 0px inset;;
     border-radius: 5px 5px 0 0; /* 위쪽 모서리만 둥글게 설정 */
-    border-bottom: 2px solid #000; /* 아래쪽 선 추가 */
     margin-bottom: 10px; /* 아래쪽 여백 추가 */
     position: absolute;
-    top: 0;
+    top: 10%;
     left: 0;
     width: 100%;
-    border: none; /* 버튼의 기본 테두리 제거 */
-    cursor: pointer; /* 커서 모양 변경 */
-    text-align: left; /* 텍스트 왼쪽 정렬 */
 }
 
-.new-box::after {
+.small-new-box::after {
     content: '';
     display: block;
-    width: 10%; /* 선의 길이를 버튼의 가운데로 조절 */
+    width: 58%; /* 선의 길이를 조정 */
     height: 2px;
     background-color: #000; /* 검은색 선 색상 */
     position: absolute;
     bottom: -2px; /* 선이 버튼 바로 아래에 위치하도록 설정 */
     left: 10px; /* padding-left 값과 동일하게 설정 */
 }
+.small-new-box {
+    position: absolute;
+    width: 44px; /* 너비를 44px로 설정 */
+    height: 28px; /* 높이를 28px로 설정 */
+    background-color: #f0f0f0;
+    border-radius: 0;
+    margin-top: 5px;
+    top: -1px; /* 원하는 만큼 음수 값으로 조정 */
+    left: 10px; /* 오른쪽으로 5px 이동 */
+    line-height: 1.2;
+    min-width: 0px;
+    color: inherit;
+    display: flex; /* Flexbox를 사용하여 중앙 정렬 */
+    justify-content: center; /* 수평 중앙 정렬 */
+    align-items: center; /* 수직 중앙 정렬 */
+    text-align: center; /* 텍스트 중앙 정렬 */
+    font-size: 14px;
+    cursor: pointer; /* 마우스 포인터를 손가락 모양으로 변경 */
+    transition: background-color 0.3s, border-color 0.3s; /* 호버 시 부드러운 전환 */
+}
+
+.small-new-box:hover {
+    background-color: #e0e0e0; /* 호버 시 배경색 변경 */
+    border-color: #888; /* 호버 시 테두리 색상 변경 */
+}
+
 </style>
 
 <div class="tab-menu">
@@ -174,15 +206,16 @@ body{
   <button id="shareButton" class="tablinks share-button">공유</button>
   <!-- 박스 -->
   <div id="shareBox" class="share-box" >
-    <button id="newBox" class="new-box">공유</button>
-    <div id="urlBox" style="border: 1px solid black; margin-bottom: 10px; margin: 46px 46px 0; padding: 8px; border-radius: 7px;">
+    <div id="newBox" class="new-box"></div>
+    <div class="small-new-box">공유</div>
+    <div id="urlBox" style="border: 1px solid gray; opacity: 0.6; margin-bottom: 8px; margin: 32px auto 0 auto; padding: 8px; border-radius: 7px; width: calc(80% - 100px); height: 15px; float: right; display:flex; align-items:center; justify-content:center; ">
         <span id="shareContent"></span>
     </div>
     <!-- 카피 버튼 이미지 -->
-    <button style="background-color:#2383E2; margin-top:46px; margin-right:20px; border-radius:4px; padding-left:12px; padding-right:12px;">
-        <a href="#" id="copyButton">
-            <svg role="graphics-symbol" viewBox="0 0 16 16" class="link" style="width: 14px; height: 14px; display: block; fill: rgba(55, 53, 47, 0.85); flex-shrink: 0; margin-left: 0px; margin-right: 6px;"><path d="M7.69922 10.8945L8.73828 9.84863C7.91797 9.77344 7.34375 9.51367 6.91992 9.08984C5.76465 7.93457 5.76465 6.29395 6.91309 5.14551L9.18262 2.87598C10.3379 1.7207 11.9717 1.7207 13.127 2.87598C14.2891 4.04492 14.2822 5.67188 13.1338 6.82031L11.958 7.99609C12.1768 8.49512 12.2451 9.10352 12.1289 9.62988L14.0908 7.6748C15.7725 6 15.7793 3.62109 14.084 1.92578C12.3887 0.223633 10.0098 0.237305 8.33496 1.91211L5.95605 4.29785C4.28125 5.97266 4.26758 8.35156 5.96289 10.0469C6.36621 10.4434 6.90625 10.7441 7.69922 10.8945ZM8.30078 5.13184L7.26855 6.17773C8.08203 6.25293 8.66309 6.51953 9.08008 6.93652C10.2422 8.09863 10.2422 9.73242 9.08691 10.8809L6.81738 13.1504C5.66211 14.3057 4.03516 14.3057 2.87305 13.1504C1.71094 11.9883 1.71777 10.3545 2.87305 9.20605L4.04199 8.03027C3.83008 7.53125 3.75488 6.92969 3.87109 6.39648L1.91602 8.35156C0.234375 10.0264 0.227539 12.4121 1.92285 14.1074C3.61816 15.8027 5.99707 15.7891 7.67188 14.1143L10.0439 11.7354C11.7256 10.0537 11.7324 7.6748 10.0371 5.98633C9.64062 5.58301 9.10059 5.28223 8.30078 5.13184Z"></path></svg>
-           Copy Link
+    <button id="copyButtonContainer">
+        <a id="copyButton" style="text-decoration: none; color: white;">
+            <svg role="graphics-symbol" viewBox="0 0 16 16" class="link" style="width: 14px; height: 14px; display: block; fill: rgba(55, 53, 47, 0.85); flex-shrink: 0; margin-left: -5px;  margin-right: 5px;"><path d="M7.69922 10.8945L8.73828 9.84863C7.91797 9.77344 7.34375 9.51367 6.91992 9.08984C5.76465 7.93457 5.76465 6.29395 6.91309 5.14551L9.18262 2.87598C10.3379 1.7207 11.9717 1.7207 13.127 2.87598C14.2891 4.04492 14.2822 5.67188 13.1338 6.82031L11.958 7.99609C12.1768 8.49512 12.2451 9.10352 12.1289 9.62988L14.0908 7.6748C15.7725 6 15.7793 3.62109 14.084 1.92578C12.3887 0.223633 10.0098 0.237305 8.33496 1.91211L5.95605 4.29785C4.28125 5.97266 4.26758 8.35156 5.96289 10.0469C6.36621 10.4434 6.90625 10.7441 7.69922 10.8945ZM8.30078 5.13184L7.26855 6.17773C8.08203 6.25293 8.66309 6.51953 9.08008 6.93652C10.2422 8.09863 10.2422 9.73242 9.08691 10.8809L6.81738 13.1504C5.66211 14.3057 4.03516 14.3057 2.87305 13.1504C1.71094 11.9883 1.71777 10.3545 2.87305 9.20605L4.04199 8.03027C3.83008 7.53125 3.75488 6.92969 3.87109 6.39648L1.91602 8.35156C0.234375 10.0264 0.227539 12.4121 1.92285 14.1074C3.61816 15.8027 5.99707 15.7891 7.67188 14.1143L10.0439 11.7354C11.7256 10.0537 11.7324 7.6748 10.0371 5.98633C9.64062 5.58301 9.10059 5.28223 8.30078 5.13184Z"></path></svg>
+            Copy Link
         </a>
     </button>
     
@@ -191,6 +224,14 @@ body{
 </div>
 
 <script>
+    
+    var smallNewBox = document.querySelector('.small-new-box');
+    smallNewBox.addEventListener('click', function(event) {
+    // 이벤트 전파 막기
+    event.stopPropagation();
+    // 클릭 이벤트 처리
+    console.log('작은 뉴 박스가 클릭되었습니다.');
+    });
     var shareButton = document.getElementById("shareButton");
     shareButton.addEventListener("click", toggleShareBox); // 공유 버튼 클릭 시 토글 함수 호출
 
@@ -205,6 +246,7 @@ body{
     }
     
     function copyURL() {
+        
         var url = window.location.href; // 현재 페이지 URL을 가져옵니다.
         navigator.clipboard.writeText(url); // 클립보드에 URL을 복사합니다.
     }
@@ -215,24 +257,28 @@ body{
         shareContent.textContent = url; // 공유 상자 내용을 현재 페이지 URL로 설정합니다.
     }
 
-    function openTab(tabId) {
-        document.location.href = "/utab/" + tabId + "/";
+    function truncateText() {
+        var shareContent = document.getElementById("shareContent");
+        console.log("Share content element:", shareContent);
+        
+        var maxLength = 10; // 최대 길이 설정
+        var content = shareContent.textContent.trim(); // 현재 텍스트 가져오기 (공백 제거)
+        console.log("Content before truncation:", content);
+        
+        if (content.length > maxLength) {
+            shareContent.textContent = content.substring(0, maxLength) + '...'; // 길이 초과 시 자르고 말줄임표 추가
+            console.log("Truncated content:", shareContent.textContent);
+        }
     }
-
+    
     // 페이지 로드시 텍스트 자르기 함수 호출
     window.onload = function() {
         truncateText();
     };
 
-    // 박스 내의 텍스트를 제한 길이로 자르고 말줄임표를 추가하는 함수
-    function truncateText() {
-        var shareContent = document.getElementById("shareContent");
-        var maxLength = 35; // 최대 길이 설정
-        var content = shareContent.textContent; // 현재 텍스트 가져오기
-        if (content.length > maxLength) {
-            content = content.substring(0, maxLength) + '...'; // 길이 초과 시 자르고 말줄임표 추가
-        }
-        shareContent.textContent = content; // 변경된 내용으로 설정
+    function openTab(tabId) {
+        document.location.href = "/utab/" + tabId + "/";
     }
+
 </script>
 {% endblock utab %}
