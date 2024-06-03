@@ -145,78 +145,142 @@
     </div>
     
 
+    <!-- 빈공간 -->
     <div style="display: flex; flex-shrink: 0; width: 100%; box-shadow: transparent 0px 0px 0px; transition: box-shadow 300ms ease 0s; height: 100px; margin-top: -2px; z-index: 99;"></div>
 
 
-    <!-- 개인페이지 상세 열고닫기 -->
-    <div style="display: inline-flex; align-items: center; border-radius: 4px;  position: relative; justify-content: center;">
-      <!-- 개인페이지 추가 버튼 / 로케이션 변경 -->
-      <div id="pppage" role="button" style="width: 220px; height: 30px; border-radius: 4px;  margin-top: 4px; margin-bottom: 4px; margin-left: 5px; margin-right: 0px; text-align: left; justify-content: center;" onclick="toggleButton()">개인 페이지</div>
-      <div id="addpage" role="button" style="width: 28px; height: 28px; right: 28px; padding: 0; position: relative; text-align: center;" 
-      onclick="addpage()">+</div>
-    
-    </div>
+    <!-- 개인 페이지 -->
+    <div style="display: flex; flex-direction: column; cursor: pointer;">
+      <div style="width: 100%;">
+        <div class="notion-outliner-private-header-container" style="width: 100%; display: flex; flex-direction: column; gap: 1px; margin-bottom: 12px;">
+          <div role="button" tabindex="0" id="showPage" aria-controls="addPage" aria-expanded="true" style="user-select: none; transition: background 20ms ease-in 0s; display: flex; align-items: center; border-radius: 6px; padding-left: 8px; padding-right: 8px; height: 30px;">
+            <span style="text-transform: initial; font-size: 12px; line-height: 1; color: rgb(145, 145, 142); font-weight: 500; transition: color 100ms ease-out 0s;">개인 페이지</span>
+            <button id="addpage" type="button" style="width: 28px; height: 28px; padding: 0; position: relative; left: 122px;" onclick="addpage()">+</button>
+            <div style="margin-left: auto;">
+              <div style="display: flex; align-items: center; opacity: 0; pointer-events: none; transition: opacity 150ms ease 0s;">
+                <div role="button" tabindex="0" style="user-select: none; transition: background 20ms ease-in 0s; cursor: pointer; display: flex; align-items: center; justify-content: center; height: 20px; width: 20px; border-radius: 4px;">
+                  <svg role="graphics-symbol" viewBox="0 0 13 3" class="dots" style="width: 14px; height: 14px; display: block; fill: rgba(55, 53, 47, 0.45); flex-shrink: 0;">
+                    <g>
+                      <path d="M3,1.5A1.5,1.5,0,1,1,1.5,0,1.5,1.5,0,0,1,3,1.5Z"></path>
+                      <path d="M8,1.5A1.5,1.5,0,1,1,6.5,0,1.5,1.5,0,0,1,8,1.5Z"></path>
+                      <path d="M13,1.5A1.5,1.5,0,1,1,11.5,0,1.5,1.5,0,0,1,13,1.5Z"></path>
+                    </g>
+                  </svg>
+                </div>
+                <div role="button" tabindex="0" class="shadow-cursor-new-page-sidebar" aria-label="페이지 추가" style="user-select: none; transition: background 20ms ease-in 0s; cursor: pointer; display: flex; align-items: center; justify-content: center; height: 20px; width: 20px; border-radius: 4px; margin-left: 4px;"><span></span>
+                  <svg role="graphics-symbol" viewBox="0 0 14 14" class="plusThick" style="width: 14px; height: 14px; display: block; fill: rgba(55, 53, 47, 0.45); flex-shrink: 0;">
+                    <path d="M2 7.16357C2 7.59692 2.36011 7.95093 2.78735 7.95093H6.37622V11.5398C6.37622 11.9731 6.73022 12.3271 7.16357 12.3271C7.59692 12.3271 7.95093 11.9731 7.95093 11.5398V7.95093H11.5398C11.9731 7.95093 12.3271 7.59692 12.3271 7.16357C12.3271 6.73022 11.9731 6.37622 11.5398 6.37622H7.95093V2.78735C7.95093 2.36011 7.59692 2 7.16357 2C6.73022 2 6.37622 2.36011 6.37622 2.78735V6.37622H2.78735C2.36011 6.37622 2 6.73022 2 7.16357Z"></path>
+                  </svg>
+                </div>
+              </div>
+            </div>
+          </div>
 
-    <div class="dksqhdla" role="button" style="height: 150px auto; display: block;" onclick="addpage()"> + 페이지 추가</div>
-    <div id="ltabGainPage"></div>
-    <table>
-      {% for page in pageList %}
-      <tr>
-        <td>
-          <div role="button" style="width: 220px; height: 30px; margin-top: 4px; margin-bottom: 4px; margin-left: 5px; margin-right: 0px; text-align: left;" onclick="location.href='/page/{{page.id}}/'">
-            <span>{{page.title}}</span><button id="addpage" type="button" style="width: 28px; height: 28px; padding: 0; position: fixed; left: 192px; top: 5px;" 
-            onclick="addpage()">+</button></div>
-        </td>
-      </tr>
-      {% endfor %}
-    </table>
-    
-    
+          <div id="addPage" style="display: flex; flex-direction: column; gap: 1px; width: 100%;">
+            <div role="tree" aria-labelledby="showPage" class="notion-outliner-private" style="display: block;">
+              <div style="display: flex; flex-direction: column; gap: 1px;">
+                <div style="display: flex; flex-direction: column; gap: 1px;"></div>
+                <!--  -->
+                <div id="ltabGainPage" style="align-items: center; display: flex; flex-direction: column;">
+                  <table>
+                    {% for page in pageList %}
+                    <!-- 이모지와 내용 플러스버튼을 감싼 div -->
+                    <div style="width: 230px; height: 30px; position: relative; display: flex; flex-direction: column;">
+                      <!-- 이모지 -->
+                      <div style="width: 30px; height: 30px; position: absolute; text-align: center;"><span>▷</span></div>
+                      <div class="imgshow1" style="position: relative; display: none; width: 160px;">페이지 없음</div>
+                      <!-- 내용 -->
+                      <div role="button" style="width: 192px; height: 30px; position: absolute; left: 30px; text-align: left;" onclick="location.href='/page/{{page.id}}/'">
+                        <span>{{page.title}}</span></div>
+                      <!-- 플러스버튼 -->
+                      <button id="addpage" type="button" style="width: 28px; height: 28px; padding: 0; position: relative; left: 194px;" 
+                      onclick="addaddpage('{{page.id}}')">+</button>
+                    </div>
+                    {% endfor %}
+                  </table>
+                </div>
+                <div role="button" tabindex="0" style="user-select: none; transition: background 150ms ease 0s; cursor: pointer; border-radius: 6px; display: flex; margin-left: 0px; margin-right: 0px; font-weight: 500;" onclick="addpage()">
+                  <div style="display: flex; align-items: center; width: 100%; font-size: 14px; min-height: 27px; padding: 4px 8px; height: 30px; color: rgb(145, 145, 142);">
+                    <div style="flex-shrink: 0; flex-grow: 0; border-radius: 4px; color: rgba(55, 53, 47, 0.65); width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; margin-right: 8px;">
+                      <div style="display: flex; align-items: center; justify-content: center;">
+                        <svg role="graphics-symbol" viewBox="0 0 14 14" class="plusThick" style="width: 16px; height: 16px; display: block; fill: rgb(145, 145, 142); flex-shrink: 0;">
+                          <path d="M2 7.16357C2 7.59692 2.36011 7.95093 2.78735 7.95093H6.37622V11.5398C6.37622 11.9731 6.73022 12.3271 7.16357 12.3271C7.59692 12.3271 7.95093 11.9731 7.95093 11.5398V7.95093H11.5398C11.9731 7.95093 12.3271 7.59692 12.3271 7.16357C12.3271 6.73022 11.9731 6.37622 11.5398 6.37622H7.95093V2.78735C7.95093 2.36011 7.59692 2 7.16357 2C6.73022 2 6.37622 2.36011 6.37622 2.78735V6.37622H2.78735C2.36011 6.37622 2 6.73022 2 7.16357Z"></path>
+                        </svg>
+                      </div>
+                    </div>
+                    <div style="flex: 1 1 auto; white-space: nowrap; min-width: 0px; overflow: hidden; text-overflow: ellipsis;">페이지 추가</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>    
 </div>
 
 
-
 <script>
-  // 눌렀을때 하위항목이 보이고, 안보이고
-  function toggleButton(){
-    ppButton = document.getElementsByClassName("dksqhdla")
-    for (var i = 0; i < ppButtons.length; i++) {
-      if (ppButton.style.display === "none") {
-        ppButton.style.display = "block";
-      } else {
-        ppButton.style.display = "none";
-      }
-    }
-    // 버튼입력했을때 하위 페이지가 없다면, '새 페이지 추가' 라는 버튼? 보이기
-    // 하위 페이지가 있다면, 페이지들이 보이기
-    // 페이지 정보를 불러와야하고, 
+// 눌렀을때 하위항목이 보이고, 안보이고
+function toggleContent() {
+  var button = document.getElementById("showPage");
+  var content = document.getElementById("addPage");
+  var content2 = document.getElementsByClassName("abc");
+  var expanded = button.getAttribute("aria-expanded");
+
+  if (expanded === "true") {
+    button.setAttribute("aria-expanded", "false");
+    content.style.display = "none";
+    content2.style.display = "none";
+  } else {
+    button.setAttribute("aria-expanded", "true");
+    content.style.display = "flex";
+    content2.style.display = "flex";
   }
+}
+document.getElementById("showPage").addEventListener("click", toggleContent);
+
+function toggleaddPage() {
+  var content = document.getElementById("addPage");
+
+  if ("{{pageList.length}}" === 0) {
+
+    content.style.display = "none";
+  } else {
+    content.style.display = "flex";
+  }
+}
+
+function addaddpage(pageid) {
+  var newDiv = document.createElement("div");
+    newDiv.className = "dksqhdla";
+    newDiv.style.position = "relative";
+
+    var container = document.getElementsByClassName("imgshow1")
+    container.appendChild(newDiv);
+    document.location.href = `/ltab/newpage/${pageid}/`;
+}
 
   // 누르면 새 페이지를 만드는 함수
   function addpage(){
     var newDiv = document.createElement("div");
     newDiv.className = "dksqhdla";
-    newDiv.style.width = "200px";
-    newDiv.style.height = "50px";
-    newDiv.style.position = "relative"; // 상대 위치 설정
+    newDiv.style.position = "relative";
 
-    // 컨테이너 가져오기
     var container = document.getElementById("ltabGainPage");
-    // 컨테이너에 새로운 div 추가
     container.appendChild(newDiv);
-
-    // 페이지 이동
     document.location.href = '/ltab/newpage/';
   }
+
+
+
 
   function openModal() {
   document.getElementById("myModal").style.display = "block";
 }
-// 모달 닫기 함수
 function closeModal() {
   document.getElementById("myModal").style.display = "none";
 }
-// 모달 외부 클릭 시 모달 닫기
 window.onclick = function(event) {
   var modal = document.getElementById("myModal");
   if (event.target == modal) {
