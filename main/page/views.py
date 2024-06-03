@@ -4,8 +4,8 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 import json
 
-def default(request):
-    return render(request, "page/default.html")
+def home(request):
+    return render(request, "home.html")
 
 def getpage(request, pageid):
     user = request.user
@@ -21,6 +21,8 @@ def getpage(request, pageid):
     }
     
     return render(request, "page/page.html", content)
+
+
 
 @csrf_exempt
 def savepage(request, pageid):

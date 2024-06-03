@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}개인 페이지 HOME{% endblock %}</title>
+    {% block headscript %}{% endblock %}
+    <style>
+        body {
+            margin: 0;
+            font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol";
+        }
+        .ltab{
+            top:0px;
+            position: fixed;
+            width: 230px;
+            height: 100%;
+            float : left;
+            clear : left;
+            background-color: rgb(247, 247, 245);
+        }
+        .utab{
+            position: fixed;
+            left: 230px;
+            height: 38px;
+            width: 100%;
+            top : 0px;
+            padding: 0;
+        }
+        .page{
+            z-index: -1;
+            position:fixed;
+            margin-left: 230px;
+            width: calc(100% - 230px);
+            height: 100%;
+            top:38px;
+        }
+    </style>
+    {% block style %}{% endblock %}
+</head>
+<body>
+    <header class = "utab">
+        {% block utab %}머리{% endblock %}
+    </header>
+    <aside class="ltab">
+        {% block ltab %}사이드바{% endblock %}
+    </aside>
+    <main class="page">
+        {% block page %}내용{% endblock %}
+    </main>
+    {% block bodyscript %}{% endblock %}
+    
+    {% block bodyscript2 %}
+        
+    {% endblock bodyscript2 %}
+        
+</body>
+</html>
