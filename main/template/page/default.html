@@ -264,6 +264,7 @@
 {% endblock headscript %}
 
 {% block page %}
+{% load static %}
 <style>
     [contenteditable="true"]:focus:empty:before {
         content: attr(placeholder);
@@ -351,11 +352,19 @@
     //         selection.addRange(range);
     //     }
     // });
+
     document.addEventListener('DOMContentLoaded', (event) => {
+        let funcBlockOn = false;
         const textarea = document.getElementById('textarea');
 
         textarea.addEventListener('keydown', function (event) {
-
+            if (funcBlockOn){
+                console.log("event.key:",event.key);
+                        
+                const funcBlock = document.getElementById('funcBlock');
+                funcBlock.remove();
+                funcBlockOn = false;
+            }
 
             const activeElement = document.activeElement;
             const textinput = event.target;
@@ -447,6 +456,76 @@
                         }
                     }
                 }
+                
+            }
+        });
+        document.addEventListener('keyup', function (event) {
+            if (event.key === '/'){
+                const funcBlock = document.createElement('div');
+                const selection = window.getSelection();
+                const cursorRange = selection.getRangeAt(0);
+                const cursorRect = cursorRange.getBoundingClientRect();
+                funcBlock.innerHTML = `
+                <div id="funcBlock" 
+                    data-overlay="true" style="pointer-events: auto; position: relative; z-index: 1;">
+                    <div>
+                        <div style="position: fixed; left: ${cursorRect.x}px; top: ${cursorRect.y}px; pointer-events: none;">
+                            <div style="width: 0px; height: 21px;"></div>
+                            <div style="position: absolute; top: 0px; left: 0px; width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; align-items: flex-start;">
+                                <div style="position: relative; pointer-events: auto; bottom: 100%;">
+                                    <div style="display: flex; align-items: center; position: relative; flex-direction: column; transform-origin: 0% bottom; left: 0px; opacity: 1; bottom: 4px; transition-property: opacity, transform; transition-duration: 200ms; transition-timing-function: ease;">
+                                        <div role="dialog" style="border-radius: 6px; background: white; backdrop-filter: none; position: relative; max-width: calc(-24px + 100vw); box-shadow: rgba(15, 15, 15, 0.05) 0px 0px 0px 1px, rgba(15, 15, 15, 0.1) 0px 3px 6px, rgba(15, 15, 15, 0.2) 0px 9px 24px; overflow: hidden;">
+                                            <div style="display: flex; flex-direction: column; width: 324px; min-width: 180px; max-width: calc(-24px + 100vw); height: 100%; max-height: 40vh;">
+                                                <div class="notion-scroller vertical" style="z-index: 1; flex-grow: 1; min-height: 0px; transform: translateZ(0px); overflow: hidden auto; margin-right: 0px; margin-bottom: 0px;">
+                                                    <div id=":r1d:" tabindex="0" role="menu" aria-activedescendant=":r1i:">
+                                                        <div style="padding-top: 6px; padding-bottom: 6px;">
+                                                            <div style="display: flex; padding-left: 14px; padding-right: 14px; margin-top: 6px; margin-bottom: 8px; color: rgba(55, 53, 47, 0.65); fill: rgba(55, 53, 47, 0.45); font-size: 12px; font-weight: 500; line-height: 120%; user-select: none;">
+                                                                <div style="align-self: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">기본 블록</div>
+                                                                <div style="margin-left: auto;">
+                                                                    <div contenteditable="false" class="pseudoSelection" data-content-editable-void="true" style="user-select: none; --pseudoSelection--background: transparent; display: contents;"><img role="progressbar" class="loading-spinner" alt="로딩 중..." aria-busy="true" aria-live="polite" src="data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20xmlns%3Asketch%3D%22http%3A%2F%2Fwww.bohemiancoding.com%2Fsketch%2Fns%22%20width%3D%22100%25%22%20height%3D%22100%25%22%20viewBox%3D%220%200%2024%2024%22%20version%3D%221.1%22%20data-ember-extension%3D%221%22%3E%3Cdefs%3E%3ClinearGradient%20x1%3D%2228.1542969%25%22%20y1%3D%2263.7402344%25%22%20x2%3D%2274.6289062%25%22%20y2%3D%2217.7832031%25%22%20id%3D%22linearGradient-1%22%3E%3Cstop%20stop-color%3D%22rgba(164%2C%20164%2C%20164%2C%201)%22%20offset%3D%220%25%22%2F%3E%3Cstop%20stop-color%3D%22rgba(164%2C%20164%2C%20164%2C%200)%22%20stop-opacity%3D%220%22%20offset%3D%22100%25%22%2F%3E%3C%2FlinearGradient%3E%3C%2Fdefs%3E%3Cg%20id%3D%22Page-1%22%20stroke%3D%22none%22%20stroke-width%3D%221%22%20fill%3D%22none%22%20%3E%3Cg%20transform%3D%22translate(-236.000000%2C%20-286.000000)%22%3E%3Cg%20transform%3D%22translate(238.000000%2C%20286.000000)%22%3E%3Ccircle%20id%3D%22Oval-2%22%20stroke%3D%22url(%23linearGradient-1)%22%20stroke-width%3D%224%22%20cx%3D%2210%22%20cy%3D%2212%22%20r%3D%2210%22%2F%3E%3Cpath%20d%3D%22M10%2C2%20C4.4771525%2C2%200%2C6.4771525%200%2C12%22%20id%3D%22Oval-2%22%20stroke%3D%22rgba(164%2C%20164%2C%20164%2C%201)%22%20stroke-width%3D%224%22%2F%3E%3Crect%20id%3D%22Rectangle-1%22%20fill%3D%22rgba(164%2C%20164%2C%20164%2C%201)%22%20x%3D%228%22%20y%3D%220%22%20width%3D%224%22%20height%3D%224%22%20rx%3D%228%22%2F%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E" style="visibility: hidden;"></div>
+                                                                </div>
+                                                            </div>
+                                                            <div role="menuitem" tabindex="-1" id=":r1e:" style="user-select: none; transition: background 20ms ease-in 0s; cursor: pointer; width: calc(100% - 8px); margin-left: 4px; margin-right: 4px; border-radius: 4px;">
+                                                                <div style="display: flex; align-items: center; line-height: 120%; width: 100%; user-select: none; min-height: 45px; font-size: 14px; padding-top: 4px; padding-bottom: 4px;">
+                                                                    <div style="display: flex; align-items: center; justify-content: center; margin-left: 10px; margin-right: 4px; margin-top: 1px; align-self: flex-start;">
+                                                                        <div style="width: 100%; height: 100%;"><img src="{% static 'ko-KR.png' %}" referrerpolicy="same-origin" style="display: block; object-fit: cover; border-radius: 4px; background: white; width: 46px; height: 46px; flex-grow: 0; flex-shrink: 0; box-shadow: rgba(15, 15, 15, 0.1) 0px 0px 0px 1px;"></div>
+                                                                    </div>
+                                                                    <div style="margin-left: 6px; margin-right: 12px; min-width: 0px; flex: 1 1 auto;">
+                                                                        <div style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                                                                            <div style="display: flex; align-items: center;"><span style="margin-right: 6px;">텍스트</span></div>
+                                                                        </div>
+                                                                        <div style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: rgb(120, 119, 116); margin-top: 2px; font-size: 12px;">일반 텍스트를 사용해 쓰기를 시작하세요.</div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div role="menuitem" tabindex="-1" id=":r1f:" style="user-select: none; transition: background 20ms ease-in 0s; cursor: pointer; width: calc(100% - 8px); margin-left: 4px; margin-right: 4px; border-radius: 4px;">
+                                                                    <div style="display: flex; align-items: center; line-height: 120%; width: 100%; user-select: none; min-height: 45px; font-size: 14px; padding-top: 4px; padding-bottom: 4px;">
+                                                                        <div style="display: flex; align-items: center; justify-content: center; margin-left: 10px; margin-right: 4px; margin-top: 1px; align-self: flex-start;">
+                                                                            <div style="width: 100%; height: 100%;"><img src="{% static 'page.83b0bf31.png' %}" referrerpolicy="same-origin" style="display: block; object-fit: cover; border-radius: 4px; background: white; width: 46px; height: 46px; flex-grow: 0; flex-shrink: 0; box-shadow: rgba(15, 15, 15, 0.1) 0px 0px 0px 1px;"></div>
+                                                                        </div>
+                                                                        <div style="margin-left: 6px; margin-right: 12px; min-width: 0px; flex: 1 1 auto;">
+                                                                            <div style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                                                                                <div style="display: flex; align-items: center;"><span style="margin-right: 6px;">페이지</span></div>
+                                                                            </div>
+                                                                            <div style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: rgb(120, 119, 116); margin-top: 2px; font-size: 12px;">이 페이지 안에 하위 페이지를 만드세요.</div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                `;
+                document.body.appendChild(funcBlock);
+                funcBlockOn = true;
             }
         });
     });
