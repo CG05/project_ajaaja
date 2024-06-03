@@ -46,109 +46,167 @@
 <style>
   /* 모든 버튼에 적용될 스타일 */
   button {
+    border: none;
+    background-color: rgb(247, 247, 245);
+  }
+  button:hover {
+    background-color: rgb(239, 239, 237);
+  }
+  #changeBackground {
     border: none; /* 테두리 없음 */
     background-color: rgb(247, 247, 245); /* 배경색 설정 */
   }
-  button:hover {
+  #changeBackground:hover {
     background-color: rgb(239, 239, 237); /* 마우스를 올렸을 때 배경색 변경 */
   }
-    
+  .dksqhdla {
+    border: none; /* 테두리 없음 */
+    background-color: rgb(247, 247, 245); /* 배경색 설정 */
+  }
+  .dksqhdla:hover {
+    background-color: rgb(239, 239, 237); /* 마우스를 올렸을 때 배경색 변경 */
+  }
+  div[role="button"] {
+    border: none; /* 테두리 없음 */
+    background-color: rgb(247, 247, 245); /* 배경색 설정 */
+  }
+  div[role="button"]:hover {
+    background-color: rgb(239, 239, 237);
+  }
+  
 </style>
-
-<form method="post" enctype="multipart/form-data"> {% csrf_token %}
-  <div id="myModal" class="modal">
-    <!-- 모달 내용 -->
-    <div class="modal-content">
-      <span class="close" onclick="closeModal()"></span>
-      <table>
-        <tr>
-          <td><input type="text" name="searchtitle" style="font-size: 24px;"></td>
-        </tr>
-      </table>
+<!-- 전체 -->
+<div style="width: 230px; height: 100%;">
+  <form method="post" enctype="multipart/form-data"> {% csrf_token %}
+    <div id="myModal" class="modal">
+      <!-- 모달 내용 -->
+      <div class="modal-content">
+        <span class="close" onclick="closeModal()"></span>
+        <table>
+          <tr>
+            <td><input type="text" name="searchtitle" style="font-size: 24px;"></td>
+          </tr>
+        </table>
+      </div>
     </div>
-  </div>
-</form>
+  </form>
 
-  <div style="display: flex; align-items: center; position: relative;">
-    <button id="notionBtn" type="button" style="width: 220px; height: 30px; margin-top: 4px; margin-bottom: 4px; margin-left: 5px; margin-right: 0px; text-align: left;">
-      <span>{{ username }}의 notion</span>
-    </button>
+  <div style="display: flex; width: 100%; position: relative; top:2px; justify-content: center;">
+    <div id="notionBtn" role="button" style="border-radius: 6px; width: 100%; line-height:30px; height: 30px; position: relative; margin: 4px 5px; display: flex; justify-content: flex-start;">{{ username }}의 notion</div>
 
     <!-- 페이지 생성되야함 /newpage/ -->
     {% load static %}
-    <button id="newpage" type="button" style="width: 28px; height: 28px; padding: 0; position: absolute; left: 192px; top: 5px;" onclick="document.location.href='/ltab/'">
-      <div role="button" tabindex="0" aria-label="새 페이지" style="user-select: none; transition: background 20ms ease-in 0s; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; border-radius: 4px; height: 28px; width: 28px; padding: 0px;"><svg role="graphics-symbol" viewBox="0 0 24 24" class="createPage" style="width: 24px; height: 24px; display: block; fill: rgb(55, 53, 47); flex-shrink: 0;"><g><path fill-rule="evenodd" d="M9.944 14.721c.104.094.216.12.336.079l1.703-.688 6.844-6.844-1.406-1.398-6.836 6.836-.711 1.68c-.052.13-.029.242.07.335zm8.102-9.484l1.414 1.406.515-.523a.917.917 0 00.282-.633.76.76 0 00-.258-.61l-.25-.25a.702.702 0 00-.578-.187.975.975 0 00-.617.297l-.508.5zm-9.453.127a3.85 3.85 0 00-3.85 3.85v6.5a3.85 3.85 0 003.85 3.85h6.5a3.85 3.85 0 003.85-3.85V12.95a.85.85 0 10-1.7 0v2.764a2.15 2.15 0 01-2.15 2.15h-6.5a2.15 2.15 0 01-2.15-2.15v-6.5a2.15 2.15 0 012.15-2.15h3.395a.85.85 0 000-1.7H8.593z" clip-rule="evenodd"></path></g></svg></div>
-    </button>
+    <div role="button" tabindex="0" aria-label="새 페이지" style="position: absolute; user-select: none; transition: background 20ms ease-in 0s; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; border-radius: 4px; height: 24px; width: 24px; padding: 0px; left: 197px; top:7px" onclick="document.location.href='/ltab/'">
+      <svg role="graphics-symbol" viewBox="0 0 24 24" class="createPage" style="width: 24px; height: 24px; display: block; fill: rgb(55, 53, 47); flex-shrink: 0;">
+        <g>
+          <path fill-rule="evenodd" d="M9.944 14.721c.104.094.216.12.336.079l1.703-.688 6.844-6.844-1.406-1.398-6.836 6.836-.711 1.68c-.052.13-.029.242.07.335zm8.102-9.484l1.414 1.406.515-.523a.917.917 0 00.282-.633.76.76 0 00-.258-.61l-.25-.25a.702.702 0 00-.578-.187.975.975 0 00-.617.297l-.508.5zm-9.453.127a3.85 3.85 0 00-3.85 3.85v6.5a3.85 3.85 0 003.85 3.85h6.5a3.85 3.85 0 003.85-3.85V12.95a.85.85 0 10-1.7 0v2.764a2.15 2.15 0 01-2.15 2.15h-6.5a2.15 2.15 0 01-2.15-2.15v-6.5a2.15 2.15 0 012.15-2.15h3.395a.85.85 0 000-1.7H8.593z" clip-rule="evenodd">
+          </path>
+        </g>
+      </svg>
+    </div>
     
+      
     <!-- 로그아웃 / 로그인 - 글자가 칸 벗어남, left: 160px -->
     {% if user.is_active %}
-    <button id="logBtn" type="button" style="width: 28px; height: 28px; display: flex; justify-content: center; align-items: center;  position: absolute; left: 150px; top: 5px;" onclick="document.location.href='/account/logout/'">logout</button>
+    <button id="logBtn" type="button" style="width: auto; height: 24px; border-radius: 4px; display: flex; justify-content: center; align-items: center;  position: absolute; left: 145px; top:7px;" onclick="document.location.href='/account/logout/'">logout</button>
     {% else %}  
-    <button id="logBtn" type="button" style="width: 28px; height: 28px; display: flex; justify-content: center; align-items: center;  position: absolute; left: 150px; top: 5px;" onclick="document.location.href='/account/login/'">login</button>
+    <button id="logBtn" type="button" style="width: auto; height: 24px; border-radius: 4px; display: flex; justify-content: center; align-items: center;  position: absolute; left: 145px; top:7px;" onclick="document.location.href='/account/login/'">login</button>
     {% endif %}
   </div>
 
-  
-  <!-- 검색 -->
-  <button id="search" type="button" style="width: 220px; height: 30px; margin-left: 5px; margin-top: 2px; text-align: left;" onclick="openModal()">검색</button>
-  
-  <!-- 홈 -->
-  <button type="button" style="width: 220px; height: 30px; margin-left: 5px; margin-top: 2px; text-align: left;" onclick="document.location.href='/page/'">홈</button>
-  
-  <div style="height: 100px;"></div>
-  <!-- 개인페이지 상세 열고닫기 -->
-  <div style="display: flex; align-items: center; position: relative;">
-    <!-- 개인페이지 추가 버튼 / 로케이션 변경 -->
-    <button id="addpage" type="button" style="width: 28px; height: 28px; padding: 0; position: absolute; left: 192px; top: 5px;" 
-    onclick="addpage()">+</button>
+    
+    <!-- 검색 -->
+    <div role="button" tabindex="0" style="display: flex; user-select: none; transition: background 150ms ease 0s; cursor: pointer; border-radius: 6px; margin-left: 0px; margin-right: 0px; font-weight: 500;">
+      <div id="changeBackground" onclick="openModal()" style="display: flex; align-items: center; width: 100%; font-size: 14px; min-height: 27px; margin: 2px 8px; height: 30px;">
+        <div style="flex-shrink: 0; flex-grow: 0; border-radius: 4px; color: rgba(55, 53, 47, 0.65); width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; margin-right: 8px;">
+          <svg role="graphics-symbol" viewBox="0 0 24 24" class="newSidebarSearch" style="width: 24px; height: 24px; display: block; fill: rgb(145, 145, 142); flex-shrink: 0;">
+            <g><path d="M4.212 10.915a6.053 6.053 0 016.05-6.057c3.34 0 6.05 2.71 6.05 6.058 0 1.245-.38 2.394-1.04 3.34l3.157 3.17c.234.235.359.55.359.887 0 .703-.528 1.252-1.245 1.252-.337 0-.66-.117-.901-.359l-3.186-3.186a5.843 5.843 0 01-3.194.945c-3.34 0-6.05-2.71-6.05-6.05zm1.788 0a4.262 4.262 0 004.262 4.263 4.268 4.268 0 004.27-4.263 4.27 4.27 0 00-4.27-4.27A4.264 4.264 0 006 10.916z"></path></g>
+          </svg>
+        </div>
+        <div style="flex: 1 1 auto; white-space: nowrap; min-width: 0px; overflow: hidden; text-overflow: ellipsis;">검색</div>
+      </div>
+    </div>
+    
+    <!-- 홈 -->
+    <div role="button" tabindex="0" style="display: flex; color: inherit; text-decoration: none; user-select: none; transition: background 150ms ease 0s; cursor: pointer; border-radius: 6px; margin-left: 0px; margin-right: 0px; font-weight: 500;">
+      <div id="changeBackground" onclick="document.location.href='/page/'" style="display: flex; align-items: center; width: 100%; font-size: 14px; min-height: 27px; margin: 2px 8px; height: 30px;">
+        <div style="flex-shrink: 0; flex-grow: 0; border-radius: 4px; color: rgba(55, 53, 47, 0.65); width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; margin-right: 8px;">
+          <svg role="graphics-symbol" viewBox="0 0 24 24" class="newSidebarHome" style="width: 24px; height: 24px; display: block; fill: rgb(145, 145, 142); flex-shrink: 0;">
+            <g>
+              <path d="M13.049 4.56l-1.05-.41-1.047.413.865 1.493.185-.155 2.564 2.15-1.517-3.49z"></path>
+              <path d="M10.952 4.563L4.828 9.698a2.759 2.759 0 00-.986 2.114v5.315c0 .76.228 1.46.772 1.987l.005.005c.543.518 1.249.731 2.012.731h3.53c.47 0 .85-.38.85-.85v-4.782c0-.058.047-.104.104-.104h1.774c.058 0 .104.046.104.104V19c0 .47.381.85.85.85h3.53c.76 0 1.461-.215 2.003-.731l-.95-1.642a.785.785 0 01-.223.411c-.152.146-.395.262-.83.262h-2.68v-3.932c0-.997-.807-1.804-1.804-1.804h-1.774c-.996 0-1.804.807-1.804 1.804v3.932h-2.68c-.44 0-.685-.116-.837-.26-.138-.135-.252-.352-.252-.763v-5.315c0-.313.139-.61.379-.811l5.896-4.945-.865-1.493zm8.223 5.135L13.05 4.56l1.517 3.49L18.084 11c.24.2.378.498.378.81v5.202l.916 2.106c.551-.526.784-1.228.784-1.992v-5.315c0-.816-.36-1.59-.986-2.114z"></path>
+              <path d="M18.426 17.477l.95 1.642-.915-2.106v.114c0 .137-.013.252-.035.35zM13.049 4.56c-.273-.228-.627-.41-1.05-.41l1.05.41z"></path>
+              <path d="M12 4.15c-.422 0-.776.182-1.048.413L12 4.15z"></path>
+            </g>
+          </svg>
+        </div>
+        <div style="flex: 1 1 auto; white-space: nowrap; min-width: 0px; overflow: hidden; text-overflow: ellipsis;">홈</div>
+      </div>
+    </div>
+    
 
-    <button id="pppage" type="button" style="width: 220px; height: 30px; margin-top: 4px; margin-bottom: 4px; margin-left: 5px; margin-right: 0px; text-align: left;" onclick="toggleButton()"><span>개인 페이지</span></button>
+    <div style="display: flex; flex-shrink: 0; width: 100%; box-shadow: transparent 0px 0px 0px; transition: box-shadow 300ms ease 0s; height: 100px; margin-top: -2px; z-index: 99;"></div>
 
-  </div>
 
-  <div style="height: 150px;">
-    <button id="pp" style="position: relative; width: 220px; height: 30px; text-align: left; display: none;" onclick="addpage()">+ 페이지 추가</button>
-    <div id="aaa"></div>
+    <!-- 개인페이지 상세 열고닫기 -->
+    <div style="display: inline-flex; align-items: center; border-radius: 4px;  position: relative; justify-content: center;">
+      <!-- 개인페이지 추가 버튼 / 로케이션 변경 -->
+      <div id="pppage" role="button" style="width: 220px; height: 30px; border-radius: 4px;  margin-top: 4px; margin-bottom: 4px; margin-left: 5px; margin-right: 0px; text-align: left; justify-content: center;" onclick="toggleButton()">개인 페이지</div>
+      <div id="addpage" role="button" style="width: 28px; height: 28px; right: 28px; padding: 0; position: relative; text-align: center;" 
+      onclick="addpage()">+</div>
+    
+    </div>
+
+    <div class="dksqhdla" role="button" style="height: 150px auto; display: block;" onclick="addpage()"> + 페이지 추가</div>
+    <div id="ltabGainPage"></div>
     <table>
       {% for page in pageList %}
       <tr>
         <td>
-          <button id="pppage" type="button" style="width: 220px; height: 30px; margin-top: 4px; margin-bottom: 4px; margin-left: 5px; margin-right: 0px; text-align: left;" onclick="location.href='/page/{{page.id}}/'"><span>{{page.title}}</span></button>
+          <div role="button" style="width: 220px; height: 30px; margin-top: 4px; margin-bottom: 4px; margin-left: 5px; margin-right: 0px; text-align: left;" onclick="location.href='/page/{{page.id}}/'">
+            <span>{{page.title}}</span><button id="addpage" type="button" style="width: 28px; height: 28px; padding: 0; position: fixed; left: 192px; top: 5px;" 
+            onclick="addpage()">+</button></div>
         </td>
       </tr>
       {% endfor %}
     </table>
-  </div>
-  
     
+    
+</div>
 
 
 
 <script>
-  
+  // 눌렀을때 하위항목이 보이고, 안보이고
   function toggleButton(){
-    ppButton = document.getElementById("pp");
-    if (ppButton.style.display === "none") {
-      ppButton.style.display = "block";
-    } else {
-      ppButton.style.display = "none";
+    ppButton = document.getElementsByClassName("dksqhdla")
+    for (var i = 0; i < ppButtons.length; i++) {
+      if (ppButton.style.display === "none") {
+        ppButton.style.display = "block";
+      } else {
+        ppButton.style.display = "none";
+      }
     }
     // 버튼입력했을때 하위 페이지가 없다면, '새 페이지 추가' 라는 버튼? 보이기
     // 하위 페이지가 있다면, 페이지들이 보이기
     // 페이지 정보를 불러와야하고, 
   }
 
+  // 누르면 새 페이지를 만드는 함수
   function addpage(){
-    // 새로운 div 요소 생성
     var newDiv = document.createElement("div");
-    // newDiv.className = "sub-item";
-    // 새로운 div에 텍스트 내용 추가
-    newDiv.textContent = "새로운 하위 항목";
-    // 하위 항목을 추가할 컨테이너 가져오기
-    var container = document.getElementById("aaa");
+    newDiv.className = "dksqhdla";
+    newDiv.style.width = "200px";
+    newDiv.style.height = "50px";
+    newDiv.style.position = "relative"; // 상대 위치 설정
+
+    // 컨테이너 가져오기
+    var container = document.getElementById("ltabGainPage");
     // 컨테이너에 새로운 div 추가
     container.appendChild(newDiv);
-    document.location.href='/ltab/newpage/';
+
+    // 페이지 이동
+    document.location.href = '/ltab/newpage/';
   }
 
   function openModal() {
