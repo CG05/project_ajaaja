@@ -13,6 +13,22 @@ def default(request):
     }
     return render(request, "ltab/default.html", content)
 
+def new_page(request):
+    user = request.user
+    username = user.username
+    
+    new = Page();
+    new.username = username
+    new.title = "Untitled"
+    new.pagepath = "newpage"
+    new.save();
+    new = Page.objects.get(pagepath="newpage")
+    
+    new.pagepath = new.id
+    new.save();
+
+    return redirect(f"/page/{new.id}/");
+
 def newpage(request, pageid):
     pagepath = "";
     if pageid != "":
@@ -32,4 +48,6 @@ def newpage(request, pageid):
     new.save();
 
     return redirect(f"/page/{new.id}/");
+
+
 
