@@ -362,6 +362,10 @@
 </div>
 {% endblock page %}
 {% block bodyscript %}
+
+{% if page %}
+    
+    
 <script>
     // document.addEventListener('paste', function (event) {
     //     const activeElement = document.activeElement;
@@ -701,4 +705,6 @@
         });
     });
 </script>
+{% endif %}
+
 {% endblock bodyscript %}

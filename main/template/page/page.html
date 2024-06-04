@@ -30,7 +30,7 @@
         });
     </script>
 
-    {% endif %}
+    
     <script>
         var targetNode = document.getElementsByClassName('page')[0];
 
@@ -58,7 +58,7 @@
                 },
                 'csrfmiddlewaretoken': '{{ csrf_token }}'
             };
-            document.querySelector(`#path_{{page.pagepath}}`).innerText = collected.title;
+            // document.querySelector(`#path_{{page.pagepath}}`).innerText = collected.title;
 
             $.ajax({
                 type: 'POST',
@@ -86,6 +86,6 @@
             return {title, contents};
         }
     </script>
-    
+    {% endif %}
 {% endblock bodyscript2 %}
     
