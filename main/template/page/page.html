@@ -1,4 +1,4 @@
-{% extends 'utab/utab.html' %}
+{% extends 'page/default.html' %}
 
 {% block bodyscript2 %}
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -58,6 +58,7 @@
                 },
                 'csrfmiddlewaretoken': '{{ csrf_token }}'
             };
+            document.querySelector(`#path_{{page.pagepath}}`).innerText = collected.title;
 
             $.ajax({
                 type: 'POST',

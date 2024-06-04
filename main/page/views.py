@@ -9,11 +9,12 @@ def home(request):
     username = user.username
     pages = Page.objects.filter(username=username)
     pageList = list(pages)
+    listLength = len(pageList)
     content={
         "username":username,
         "pageList":pageList,
+        "listLength":listLength,
     }
-    
     return render(request, "home.html", content)
 
 def getpage(request, pageid):
@@ -22,11 +23,13 @@ def getpage(request, pageid):
     pages = Page.objects.filter(username=username)
     pageList = list(pages)
     page = Page.objects.get(id=pageid)
+    listLength = len(pageList)
     content={
         "username":username,
         "pageList":pageList,
         "page":page,
         "pageid":pageid,
+        "listLength":listLength,
     }
     
     return render(request, "page/page.html", content)

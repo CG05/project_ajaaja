@@ -61,6 +61,6 @@ def logout(request):
 
 def index(request):
     if request.user.is_active:
-        return render(request, "home.html");
+        return redirect("/page/");
     else:
         return render(request, "main.html")
