@@ -6,6 +6,7 @@ class Page(models.Model):
     pagepath = models.CharField(max_length=100, null=False, blank=False)
     title = models.CharField(max_length=100)
     content = models.JSONField('json', default=dict)
+    style=  models.JSONField('json', default=dict)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
