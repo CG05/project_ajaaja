@@ -1,8 +1,8 @@
 {% extends 'default.html' %}
-
+{% load static %}
 {% block headscript %}
+<link rel="stylesheet" href="{% static 'css/default.css' %}">
 <script>
-
     function newLineblock(block, textAfterCursor) {
         var newBlock = document.createElement('div');
         newBlock.setAttribute('class', 'lineblock');
@@ -24,6 +24,42 @@
         } else if (textlist.length == 1) {
             textinput.appendChild(document.createTextNode(textlist[0]));
         }
+        return newBlock;
+    }
+
+    function newCheckboxblock(block, textAfterCursor) {
+        var newBlock = document.createElement('div');
+        newBlock.setAttribute('class', 'lineblock');
+        newBlock.setAttribute('style', 'width: 100%; max-width: 700px; margin-top: 1px; margin-bottom: 1px; position: relative;');
+        newBlock.innerHTML = '<div style="display: flex; align-items: flex-start; width: 100%; padding-left: 2px; color: inherit; fill: inherit;"><div contenteditable="false" class="pseudoSelection" data-content-editable-void="true" data-text-edit-side="start" style="user-select: none; --pseudoSelection--background: transparent; margin-right: 2px; width: 24px; display: flex; align-items: center; justify-content: center; flex-grow: 0; flex-shrink: 0; min-height: calc(1.5em + 6px);"><div class="pseudoHover pseudoActive" style="position: relative; flex-shrink: 0; flex-grow: 0; width: 16px; height: 16px; display: flex; align-items: center; justify-content: center; transition: background 200ms ease-out 0s; --pseudoHover--background: rgba(55,53,47,.08); --pseudoActive--background: rgba(55,53,47,.16);"><div aria-hidden="true"><svg role="graphics-symbol" viewBox="0 0 16 16" class="checkboxSquare" style="width: 100%; height: 100%; display: block; fill: inherit; flex-shrink: 0;"><path d="M1.5,1.5 L1.5,14.5 L14.5,14.5 L14.5,1.5 L1.5,1.5 Z M0,0 L16,0 L16,16 L0,16 L0,0 Z"></path></svg></div><input class="inactive" type="checkbox" style="margin: 0; position: absolute; opacity: 0; width: 16px; height: 16px; top: 0px; left: 0px; cursor: pointer;"></div></div><div style="flex: 1 1 0px; min-width: 1px; display: flex; flex-direction: column;"><div style="display: flex;"><div id=":rf3:" class="textinput" spellcheck="true" placeholder="To-do" data-content-editable-leaf="true" contenteditable="true" style="max-width: 100%; white-space: pre-wrap; word-break: break-word; caret-color: rgb(55, 53, 47); padding: 3px 2px; text-align: left; flex-grow: 1; min-height: 1em; color: rgb(55, 53, 47);"></div><div style="position: relative; left: 0px;"></div></div><div data-block-id="5bdefa3f-7377-45fd-a217-fd690d058a43" class="notion-selectable notion-to_do-block"></div></div></div>';
+        block.parentNode.insertBefore(newBlock, block.nextElementSibling);
+            return newBlock;
+    }
+
+    function newLinebigtitleblock(block, textAfterCursor) {
+        var newBlock = document.createElement('div');
+        newBlock.setAttribute('class', 'lineblock');
+        newBlock.setAttribute('style', 'font-size: 27px; font-weight: 600; width: 100%; max-width: 700px; margin-top: 1px; margin-bottom: 1px; position: relative;');
+        newBlock.innerHTML = '<div style="display: flex; align-items: flex-start; width: 100%; padding-left: 2px; fill: inherit;"></div><div style="flex: 1 1 0px; min-width: 1px; display: flex; flex-direction: column;"><div style="display: flex"><div class="textinput" spellcheck="true" placeholder="제목 1" data-content-editable-leaf="true" contenteditable="true" style="max-width: 100%; width: 100%; white-space: pre-wrap; word-break: break-word; caret-color: rgb(55, 53, 47); padding: 3px 2px; text-align: left;"></div></div></div>';
+        block.parentNode.insertBefore(newBlock, block.nextElementSibling);
+        return newBlock;
+    }
+
+    function newLinemiddletitleblock(block, textAfterCursor) {
+        var newBlock = document.createElement('div');
+        newBlock.setAttribute('class', 'lineblock');
+        newBlock.setAttribute('style', 'font-size: 21px; font-weight: 600; width: 100%; max-width: 700px; margin-top: 1px; margin-bottom: 1px; position: relative;');
+        newBlock.innerHTML = '<div style="display: flex; align-items: flex-start; width: 100%; padding-left: 2px; fill: inherit;"></div><div style="flex: 1 1 0px; min-width: 1px; display: flex; flex-direction: column;"><div style="display: flex"><div class="textinput" spellcheck="true" placeholder="제목 2" data-content-editable-leaf="true" contenteditable="true" style="max-width: 100%; width: 100%; white-space: pre-wrap; word-break: break-word; caret-color: rgb(55, 53, 47); padding: 3px 2px; text-align: left;"></div></div></div>';
+        block.parentNode.insertBefore(newBlock, block.nextElementSibling);
+        return newBlock;
+    }
+
+    function newLinesmalltitleblock(block, textAfterCursor) {
+        var newBlock = document.createElement('div');
+        newBlock.setAttribute('class', 'lineblock');
+        newBlock.setAttribute('style', 'font-size: 16px; font-weight: 600; width: 100%; max-width: 700px; margin-top: 1px; margin-bottom: 1px; position: relative;');
+        newBlock.innerHTML = '<div style="display: flex; align-items: flex-start; width: 100%; padding-left: 2px; fill: inherit;"></div><div style="flex: 1 1 0px; min-width: 1px; display: flex; flex-direction: column;"><div style="display: flex"><div class="textinput" spellcheck="true" placeholder="제목 3" data-content-editable-leaf="true" contenteditable="true" style="max-width: 100%; width: 100%; white-space: pre-wrap; word-break: break-word; caret-color: rgb(55, 53, 47); padding: 3px 2px; text-align: left;"></div></div></div>';
+        block.parentNode.insertBefore(newBlock, block.nextElementSibling);
         return newBlock;
     }
 
@@ -264,11 +300,10 @@
 {% endblock headscript %}
 
 {% block page %}
-{% load static %}
 <style>
     [contenteditable="true"]:focus:empty:before {
         content: attr(placeholder);
-        color: #666
+        color: rgba(55, 53, 47, 0.2)
     }
 </style>
 <div class="layout" style="position: relative; padding-bottom: 300px; cursor: text;">
@@ -462,6 +497,7 @@
         document.addEventListener('keyup', function (event) {
             if (event.key === '/'){
                 const funcBlock = document.createElement('div');
+                const textinput = event.target
                 const selection = window.getSelection();
                 const cursorRange = selection.getRangeAt(0);
                 const cursorRect = cursorRange.getBoundingClientRect();
@@ -469,8 +505,8 @@
                 if (window.innerWidth - cursorRect.x < 324){
                     x = cursorRect.x - 324;
                 }
-                let y = cursorRect.y + 400;
-                if (cursorRect.y > 400){
+                let y = cursorRect.y + 321.84;
+                if (cursorRect.y > 321.84){
                     y = cursorRect.y;
                 }
                 funcBlock.innerHTML = `
@@ -490,84 +526,86 @@
                                                             <div style="display: flex; padding-left: 14px; padding-right: 14px; margin-top: 6px; margin-bottom: 8px; color: rgba(55, 53, 47, 0.65); fill: rgba(55, 53, 47, 0.45); font-size: 12px; font-weight: 500; line-height: 120%; user-select: none;">
                                                                 <div style="align-self: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">기본 블록</div>
                                                                 <div style="margin-left: auto;">
-                                                                    <div contenteditable="false" class="pseudoSelection" data-content-editable-void="true" style="user-select: none; --pseudoSelection--background: transparent; display: contents;"><img role="progressbar" class="loading-spinner" alt="로딩 중..." aria-busy="true" aria-live="polite" src="data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20xmlns%3Asketch%3D%22http%3A%2F%2Fwww.bohemiancoding.com%2Fsketch%2Fns%22%20width%3D%22100%25%22%20height%3D%22100%25%22%20viewBox%3D%220%200%2024%2024%22%20version%3D%221.1%22%20data-ember-extension%3D%221%22%3E%3Cdefs%3E%3ClinearGradient%20x1%3D%2228.1542969%25%22%20y1%3D%2263.7402344%25%22%20x2%3D%2274.6289062%25%22%20y2%3D%2217.7832031%25%22%20id%3D%22linearGradient-1%22%3E%3Cstop%20stop-color%3D%22rgba(164%2C%20164%2C%20164%2C%201)%22%20offset%3D%220%25%22%2F%3E%3Cstop%20stop-color%3D%22rgba(164%2C%20164%2C%20164%2C%200)%22%20stop-opacity%3D%220%22%20offset%3D%22100%25%22%2F%3E%3C%2FlinearGradient%3E%3C%2Fdefs%3E%3Cg%20id%3D%22Page-1%22%20stroke%3D%22none%22%20stroke-width%3D%221%22%20fill%3D%22none%22%20%3E%3Cg%20transform%3D%22translate(-236.000000%2C%20-286.000000)%22%3E%3Cg%20transform%3D%22translate(238.000000%2C%20286.000000)%22%3E%3Ccircle%20id%3D%22Oval-2%22%20stroke%3D%22url(%23linearGradient-1)%22%20stroke-width%3D%224%22%20cx%3D%2210%22%20cy%3D%2212%22%20r%3D%2210%22%2F%3E%3Cpath%20d%3D%22M10%2C2%20C4.4771525%2C2%200%2C6.4771525%200%2C12%22%20id%3D%22Oval-2%22%20stroke%3D%22rgba(164%2C%20164%2C%20164%2C%201)%22%20stroke-width%3D%224%22%2F%3E%3Crect%20id%3D%22Rectangle-1%22%20fill%3D%22rgba(164%2C%20164%2C%20164%2C%201)%22%20x%3D%228%22%20y%3D%220%22%20width%3D%224%22%20height%3D%224%22%20rx%3D%228%22%2F%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E" style="visibility: hidden;"></div>
+                                                                    <div contenteditable="false" class="pseudoSelection" data-content-editable-void="true" style="user-select: none; --pseudoSelection--background: transparent; display: contents;"><img role="progressbar" class="loading-spinner" alt="로딩 중..." 
+                                                                        aria-busy="true" aria-live="polite" 
+                                                                        src="data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20xmlns%3Asketch%3D%22http%3A%2F%2Fwww.bohemiancoding.com%2Fsketch%2Fns%22%20width%3D%22100%25%22%20height%3D%22100%25%22%20viewBox%3D%220%200%2024%2024%22%20version%3D%221.1%22%20data-ember-extension%3D%221%22%3E%3Cdefs%3E%3ClinearGradient%20x1%3D%2228.1542969%25%22%20y1%3D%2263.7402344%25%22%20x2%3D%2274.6289062%25%22%20y2%3D%2217.7832031%25%22%20id%3D%22linearGradient-1%22%3E%3Cstop%20stop-color%3D%22rgba(164%2C%20164%2C%20164%2C%201)%22%20offset%3D%220%25%22%2F%3E%3Cstop%20stop-color%3D%22rgba(164%2C%20164%2C%20164%2C%200)%22%20stop-opacity%3D%220%22%20offset%3D%22100%25%22%2F%3E%3C%2FlinearGradient%3E%3C%2Fdefs%3E%3Cg%20id%3D%22Page-1%22%20stroke%3D%22none%22%20stroke-width%3D%221%22%20fill%3D%22none%22%20%3E%3Cg%20transform%3D%22translate(-236.000000%2C%20-286.000000)%22%3E%3Cg%20transform%3D%22translate(238.000000%2C%20286.000000)%22%3E%3Ccircle%20id%3D%22Oval-2%22%20stroke%3D%22url(%23linearGradient-1)%22%20stroke-width%3D%224%22%20cx%3D%2210%22%20cy%3D%2212%22%20r%3D%2210%22%2F%3E%3Cpath%20d%3D%22M10%2C2%20C4.4771525%2C2%200%2C6.4771525%200%2C12%22%20id%3D%22Oval-2%22%20stroke%3D%22rgba(164%2C%20164%2C%20164%2C%201)%22%20stroke-width%3D%224%22%2F%3E%3Crect%20id%3D%22Rectangle-1%22%20fill%3D%22rgba(164%2C%20164%2C%20164%2C%201)%22%20x%3D%228%22%20y%3D%220%22%20width%3D%224%22%20height%3D%224%22%20rx%3D%228%22%2F%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E" style="visibility: hidden;"></div>
                                                                 </div>
                                                             </div>
-                                                            <div role="menuitem" tabindex="-1" id=":r1e:" style="user-select: none; transition: background 20ms ease-in 0s; cursor: pointer; width: calc(100% - 8px); margin-left: 4px; margin-right: 4px; border-radius: 4px;">
-                                                                <div style="display: flex; align-items: center; line-height: 120%; width: 100%; user-select: none; min-height: 45px; font-size: 14px; padding-top: 4px; padding-bottom: 4px;">
-                                                                    <div style="display: flex; align-items: center; justify-content: center; margin-left: 10px; margin-right: 4px; margin-top: 1px; align-self: flex-start;">
-                                                                        <div style="width: 100%; height: 100%;"><img src="{% static 'ko-KR.png' %}" referrerpolicy="same-origin" style="display: block; object-fit: cover; border-radius: 4px; background: white; width: 46px; height: 46px; flex-grow: 0; flex-shrink: 0; box-shadow: rgba(15, 15, 15, 0.1) 0px 0px 0px 1px;"></div>
+                                                            <div role="menuitem" tabindex="-1" id="text" class="tableindex">
+                                                                <div class="tableindex_1">
+                                                                    <div class="tableindex_2">
+                                                                        <div style="width: 100%; height: 100%;"><img src="{% static 'ko-KR.png' %}" referrerpolicy="same-origin" class="tablebox"></div>
                                                                     </div>
-                                                                    <div style="margin-left: 6px; margin-right: 12px; min-width: 0px; flex: 1 1 auto;">
-                                                                        <div style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                                                                    <div class="tableapp">
+                                                                        <div class="tableapp_1">
                                                                             <div style="display: flex; align-items: center;"><span style="margin-right: 6px;">텍스트</span></div>
                                                                         </div>
-                                                                        <div style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: rgb(120, 119, 116); margin-top: 2px; font-size: 12px;">일반 텍스트를 사용해 쓰기를 시작하세요.</div>
+                                                                        <div class="tableapp_2">일반 텍스트를 사용해 쓰기를 시작하세요.</div>
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                                <div role="menuitem" tabindex="-1" id=":r1f:" style="user-select: none; transition: background 20ms ease-in 0s; cursor: pointer; width: calc(100% - 8px); margin-left: 4px; margin-right: 4px; border-radius: 4px;">
-                                                                    <div style="display: flex; align-items: center; line-height: 120%; width: 100%; user-select: none; min-height: 45px; font-size: 14px; padding-top: 4px; padding-bottom: 4px;">
-                                                                        <div style="display: flex; align-items: center; justify-content: center; margin-left: 10px; margin-right: 4px; margin-top: 1px; align-self: flex-start;">
-                                                                            <div style="width: 100%; height: 100%;"><img src="{% static 'page.83b0bf31.png' %}" referrerpolicy="same-origin" style="display: block; object-fit: cover; border-radius: 4px; background: white; width: 46px; height: 46px; flex-grow: 0; flex-shrink: 0; box-shadow: rgba(15, 15, 15, 0.1) 0px 0px 0px 1px;"></div>
+                                                                <div role="menuitem" tabindex="-1" id="page" class="tableindex">
+                                                                    <div class="tableindex_1">
+                                                                        <div class="tableindex_2">
+                                                                            <div style="width: 100%; height: 100%;"><img src="{% static 'page.83b0bf31.png' %}" referrerpolicy="same-origin" class="tablebox"></div>
                                                                         </div>
-                                                                        <div style="margin-left: 6px; margin-right: 12px; min-width: 0px; flex: 1 1 auto;">
-                                                                            <div style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                                                                        <div class="tableapp">
+                                                                            <div class="tableapp_1">
                                                                                 <div style="display: flex; align-items: center;"><span style="margin-right: 6px;">페이지</span></div>
                                                                             </div>
-                                                                            <div style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: rgb(120, 119, 116); margin-top: 2px; font-size: 12px;">이 페이지 안에 하위 페이지를 만드세요.</div>
+                                                                            <div class="tableapp_2">이 페이지 안에 하위 페이지를 만드세요.</div>
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                                <div role="menuitem" tabindex="-1" id=":r1f:" style="user-select: none; transition: background 20ms ease-in 0s; cursor: pointer; width: calc(100% - 8px); margin-left: 4px; margin-right: 4px; border-radius: 4px;">
-                                                                    <div style="display: flex; align-items: center; line-height: 120%; width: 100%; user-select: none; min-height: 45px; font-size: 14px; padding-top: 4px; padding-bottom: 4px;">
-                                                                        <div style="display: flex; align-items: center; justify-content: center; margin-left: 10px; margin-right: 4px; margin-top: 1px; align-self: flex-start;">
-                                                                            <div style="width: 100%; height: 100%;"><img src="{% static 'todolist.png' %}" referrerpolicy="same-origin" style="display: block; object-fit: cover; border-radius: 4px; background: white; width: 46px; height: 46px; flex-grow: 0; flex-shrink: 0; box-shadow: rgba(15, 15, 15, 0.1) 0px 0px 0px 1px;"></div>
+                                                                <div role="menuitem" tabindex="-1" id="todolist" class="tableindex">
+                                                                    <div class="tableindex_1">
+                                                                        <div class="tableindex_2">
+                                                                            <div style="width: 100%; height: 100%;"><img src="{% static 'todolist.png' %}" referrerpolicy="same-origin" class="tablebox"></div>
                                                                         </div>
-                                                                        <div style="margin-left: 6px; margin-right: 12px; min-width: 0px; flex: 1 1 auto;">
-                                                                            <div style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                                                                        <div class="tableapp">
+                                                                            <div class="tableapp_1">
                                                                                 <div style="display: flex; align-items: center;"><span style="margin-right: 6px;">할 일 목록</span></div>
                                                                             </div>
-                                                                            <div style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: rgb(120, 119, 116); margin-top: 2px; font-size: 12px;">할 일 목록으로 작업을 추적하세요.</div>
+                                                                            <div class="tableapp_2">할 일 목록으로 작업을 추적하세요.</div>
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                                <div role="menuitem" tabindex="-1" id=":r1f:" style="user-select: none; transition: background 20ms ease-in 0s; cursor: pointer; width: calc(100% - 8px); margin-left: 4px; margin-right: 4px; border-radius: 4px;">
-                                                                    <div style="display: flex; align-items: center; line-height: 120%; width: 100%; user-select: none; min-height: 45px; font-size: 14px; padding-top: 4px; padding-bottom: 4px;">
-                                                                        <div style="display: flex; align-items: center; justify-content: center; margin-left: 10px; margin-right: 4px; margin-top: 1px; align-self: flex-start;">
-                                                                            <div style="width: 100%; height: 100%;"><img src="{% static 'bigtitle.png' %}" referrerpolicy="same-origin" style="display: block; object-fit: cover; border-radius: 4px; background: white; width: 46px; height: 46px; flex-grow: 0; flex-shrink: 0; box-shadow: rgba(15, 15, 15, 0.1) 0px 0px 0px 1px;"></div>
+                                                                <div role="menuitem" tabindex="-1" id="bigtitle" class="tableindex">
+                                                                    <div class="tableindex_1">
+                                                                        <div class="tableindex_2">
+                                                                            <div style="width: 100%; height: 100%;"><img src="{% static 'bigtitle.png' %}" referrerpolicy="same-origin" class="tablebox"></div>
                                                                         </div>
-                                                                        <div style="margin-left: 6px; margin-right: 12px; min-width: 0px; flex: 1 1 auto;">
-                                                                            <div style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                                                                        <div class="tableapp">
+                                                                            <div class="tableapp_1">
                                                                                 <div style="display: flex; align-items: center;"><span style="margin-right: 6px;">제목 1</span></div>
                                                                             </div>
-                                                                            <div style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: rgb(120, 119, 116); margin-top: 2px; font-size: 12px;">큰 섹션 제목</div>
+                                                                            <div class="tableapp_2">큰 섹션 제목</div>
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                                <div role="menuitem" tabindex="-1" id=":r1f:" style="user-select: none; transition: background 20ms ease-in 0s; cursor: pointer; width: calc(100% - 8px); margin-left: 4px; margin-right: 4px; border-radius: 4px;">
-                                                                    <div style="display: flex; align-items: center; line-height: 120%; width: 100%; user-select: none; min-height: 45px; font-size: 14px; padding-top: 4px; padding-bottom: 4px;">
-                                                                        <div style="display: flex; align-items: center; justify-content: center; margin-left: 10px; margin-right: 4px; margin-top: 1px; align-self: flex-start;">
-                                                                            <div style="width: 100%; height: 100%;"><img src="{% static 'middletitle.png' %}" referrerpolicy="same-origin" style="display: block; object-fit: cover; border-radius: 4px; background: white; width: 46px; height: 46px; flex-grow: 0; flex-shrink: 0; box-shadow: rgba(15, 15, 15, 0.1) 0px 0px 0px 1px;"></div>
+                                                                <div role="menuitem" tabindex="-1" id="middletitle" class="tableindex">
+                                                                    <div class="tableindex_1">
+                                                                        <div class="tableindex_2">
+                                                                            <div style="width: 100%; height: 100%;"><img src="{% static 'middletitle.png' %}" referrerpolicy="same-origin" class="tablebox"></div>
                                                                         </div>
-                                                                        <div style="margin-left: 6px; margin-right: 12px; min-width: 0px; flex: 1 1 auto;">
-                                                                            <div style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                                                                        <div class="tableapp">
+                                                                            <div class="tableapp_1">
                                                                                 <div style="display: flex; align-items: center;"><span style="margin-right: 6px;">제목 2</span></div>
                                                                             </div>
-                                                                            <div style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: rgb(120, 119, 116); margin-top: 2px; font-size: 12px;">중간 섹션 제목</div>
+                                                                            <div class="tableapp_2">중간 섹션 제목</div>
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                                <div role="menuitem" tabindex="-1" id=":r1f:" style="user-select: none; transition: background 20ms ease-in 0s; cursor: pointer; width: calc(100% - 8px); margin-left: 4px; margin-right: 4px; border-radius: 4px;">
-                                                                    <div style="display: flex; align-items: center; line-height: 120%; width: 100%; user-select: none; min-height: 45px; font-size: 14px; padding-top: 4px; padding-bottom: 4px;">
-                                                                        <div style="display: flex; align-items: center; justify-content: center; margin-left: 10px; margin-right: 4px; margin-top: 1px; align-self: flex-start;">
-                                                                            <div style="width: 100%; height: 100%;"><img src="{% static 'smalltitle.png' %}" referrerpolicy="same-origin" style="display: block; object-fit: cover; border-radius: 4px; background: white; width: 46px; height: 46px; flex-grow: 0; flex-shrink: 0; box-shadow: rgba(15, 15, 15, 0.1) 0px 0px 0px 1px;"></div>
+                                                                <div role="menuitem" tabindex="-1" id="smalltitle" class="tableindex">
+                                                                    <div class="tableindex_1">
+                                                                        <div class="tableindex_2">
+                                                                            <div style="width: 100%; height: 100%;"><img src="{% static 'smalltitle.png' %}" referrerpolicy="same-origin" class="tablebox"></div>
                                                                         </div>
-                                                                        <div style="margin-left: 6px; margin-right: 12px; min-width: 0px; flex: 1 1 auto;">
-                                                                            <div style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                                                                        <div class="tableapp">
+                                                                            <div class="tableapp_1">
                                                                                 <div style="display: flex; align-items: center;"><span style="margin-right: 6px;">제목 3</span></div>
                                                                             </div>
-                                                                            <div style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: rgb(120, 119, 116); margin-top: 2px; font-size: 12px;">작은 섹션 제목</div>
+                                                                            <div class="tableapp_2">작은 섹션 제목</div>
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -586,6 +624,78 @@
                 `;
                 document.body.appendChild(funcBlock);
                 funcBlockOn = true;
+                document.getElementById('text').addEventListener('click', function(){
+                    newBlock = newLineblock(textinput.parentNode.parentNode.parentNode, "")
+                    funcBlock.remove()
+                    funcBlockOn=false
+                    newBlock.children[1].children[0].children[0].focus()
+                })
+
+                document.getElementById('page').addEventListener('click', function(){
+                    window.location.href = '/ltab/newpage/{{page.id}}';
+                    funcBlock.remove()
+                    funcBlockOn=false
+                })
+
+                function checkboxevent(e){
+                    checkedbox = e.target
+                    block=checkedbox.parentNode.parentNode.parentNode.parentNode
+                    if(checkedbox.className == "inactive"){
+                        converthtml='<div style="display: flex; align-items: flex-start; width: 100%; padding-left: 2px; color: inherit; fill: inherit;"><div contenteditable="false" class="pseudoSelection" data-content-editable-void="true" data-text-edit-side="start" style="user-select: none; --pseudoSelection--background: transparent; margin-right: 2px; width: 24px; display: flex; align-items: center; justify-content: center; flex-grow: 0; flex-shrink: 0; min-height: calc(1.5em + 6px);"><div class="pseudoHover pseudoActive" style="position: relative; flex-shrink: 0; flex-grow: 0; width: 16px; height: 16px; display: flex; align-items: center; justify-content: center; transition: background 200ms ease-out 0s; --pseudoHover--background: rgba(55,53,47,.08); --pseudoActive--background: rgba(55,53,47,.16); background: rgb(35, 131, 226);"><div aria-hidden="true"><svg role="graphics-symbol" viewBox="0 0 14 14" class="check" style="width: 12px; height: 12px; display: block; fill: white; flex-shrink: 0;"><polygon points="5.5 11.9993304 14 3.49933039 12.5 2 5.5 8.99933039 1.5 4.9968652 0 6.49933039"></polygon></svg></div><input aria-labelledby=":r2:" class="active" type="checkbox" style="position: absolute; opacity: 0; width: 16px; height: 16px; top: 0px; left: 0px; cursor: pointer;"></div></div><div style="flex: 1 1 0px; min-width: 1px; display: flex; flex-direction: column;"><div style="display: flex;"><div id=":r2:" class="textinput" spellcheck="true" placeholder="To-do" data-content-editable-leaf="true" contenteditable="true" style="max-width: 100%; white-space: pre-wrap; word-break: break-word; caret-color: rgb(55, 53, 47); padding: 3px 2px; text-align: left; flex-grow: 1; min-height: 1em; color: rgb(55, 53, 47); -webkit-text-fill-color: rgba(55, 53, 47, 0.5); text-decoration: line-through rgba(55, 53, 47, 0.25); opacity: 1;"></div><div style="position: relative; left: 0px;"></div></div><div data-block-id="5bdefa3f-7377-45fd-a217-fd690d058a43" class="notion-selectable notion-to_do-block"></div></div></div>'
+                    }else if (checkedbox.className=="active"){
+                        converthtml ='<div style="display: flex; align-items: flex-start; width: 100%; padding-left: 2px; color: inherit; fill: inherit;"><div contenteditable="false" class="pseudoSelection" data-content-editable-void="true" data-text-edit-side="start" style="user-select: none; --pseudoSelection--background: transparent; margin-right: 2px; width: 24px; display: flex; align-items: center; justify-content: center; flex-grow: 0; flex-shrink: 0; min-height: calc(1.5em + 6px);"><div class="pseudoHover pseudoActive" style="position: relative; flex-shrink: 0; flex-grow: 0; width: 16px; height: 16px; display: flex; align-items: center; justify-content: center; transition: background 200ms ease-out 0s; --pseudoHover--background: rgba(55,53,47,.08); --pseudoActive--background: rgba(55,53,47,.16);"><div aria-hidden="true"><svg role="graphics-symbol" viewBox="0 0 16 16" class="checkboxSquare" style="width: 100%; height: 100%; display: block; fill: inherit; flex-shrink: 0;"><path d="M1.5,1.5 L1.5,14.5 L14.5,14.5 L14.5,1.5 L1.5,1.5 Z M0,0 L16,0 L16,16 L0,16 L0,0 Z"></path></svg></div><input aria-labelledby=":rf3:" class="inactive" type="checkbox" style="position: absolute; opacity: 0; width: 16px; height: 16px; top: 0px; left: 0px; cursor: pointer;"></div></div><div style="flex: 1 1 0px; min-width: 1px; display: flex; flex-direction: column;"><div style="display: flex;"><div id=":rf3:" class="textinput" spellcheck="true" placeholder="To-do" data-content-editable-leaf="true" contenteditable="true" style="max-width: 100%; white-space: pre-wrap; word-break: break-word; caret-color: rgb(55, 53, 47); padding: 3px 2px; text-align: left; flex-grow: 1; min-height: 1em; color: rgb(55, 53, 47);"></div><div style="position: relative; left: 0px;"></div></div><div data-block-id="5bdefa3f-7377-45fd-a217-fd690d058a43" class="notion-selectable notion-to_do-block"></div></div></div>';
+                    }block.innerHTML=converthtml
+                    checkedbox = block.children[0].children[0].children[0].children[1]
+                    checkedbox.addEventListener('click',checkboxevent)
+                }
+
+                document.getElementById('todolist').addEventListener('click', function(){
+                    newBlock = newCheckboxblock(textinput.parentNode.parentNode.parentNode, "")
+                    checkbox = newBlock.children[0].children[0].children[0].children[1]
+                    checkbox.addEventListener('click',function(e){
+                        checkboxevent(e)
+                    })
+                    funcBlock.remove()
+                    funcBlockOn=false
+                    newBlock.children[0].children[1].children[0].children[0].focus()
+                })
+                
+                document.getElementById('bigtitle').addEventListener('click', function(){
+                    newBlock = newLinebigtitleblock(textinput.parentNode.parentNode.parentNode, "")
+                    funcBlock.remove()
+                    funcBlockOn=false
+                    newBlock.children[1].children[0].children[0].focus()
+                })
+                
+                document.getElementById('middletitle').addEventListener('click', function(){
+                    newBlock = newLinemiddletitleblock(textinput.parentNode.parentNode.parentNode, "")
+                    funcBlock.remove()
+                    funcBlockOn=false
+                    newBlock.children[1].children[0].children[0].focus()
+                })
+
+                document.getElementById('smalltitle').addEventListener('click', function(){
+                    newBlock = newLinesmalltitleblock(textinput.parentNode.parentNode.parentNode, "")
+                    funcBlock.remove()
+                    funcBlockOn=false
+                    newBlock.children[1].children[0].children[0].focus()
+                })
+                
+                document.addEventListener('click', function(event) {
+                    if (!funcBlock.contains(event.target)) {
+                        document.body.removeChild(funcBlock);
+                    }
+                }, { once: true });
+
+                // ESC 키로 팝업 닫기
+                document.addEventListener('keyup', function(event) {
+                    if (event.key === 'Escape') {
+                        document.body.removeChild(funcBlock);
+                    }
+                }, { once: true });
+
+
+                
             }
         });
     });

@@ -30,9 +30,7 @@ def new_page(request):
     return redirect(f"/page/{new.id}/");
 
 def newpage(request, pageid):
-    pagepath = "";
-    if pageid != "":
-        pagepath = Page.objects.get(id=pageid).pagepath + "_"
+    pagepath = Page.objects.get(id=pageid).pagepath + "_"
     
     user = request.user
     username = user.username
@@ -44,7 +42,7 @@ def newpage(request, pageid):
     new.save();
     new = Page.objects.get(pagepath="newpage")
     
-    new.pagepath = pagepath + new.id
+    new.pagepath = f'{pagepath}{new.id}'
     new.save();
 
     return redirect(f"/page/{new.id}/");
