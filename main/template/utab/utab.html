@@ -17,6 +17,7 @@ body{
     background-color: #fff;
     padding: 0;
     z-index: 1000;
+    max-height: 38px;
 }
 /* 폰트 */
 .tablinks {
@@ -63,7 +64,7 @@ body{
     position: fixed; /* 페이지 스크롤에 따라 고정되도록 설정 */
     top: 4%;
     right: 0;
-    min-width: 200px;
+    min-width: 100px;
     background-color: #fff;
     border: 1px solid #ccc;
     border-radius: 5px;
@@ -71,7 +72,7 @@ body{
     z-index: 1;
     opacity: 0; /* 초기에는 투명하게 설정 */
     transition: opacity 0.3s ease-in-out; /* 부드러운 나타나기/사라지기 효과를 추가합니다. */
-    height:110px;   
+    height: 100px;   
     pointer-events: none; /* 클릭 이벤트를 비활성화합니다. */
     display: flex; /* Flexbox 사용하여 내부 요소를 가로로 배열합니다. */
     justify-content: space-between; /* 내부 요소 사이의 여백을 최대한 확보하고 요소를 동일한 간격으로 배치합니다. */
@@ -155,7 +156,7 @@ body{
     border-radius: 5px 5px 0 0; /* 위쪽 모서리만 둥글게 설정 */
     margin-bottom: 10px; /* 아래쪽 여백 추가 */
     position: absolute;
-    top: 10%;
+    top: 14%;
     left: 0;
     width: 100%;
 }
