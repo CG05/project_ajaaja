@@ -7,43 +7,78 @@
         display: none;
     }
 </style>
-<div style="width: 100%; height: 100%; z-index: 150; position: relative; align-items: center;">
-    <!-- 인사 -->
-    <div style="width: 100%; height: 40px; padding-top: 26px; font-size: 30px; line-height: 1.2; font-weight: 600; color: rgb(55, 53, 47); display: flex; align-items: center; justify-content: center;">
-        <span style="display: flex; pointer-events: all; max-width: 100%;">
-            <div role="button" tabindex="0" style="user-select: none; transition: background 20ms ease-in 0s; cursor: pointer; display: flow; align-items: center; flex-shrink: 1; white-space: nowrap; height: 100%; border-radius: 4px; font-size: inherit; min-width: 0px; padding: 2px 0px; color: transparent; font-weight: inherit; margin: -2px 0px 2px; text-overflow: ellipsis; width: 0px; pointer-events: none;">{{ username }} </div>
-            <div role="button" tabindex="0" style="user-select: none; transition: background 20ms ease-in 0s; cursor: pointer; display: flow; align-items: center; flex-shrink: 1; white-space: nowrap; height: 100%; border-radius: 4px; font-size: inherit; min-width: 0px; padding: 2px 6px; font-weight: inherit; margin: -2px -6px 2px; overflow: hidden; text-overflow: ellipsis; text-shadow: none;">{{ username }} </div>
-            <span style="flex-shrink: 0;">님,&nbsp;안녕하세요.</span>
-        </span>
-    </div>
 
-    <!-- 공백칸 -->
-    <div style=" width: 100%; height: 26px;"></div>
+<div>
+    <!-- <div style="width: 100px; height: 100%; position: relative;"></div> -->
+    <div style="width: 100%; height: 100%; position: relative; align-items: center;">
+        <!-- 인사 -->
+        <div style="width: 100%; height: 40px; padding-top: 26px; font-size: 30px; line-height: 1.2; font-weight: 600; color: rgb(55, 53, 47); display: flex; align-items: center; justify-content: center;">
+            <span style="display: flex; pointer-events: all; max-width: 100%;">
+                <div role="button" tabindex="0" style="user-select: none; transition: background 20ms ease-in 0s; cursor: pointer; display: flow; align-items: center; flex-shrink: 1; white-space: nowrap; height: 100%; border-radius: 4px; font-size: inherit; min-width: 0px; padding: 2px 0px; color: transparent; font-weight: inherit; margin: -2px 0px 2px; text-overflow: ellipsis; width: 0px; pointer-events: none;">{{ username }} </div>
+                <div role="button" tabindex="0" style="user-select: none; transition: background 20ms ease-in 0s; cursor: pointer; display: flow; align-items: center; flex-shrink: 1; white-space: nowrap; height: 100%; border-radius: 4px; font-size: inherit; min-width: 0px; padding: 2px 6px; font-weight: inherit; margin: -2px -6px 2px; overflow: hidden; text-overflow: ellipsis; text-shadow: none;">{{ username }} </div>
+                <span style="flex-shrink: 0;">님,&nbsp;안녕하세요.</span>
+            </span>
+        </div>
 
-    <!-- 최근방문 -->
-    <div style="width: 100%; height: 240px; display: flex; justify-content: center; flex-direction: column;">
-        <div style="width: 100%; height: 40px; display: flex;">
-            <div style="flex-shrink: 0; display: flex; justify-content: space-between; align-items: center; width: 300px; height: 40px;">
-                <div style="display: flex; align-items: center; font-size: 12px; font-weight: 500; color: rgb(120, 119, 116); fill: rgba(55, 53, 47, 0.45); flex-shrink: 0; max-width: 100%;">
-                    <span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">최근 방문</span>
+        <!-- 공백칸 -->
+        <div style=" width: 100%; height: 60px;"></div>
+
+        <!-- 최근방문 -->
+        <div style="width: 100%; height: 240px; display: flex; justify-content: center; flex-direction: column;">
+            <!-- 최근방문 -->
+            <div style="width: 80%; height: 40px; display: flex; text-align: center; align-items: center; margin-left: 10%;">
+                <div style="flex-shrink: 0; display: flex; justify-content: space-between; align-items: center; width: 300px; height: 40px;">
+                    <div style="margin-left: 16px; display: flex; align-items: center; font-size: 12px; font-weight: 500; color: rgb(120, 119, 116); fill: rgba(55, 53, 47, 0.45); flex-shrink: 0; max-width: 100%;">
+                        <span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">최근 방문</span>
+                    </div>
                 </div>
             </div>
+
+            <!-- 좌 이동 클릭 버튼 -->
+            <div style="opacity: 1; transition: opacity 100ms ease-in 0s;">
+                <!-- <div role="button" tabindex="0" style="user-select: none; transition: background 20ms ease-in 0s; cursor: pointer; display: flex; align-items: center; flex-shrink: 0; white-space: nowrap; height: 32px; border-radius: 100%; font-size: 14px; line-height: 1.2; min-width: 0px; padding-left: 8px; padding-right: 8px; color: rgb(55, 53, 47); width: 32px; box-shadow: rgba(15, 15, 15, 0.1) 0px 0px 0px 1px, rgba(15, 15, 15, 0.1) 0px 2px 4px; background: white; position: absolute; left: -16px; top: calc(50% - 28px); justify-content: center; z-index: 1;"> -->
+                <div role="button" style="position: absolute; left: 4%; display: flex; justify-content: center; align-items: center; flex-shrink: 0; width: 32px; height: 32px; border-radius: 100%; font-size: 14px; line-height: 1.2; min-width: 0px;">
+                    <svg role="graphics-symbol" viewBox="0 0 16 16" class="chevronLeft" style="width: 13px; height: 13px; display: block; fill: rgba(55, 53, 47, 0.45); flex-shrink: 0;">
+                        <path d="M3.61816 8.06445C3.61816 8.29688 3.70703 8.49512 3.8916 8.67285L9.22363 13.8887C9.36719 14.0391 9.55859 14.1143 9.77734 14.1143C10.2217 14.1143 10.5703 13.7725 10.5703 13.3213C10.5703 13.1025 10.4814 12.9043 10.3311 12.7539L5.52539 8.06445L10.3311 3.375C10.4814 3.21777 10.5703 3.01953 10.5703 2.80078C10.5703 2.35645 10.2217 2.01465 9.77734 2.01465C9.55859 2.01465 9.36719 2.08984 9.22363 2.24023L3.8916 7.45605C3.70703 7.63379 3.625 7.83203 3.61816 8.06445Z"></path>
+                    </svg>
+                </div>
+                <!-- </div> -->
+            </div>
+            <!-- 우 이동 클릭 버튼 -->
+            <div style="opacity: 1; transition: opacity 100ms ease-in 0s;">
+                <!-- <div role="button" tabindex="0" style="user-select: none; transition: background 20ms ease-in 0s; cursor: pointer; display: flex; align-items: center; flex-shrink: 0; white-space: nowrap; height: 32px; border-radius: 100%; font-size: 14px; line-height: 1.2; min-width: 0px; padding-left: 8px; padding-right: 8px; color: rgb(55, 53, 47); width: 32px; box-shadow: rgba(15, 15, 15, 0.1) 0px 0px 0px 1px, rgba(15, 15, 15, 0.1) 0px 2px 4px; background: white; position: absolute; right: -16px; top: calc(50% - 28px); justify-content: center; z-index: 1;"> -->
+                <div role="button" style="position: absolute; left: 92%; display: flex; justify-content: center; align-items: center; flex-shrink: 0; width: 32px; height: 32px; border-radius: 100%; font-size: 14px; line-height: 1.2; min-width: 0px;">
+                    <svg role="graphics-symbol" viewBox="0 0 16 16" class="chevronRight" style="width: 13px; height: 13px; display: block; fill: rgba(55, 53, 47, 0.45); flex-shrink: 0;">
+                        <path d="M12.375 8.06445C12.375 7.83203 12.2861 7.63379 12.1084 7.45605L6.77637 2.24023C6.62598 2.08984 6.44141 2.01465 6.22266 2.01465C5.77832 2.01465 5.42285 2.35645 5.42285 2.80078C5.42285 3.01953 5.51172 3.21777 5.66211 3.375L10.4746 8.06445L5.66211 12.7539C5.51855 12.9043 5.42285 13.1025 5.42285 13.3213C5.42285 13.7725 5.77832 14.1143 6.22266 14.1143C6.44141 14.1143 6.62598 14.0391 6.77637 13.8887L12.1084 8.67285C12.293 8.49512 12.375 8.29688 12.375 8.06445Z"></path>
+                    </svg>
+                </div>
+            </div>
+
+            <!-- 페이지들 -->
+            <div style="width: max-content; gap: 16px; margin-left: 10%; height: 200px; display: flex; overflow-x: auto;">
+                <!-- 페이지 id 값으로 페이지들을 불러와서 나열시키면되는데 최근방문을 어떻게 알지?-->
+                <!-- 이 div들을 갯수를 정하고 그 갯수만큼 만들어서 각각의 path 를 지정해야하나 -->
+                {% for page in pageList %}
+                <div role="button" style="flex-direction: column; border-radius: 16px; width: 144px; height: 144px; margin-right: 10px; overflow: hidden;" onclick="location.href='/page/{{page.id}}/'">
+                    <div style="width: 100%; height: 60px;"></div>
+                    <div style="width: 100%; height: 84px;">{{page.title}}</div>
+                </div>
+                {% endfor %}
+            </div>
+
+
+            <!-- 공백칸 -->
+            <div style=" width: 100%; height: 26px;"></div>
         </div>
         
-        <div style="width: 100%; height: 200px; display: flex;">
 
-        </div>
 
-    </div>
+
+
+
     
-
-
-
-
-
-   
+    </div>
 </div>
-
 
 
 
