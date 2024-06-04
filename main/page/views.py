@@ -5,7 +5,16 @@ from django.views.decorators.csrf import csrf_exempt
 import json
 
 def home(request):
-    return render(request, "home.html")
+    user = request.user
+    username = user.username
+    pages = Page.objects.filter(username=username)
+    pageList = list(pages)
+    content={
+        "username":username,
+        "pageList":pageList,
+    }
+    
+    return render(request, "home.html", content)
 
 def getpage(request, pageid):
     user = request.user

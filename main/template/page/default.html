@@ -3,7 +3,6 @@
 {% block headscript %}
 <link rel="stylesheet" href="{% static 'css/default.css' %}">
 <script>
-
     function newLineblock(block, textAfterCursor) {
         var newBlock = document.createElement('div');
         newBlock.setAttribute('class', 'lineblock');
@@ -32,10 +31,36 @@
         var newBlock = document.createElement('div');
         newBlock.setAttribute('class', 'lineblock');
         newBlock.setAttribute('style', 'width: 100%; max-width: 700px; margin-top: 1px; margin-bottom: 1px; position: relative;');
-        newBlock.innerHTML = '<div style="display: flex; align-items: flex-start; width: 100%; padding-left: 2px; color: inherit; fill: inherit;"><div contenteditable="false" class="pseudoSelection" data-content-editable-void="true" data-text-edit-side="start" style="user-select: none; --pseudoSelection--background: transparent; margin-right: 2px; width: 24px; display: flex; align-items: center; justify-content: center; flex-grow: 0; flex-shrink: 0; min-height: calc(1.5em + 6px);"><div class="pseudoHover pseudoActive" style="position: relative; flex-shrink: 0; flex-grow: 0; width: 16px; height: 16px; display: flex; align-items: center; justify-content: center; transition: background 200ms ease-out 0s; --pseudoHover--background: rgba(55,53,47,.08); --pseudoActive--background: rgba(55,53,47,.16);"><div aria-hidden="true"><svg role="graphics-symbol" viewBox="0 0 16 16" class="checkboxSquare" style="width: 100%; height: 100%; display: block; fill: inherit; flex-shrink: 0;"><path d="M1.5,1.5 L1.5,14.5 L14.5,14.5 L14.5,1.5 L1.5,1.5 Z M0,0 L16,0 L16,16 L0,16 L0,0 Z"></path></svg></div><input aria-labelledby=":rf3:" type="checkbox" style="position: absolute; opacity: 0; width: 16px; height: 16px; top: 0px; left: 0px; cursor: pointer;"></div></div><div style="flex: 1 1 0px; min-width: 1px; display: flex; flex-direction: column;"><div style="display: flex;"><div id=":rf3:" class="notranslate" spellcheck="true" placeholder="To-do" data-content-editable-leaf="true" contenteditable="true" style="max-width: 100%; white-space: pre-wrap; word-break: break-word; caret-color: rgb(55, 53, 47); padding: 3px 2px; text-align: left; flex-grow: 1; min-height: 1em; color: rgb(55, 53, 47); -webkit-text-fill-color: rgba(55, 53, 47, 0.5);"></div><div style="position: relative; left: 0px;"></div></div><div data-block-id="5bdefa3f-7377-45fd-a217-fd690d058a43" class="notion-selectable notion-to_do-block"></div></div></div>';
+        newBlock.innerHTML = '<div style="display: flex; align-items: flex-start; width: 100%; padding-left: 2px; color: inherit; fill: inherit;"><div contenteditable="false" class="pseudoSelection" data-content-editable-void="true" data-text-edit-side="start" style="user-select: none; --pseudoSelection--background: transparent; margin-right: 2px; width: 24px; display: flex; align-items: center; justify-content: center; flex-grow: 0; flex-shrink: 0; min-height: calc(1.5em + 6px);"><div class="pseudoHover pseudoActive" style="position: relative; flex-shrink: 0; flex-grow: 0; width: 16px; height: 16px; display: flex; align-items: center; justify-content: center; transition: background 200ms ease-out 0s; --pseudoHover--background: rgba(55,53,47,.08); --pseudoActive--background: rgba(55,53,47,.16);"><div aria-hidden="true"><svg role="graphics-symbol" viewBox="0 0 16 16" class="checkboxSquare" style="width: 100%; height: 100%; display: block; fill: inherit; flex-shrink: 0;"><path d="M1.5,1.5 L1.5,14.5 L14.5,14.5 L14.5,1.5 L1.5,1.5 Z M0,0 L16,0 L16,16 L0,16 L0,0 Z"></path></svg></div><input class="inactive" type="checkbox" style="margin: 0; position: absolute; opacity: 0; width: 16px; height: 16px; top: 0px; left: 0px; cursor: pointer;"></div></div><div style="flex: 1 1 0px; min-width: 1px; display: flex; flex-direction: column;"><div style="display: flex;"><div id=":rf3:" class="textinput" spellcheck="true" placeholder="To-do" data-content-editable-leaf="true" contenteditable="true" style="max-width: 100%; white-space: pre-wrap; word-break: break-word; caret-color: rgb(55, 53, 47); padding: 3px 2px; text-align: left; flex-grow: 1; min-height: 1em; color: rgb(55, 53, 47);"></div><div style="position: relative; left: 0px;"></div></div><div data-block-id="5bdefa3f-7377-45fd-a217-fd690d058a43" class="notion-selectable notion-to_do-block"></div></div></div>';
         block.parentNode.insertBefore(newBlock, block.nextElementSibling);
-        const textinput = newBlock.children[1].children[0].children[0];
             return newBlock;
+    }
+
+    function newLinebigtitleblock(block, textAfterCursor) {
+        var newBlock = document.createElement('div');
+        newBlock.setAttribute('class', 'lineblock');
+        newBlock.setAttribute('style', 'font-size: 27px; font-weight: 600; width: 100%; max-width: 700px; margin-top: 1px; margin-bottom: 1px; position: relative;');
+        newBlock.innerHTML = '<div style="display: flex; align-items: flex-start; width: 100%; padding-left: 2px; fill: inherit;"></div><div style="flex: 1 1 0px; min-width: 1px; display: flex; flex-direction: column;"><div style="display: flex"><div class="textinput" spellcheck="true" placeholder="제목 1" data-content-editable-leaf="true" contenteditable="true" style="max-width: 100%; width: 100%; white-space: pre-wrap; word-break: break-word; caret-color: rgb(55, 53, 47); padding: 3px 2px; text-align: left;"></div></div></div>';
+        block.parentNode.insertBefore(newBlock, block.nextElementSibling);
+        return newBlock;
+    }
+
+    function newLinemiddletitleblock(block, textAfterCursor) {
+        var newBlock = document.createElement('div');
+        newBlock.setAttribute('class', 'lineblock');
+        newBlock.setAttribute('style', 'font-size: 21px; font-weight: 600; width: 100%; max-width: 700px; margin-top: 1px; margin-bottom: 1px; position: relative;');
+        newBlock.innerHTML = '<div style="display: flex; align-items: flex-start; width: 100%; padding-left: 2px; fill: inherit;"></div><div style="flex: 1 1 0px; min-width: 1px; display: flex; flex-direction: column;"><div style="display: flex"><div class="textinput" spellcheck="true" placeholder="제목 2" data-content-editable-leaf="true" contenteditable="true" style="max-width: 100%; width: 100%; white-space: pre-wrap; word-break: break-word; caret-color: rgb(55, 53, 47); padding: 3px 2px; text-align: left;"></div></div></div>';
+        block.parentNode.insertBefore(newBlock, block.nextElementSibling);
+        return newBlock;
+    }
+
+    function newLinesmalltitleblock(block, textAfterCursor) {
+        var newBlock = document.createElement('div');
+        newBlock.setAttribute('class', 'lineblock');
+        newBlock.setAttribute('style', 'font-size: 16px; font-weight: 600; width: 100%; max-width: 700px; margin-top: 1px; margin-bottom: 1px; position: relative;');
+        newBlock.innerHTML = '<div style="display: flex; align-items: flex-start; width: 100%; padding-left: 2px; fill: inherit;"></div><div style="flex: 1 1 0px; min-width: 1px; display: flex; flex-direction: column;"><div style="display: flex"><div class="textinput" spellcheck="true" placeholder="제목 3" data-content-editable-leaf="true" contenteditable="true" style="max-width: 100%; width: 100%; white-space: pre-wrap; word-break: break-word; caret-color: rgb(55, 53, 47); padding: 3px 2px; text-align: left;"></div></div></div>';
+        block.parentNode.insertBefore(newBlock, block.nextElementSibling);
+        return newBlock;
     }
 
     function enterToNewLineblock(textinput, position) {
@@ -278,7 +303,7 @@
 <style>
     [contenteditable="true"]:focus:empty:before {
         content: attr(placeholder);
-        color: #666
+        color: rgba(55, 53, 47, 0.2)
     }
 </style>
 <div class="layout" style="position: relative; padding-bottom: 300px; cursor: text;">
@@ -584,19 +609,6 @@
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                                <div role="menuitem" tabindex="-1" id="imoticon" class="tableindex">
-                                                                    <div class="tableindex_1">
-                                                                        <div class="tableindex_2">
-                                                                            <div style="width: 100%; height: 100%;"><img src="{% static 'imoticon.png' %}" referrerpolicy="same-origin" class="tablebox"></div>
-                                                                        </div>
-                                                                        <div class="tableapp">
-                                                                            <div class="tableapp_1">
-                                                                                <div style="display: flex; align-items: center;"><span style="margin-right: 6px;">이모티콘</span></div>
-                                                                            </div>
-                                                                            <div class="tableapp_2">텍스트에 넣을 이모티콘을 검색하세요.</div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -611,6 +623,7 @@
                 </div>
                 `;
                 document.body.appendChild(funcBlock);
+                funcBlockOn = true;
                 document.getElementById('text').addEventListener('click', function(){
                     newBlock = newLineblock(textinput.parentNode.parentNode.parentNode, "")
                     funcBlock.remove()
@@ -624,14 +637,50 @@
                     funcBlockOn=false
                 })
 
+                function checkboxevent(e){
+                    checkedbox = e.target
+                    block=checkedbox.parentNode.parentNode.parentNode.parentNode
+                    if(checkedbox.className == "inactive"){
+                        converthtml='<div style="display: flex; align-items: flex-start; width: 100%; padding-left: 2px; color: inherit; fill: inherit;"><div contenteditable="false" class="pseudoSelection" data-content-editable-void="true" data-text-edit-side="start" style="user-select: none; --pseudoSelection--background: transparent; margin-right: 2px; width: 24px; display: flex; align-items: center; justify-content: center; flex-grow: 0; flex-shrink: 0; min-height: calc(1.5em + 6px);"><div class="pseudoHover pseudoActive" style="position: relative; flex-shrink: 0; flex-grow: 0; width: 16px; height: 16px; display: flex; align-items: center; justify-content: center; transition: background 200ms ease-out 0s; --pseudoHover--background: rgba(55,53,47,.08); --pseudoActive--background: rgba(55,53,47,.16); background: rgb(35, 131, 226);"><div aria-hidden="true"><svg role="graphics-symbol" viewBox="0 0 14 14" class="check" style="width: 12px; height: 12px; display: block; fill: white; flex-shrink: 0;"><polygon points="5.5 11.9993304 14 3.49933039 12.5 2 5.5 8.99933039 1.5 4.9968652 0 6.49933039"></polygon></svg></div><input aria-labelledby=":r2:" class="active" type="checkbox" style="position: absolute; opacity: 0; width: 16px; height: 16px; top: 0px; left: 0px; cursor: pointer;"></div></div><div style="flex: 1 1 0px; min-width: 1px; display: flex; flex-direction: column;"><div style="display: flex;"><div id=":r2:" class="textinput" spellcheck="true" placeholder="To-do" data-content-editable-leaf="true" contenteditable="true" style="max-width: 100%; white-space: pre-wrap; word-break: break-word; caret-color: rgb(55, 53, 47); padding: 3px 2px; text-align: left; flex-grow: 1; min-height: 1em; color: rgb(55, 53, 47); -webkit-text-fill-color: rgba(55, 53, 47, 0.5); text-decoration: line-through rgba(55, 53, 47, 0.25); opacity: 1;"></div><div style="position: relative; left: 0px;"></div></div><div data-block-id="5bdefa3f-7377-45fd-a217-fd690d058a43" class="notion-selectable notion-to_do-block"></div></div></div>'
+                    }else if (checkedbox.className=="active"){
+                        converthtml ='<div style="display: flex; align-items: flex-start; width: 100%; padding-left: 2px; color: inherit; fill: inherit;"><div contenteditable="false" class="pseudoSelection" data-content-editable-void="true" data-text-edit-side="start" style="user-select: none; --pseudoSelection--background: transparent; margin-right: 2px; width: 24px; display: flex; align-items: center; justify-content: center; flex-grow: 0; flex-shrink: 0; min-height: calc(1.5em + 6px);"><div class="pseudoHover pseudoActive" style="position: relative; flex-shrink: 0; flex-grow: 0; width: 16px; height: 16px; display: flex; align-items: center; justify-content: center; transition: background 200ms ease-out 0s; --pseudoHover--background: rgba(55,53,47,.08); --pseudoActive--background: rgba(55,53,47,.16);"><div aria-hidden="true"><svg role="graphics-symbol" viewBox="0 0 16 16" class="checkboxSquare" style="width: 100%; height: 100%; display: block; fill: inherit; flex-shrink: 0;"><path d="M1.5,1.5 L1.5,14.5 L14.5,14.5 L14.5,1.5 L1.5,1.5 Z M0,0 L16,0 L16,16 L0,16 L0,0 Z"></path></svg></div><input aria-labelledby=":rf3:" class="inactive" type="checkbox" style="position: absolute; opacity: 0; width: 16px; height: 16px; top: 0px; left: 0px; cursor: pointer;"></div></div><div style="flex: 1 1 0px; min-width: 1px; display: flex; flex-direction: column;"><div style="display: flex;"><div id=":rf3:" class="textinput" spellcheck="true" placeholder="To-do" data-content-editable-leaf="true" contenteditable="true" style="max-width: 100%; white-space: pre-wrap; word-break: break-word; caret-color: rgb(55, 53, 47); padding: 3px 2px; text-align: left; flex-grow: 1; min-height: 1em; color: rgb(55, 53, 47);"></div><div style="position: relative; left: 0px;"></div></div><div data-block-id="5bdefa3f-7377-45fd-a217-fd690d058a43" class="notion-selectable notion-to_do-block"></div></div></div>';
+                    }block.innerHTML=converthtml
+                    checkedbox = block.children[0].children[0].children[0].children[1]
+                    checkedbox.addEventListener('click',checkboxevent)
+                }
+
                 document.getElementById('todolist').addEventListener('click', function(){
                     newBlock = newCheckboxblock(textinput.parentNode.parentNode.parentNode, "")
+                    checkbox = newBlock.children[0].children[0].children[0].children[1]
+                    checkbox.addEventListener('click',function(e){
+                        checkboxevent(e)
+                    })
+                    funcBlock.remove()
+                    funcBlockOn=false
+                    newBlock.children[0].children[1].children[0].children[0].focus()
+                })
+                
+                document.getElementById('bigtitle').addEventListener('click', function(){
+                    newBlock = newLinebigtitleblock(textinput.parentNode.parentNode.parentNode, "")
+                    funcBlock.remove()
+                    funcBlockOn=false
+                    newBlock.children[1].children[0].children[0].focus()
+                })
+                
+                document.getElementById('middletitle').addEventListener('click', function(){
+                    newBlock = newLinemiddletitleblock(textinput.parentNode.parentNode.parentNode, "")
                     funcBlock.remove()
                     funcBlockOn=false
                     newBlock.children[1].children[0].children[0].focus()
                 })
 
-
+                document.getElementById('smalltitle').addEventListener('click', function(){
+                    newBlock = newLinesmalltitleblock(textinput.parentNode.parentNode.parentNode, "")
+                    funcBlock.remove()
+                    funcBlockOn=false
+                    newBlock.children[1].children[0].children[0].focus()
+                })
+                
                 document.addEventListener('click', function(event) {
                     if (!funcBlock.contains(event.target)) {
                         document.body.removeChild(funcBlock);
@@ -646,7 +695,7 @@
                 }, { once: true });
 
 
-                funcBlockOn = true;
+                
             }
         });
     });
