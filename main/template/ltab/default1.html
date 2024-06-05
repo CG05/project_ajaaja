@@ -55,15 +55,6 @@
   #changeBackground {
     border: none; /* 테두리 없음 */
     background-color: rgb(247, 247, 245); /* 배경색 설정 */
-    display: flex;
-    align-items: center;
-    width: 100%;
-    font-size: 14px;
-    min-height: 27px;
-    margin: 2px 5px;
-    height: 30px;
-    padding: 4px 8px;
-    z-index:3px;
   }
   #changeBackground:hover {
     background-color: rgb(239, 239, 237); /* 마우스를 올렸을 때 배경색 변경 */
@@ -76,6 +67,8 @@
     background-color: rgb(239, 239, 237); /* 마우스를 올렸을 때 배경색 변경 */
   }
   div[role="button"] {
+    display: flex; 
+    align-items: center; 
     width: 100%; 
     font-size: 14px; 
     min-height: 17px; 
@@ -106,27 +99,6 @@
     width: 230px;
     height: 100%;
   }
-  #notionBtn{
-    border-radius: 6px;
-    width: 100%;
-    line-height:30px;
-    height: 30px;
-    position: relative;
-    margin: 4px 5px;
-    display: flex;
-    justify-content: flex-start;
-    overflow:hidden;
-    z-index: 1px;
-  }
-  .listbutton{
-    width:100%;
-    height: 30px;
-    padding: 1px 4px;
-    border-radius: 4px;
-  }
-  .listbutton:hover {
-    background-color: rgb(239, 239, 237);
-  }
 </style>
 <!-- 전체 -->
 <div class="notion-app">
@@ -145,11 +117,11 @@
   </form>
 
   <div style="display: flex; width: 100%; position: relative; top:2px; justify-content: center;">
-    <div id="notionBtn" style="display: flex; align-items: center;" role="button">💖 {{ username }} 님의 Notion</div>
+    <div id="notionBtn" role="button" style="border-radius: 6px; width: 100%; line-height:30px; height: 30px; position: relative; margin: 4px 5px; display: flex; justify-content: flex-start;">{{ username }}의 notion</div>
 
     <!-- 페이지 생성되야함 /newpage/ -->
     {% load static %}
-    <div role="button" tabindex="0" aria-label="새 페이지" style="position: absolute; user-select: none; transition: background 20ms ease-in 0s; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; border-radius: 4px; height: 24px; width: 24px; padding: 0px; left: 197px; top:7px" onclick="document.location.href='/notion/createNewPage/'">
+    <div role="button" tabindex="0" aria-label="새 페이지" style="position: absolute; user-select: none; transition: background 20ms ease-in 0s; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; border-radius: 4px; height: 24px; width: 24px; padding: 0px; left: 197px; top:7px" onclick="document.location.href='/ltab/'">
       <svg role="graphics-symbol" viewBox="0 0 24 24" class="createPage" style="width: 24px; height: 24px; display: block; fill: rgb(55, 53, 47); flex-shrink: 0;">
         <g>
           <path fill-rule="evenodd" d="M9.944 14.721c.104.094.216.12.336.079l1.703-.688 6.844-6.844-1.406-1.398-6.836 6.836-.711 1.68c-.052.13-.029.242.07.335zm8.102-9.484l1.414 1.406.515-.523a.917.917 0 00.282-.633.76.76 0 00-.258-.61l-.25-.25a.702.702 0 00-.578-.187.975.975 0 00-.617.297l-.508.5zm-9.453.127a3.85 3.85 0 00-3.85 3.85v6.5a3.85 3.85 0 003.85 3.85h6.5a3.85 3.85 0 003.85-3.85V12.95a.85.85 0 10-1.7 0v2.764a2.15 2.15 0 01-2.15 2.15h-6.5a2.15 2.15 0 01-2.15-2.15v-6.5a2.15 2.15 0 012.15-2.15h3.395a.85.85 0 000-1.7H8.593z" clip-rule="evenodd">
@@ -161,28 +133,28 @@
       
     <!-- 로그아웃 / 로그인 - 글자가 칸 벗어남, left: 160px -->
     {% if user.is_active %}
-    <div id="logBtn" role="button" style="font-size:12px; font-weight:500; width: auto; height: 24px; border-radius: 4px; display: flex; justify-content: center; align-items: center;  position: absolute; left: 154px; top:7px;" onclick="document.location.href='/account/logout/'">Logout</div>
+    <button id="logBtn" type="button" style="width: auto; height: 24px; border-radius: 4px; display: flex; justify-content: center; align-items: center;  position: absolute; left: 145px; top:8px;" onclick="document.location.href='/account/logout/'">logout</button>
     {% else %}  
-    <div id="logBtn" role="button" style="font-size:12px; font-weight:500; width: auto; height: 24px; border-radius: 4px; display: flex; justify-content: center; align-items: center;  position: absolute; left: 154px; top:7px;" onclick="document.location.href='/account/login/'">Login</div>
+    <button id="logBtn" type="button" style="width: auto; height: 24px; border-radius: 4px; display: flex; justify-content: center; align-items: center;  position: absolute; left: 145px; top:8px;" onclick="document.location.href='/account/login/'">login</button>
     {% endif %}
   </div>
 
     
     <!-- 검색 -->
-    <div tabindex="0" style="display: flex; user-select: none; transition: background 150ms ease 0s; cursor: pointer; border-radius: 6px; margin-left: 0px; margin-right: 0px; font-weight: 500;">
-      <div role="button" id="changeBackground" onclick="openModal()">
+    <div role="button" tabindex="0" style="display: flex; user-select: none; transition: background 150ms ease 0s; cursor: pointer; border-radius: 6px; margin-left: 0px; margin-right: 0px; font-weight: 500;">
+      <div id="changeBackground" onclick="openModal()" style="display: flex; align-items: center; width: 100%; font-size: 14px; min-height: 27px; margin: 2px 8px; height: 30px;">
         <div style="flex-shrink: 0; flex-grow: 0; border-radius: 4px; color: rgba(55, 53, 47, 0.65); width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; margin-right: 8px;">
           <svg role="graphics-symbol" viewBox="0 0 24 24" class="newSidebarSearch" style="width: 24px; height: 24px; display: block; fill: rgb(145, 145, 142); flex-shrink: 0;">
             <g><path d="M4.212 10.915a6.053 6.053 0 016.05-6.057c3.34 0 6.05 2.71 6.05 6.058 0 1.245-.38 2.394-1.04 3.34l3.157 3.17c.234.235.359.55.359.887 0 .703-.528 1.252-1.245 1.252-.337 0-.66-.117-.901-.359l-3.186-3.186a5.843 5.843 0 01-3.194.945c-3.34 0-6.05-2.71-6.05-6.05zm1.788 0a4.262 4.262 0 004.262 4.263 4.268 4.268 0 004.27-4.263 4.27 4.27 0 00-4.27-4.27A4.264 4.264 0 006 10.916z"></path></g>
           </svg>
         </div>
-        <div style="font-weight:500; color:#5F5E5B; flex: 1 1 auto; white-space: nowrap; min-width: 0px; overflow: hidden; text-overflow: ellipsis;">Search</div>
+        <div style="flex: 1 1 auto; white-space: nowrap; min-width: 0px; overflow: hidden; text-overflow: ellipsis;">검색</div>
       </div>
     </div>
     
     <!-- 홈 -->
-    <div  tabindex="0" style="display: flex; color: inherit; text-decoration: none; user-select: none; transition: background 150ms ease 0s; cursor: pointer; border-radius: 6px; margin-left: 0px; margin-right: 0px; font-weight: 500;">
-      <div role="button" id="changeBackground" onclick="document.location.href='/notion/'">
+    <div role="button" tabindex="0" style="display: flex; color: inherit; text-decoration: none; user-select: none; transition: background 150ms ease 0s; cursor: pointer; border-radius: 6px; margin-left: 0px; margin-right: 0px; font-weight: 500;">
+      <div id="changeBackground" onclick="document.location.href='/page/'" style="display: flex; align-items: center; width: 100%; font-size: 14px; min-height: 27px; margin: 2px 8px; height: 30px;">
         <div style="flex-shrink: 0; flex-grow: 0; border-radius: 4px; color: rgba(55, 53, 47, 0.65); width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; margin-right: 8px;">
           <svg role="graphics-symbol" viewBox="0 0 24 24" class="newSidebarHome" style="width: 24px; height: 24px; display: block; fill: rgb(145, 145, 142); flex-shrink: 0;">
             <g>
@@ -193,13 +165,13 @@
             </g>
           </svg>
         </div>
-        <div style="font-weight:500; color:#5F5E5B; flex: 1 1 auto; white-space: nowrap; min-width: 0px; overflow: hidden; text-overflow: ellipsis;">Home</div>
+        <div style="flex: 1 1 auto; white-space: nowrap; min-width: 0px; overflow: hidden; text-overflow: ellipsis;">홈</div>
       </div>
     </div>
     
 
     <!-- 빈공간 -->
-    <div style="display: flex; flex-shrink: 0; width: 100%; box-shadow: transparent 0px 0px 0px; transition: box-shadow 300ms ease 0s; height: 100px; margin-top: -2px;"></div>
+    <div style="display: flex; flex-shrink: 0; width: 100%; box-shadow: transparent 0px 0px 0px; transition: box-shadow 300ms ease 0s; height: 100px; margin-top: -2px; z-index: 99;"></div>
 
 
     <!-- 개인 페이지 -->
@@ -212,7 +184,8 @@
             </div>
             <div style="margin-left: auto;">
               <div style="display: flex; align-items: center; pointer-events: pointer; transition: opacity 150ms ease 0s;">
-                <div id="addpage" role="button" onclick="location.href='/notion/createNewPage/'" tabindex="0" class="shadow-cursor-new-page-sidebar" aria-label="페이지 추가" style="user-select: none; transition: background 20ms ease-in 0s; cursor: pointer; display: flex; align-items: center; justify-content: center; height: 20px; width: 20px; border-radius: 5px; margin-right: 4px;"><span></span>
+                
+                <div id="addpage" role="button" onclick="location.href='/ltab/newpage/'" tabindex="0" class="shadow-cursor-new-page-sidebar" aria-label="페이지 추가" style="user-select: none; transition: background 20ms ease-in 0s; cursor: pointer; display: flex; align-items: center; justify-content: center; height: 20px; width: 20px; border-radius: 4px; margin-left: 4px;"><span></span>
                   <svg role="graphics-symbol" viewBox="0 0 14 14" class="plusThick" style="width: 14px; height: 14px; display: block; fill: rgba(55, 53, 47, 0.45); flex-shrink: 0;">
                     <path d="M2 7.16357C2 7.59692 2.36011 7.95093 2.78735 7.95093H6.37622V11.5398C6.37622 11.9731 6.73022 12.3271 7.16357 12.3271C7.59692 12.3271 7.95093 11.9731 7.95093 11.5398V7.95093H11.5398C11.9731 7.95093 12.3271 7.59692 12.3271 7.16357C12.3271 6.73022 11.9731 6.37622 11.5398 6.37622H7.95093V2.78735C7.95093 2.36011 7.59692 2 7.16357 2C6.73022 2 6.37622 2.36011 6.37622 2.78735V6.37622H2.78735C2.36011 6.37622 2 6.73022 2 7.16357Z"></path>
                   </svg>
@@ -220,11 +193,61 @@
               </div>
             </div>
           </div>
-          <div style="width:100%;">
-          {{ borderList|safe}}
+          {% if listLength == 0 %}
+                    <div id="emptyaddPage" role="button" tabindex="0" style="user-select: none; transition: background 150ms ease 0s; cursor: pointer; border-radius: 6px; display: none; margin-left: 0px; margin-right: 0px; font-weight: 500;">
+                      <div style="display: flex; align-items: center; width: 100%; font-size: 14px; min-height: 27px; padding: 4px 8px; height: 30px; color: rgb(145, 145, 142);">
+                        <div style="flex-shrink: 0; flex-grow: 0; border-radius: 4px; color: rgba(55, 53, 47, 0.65); width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; margin-right: 8px;">
+                          <div style="display: flex; align-items: center; justify-content: center;">
+                            <svg role="graphics-symbol" viewBox="0 0 14 14" class="plusThick" style="width: 16px; height: 16px; display: block; fill: rgb(145, 145, 142); flex-shrink: 0;">
+                              <path d="M2 7.16357C2 7.59692 2.36011 7.95093 2.78735 7.95093H6.37622V11.5398C6.37622 11.9731 6.73022 12.3271 7.16357 12.3271C7.59692 12.3271 7.95093 11.9731 7.95093 11.5398V7.95093H11.5398C11.9731 7.95093 12.3271 7.59692 12.3271 7.16357C12.3271 6.73022 11.9731 6.37622 11.5398 6.37622H7.95093V2.78735C7.95093 2.36011 7.59692 2 7.16357 2C6.73022 2 6.37622 2.36011 6.37622 2.78735V6.37622H2.78735C2.36011 6.37622 2 6.73022 2 7.16357Z"></path>
+                            </svg>
+                          </div>
+                        </div>
+                        <div style="flex: 1 1 auto; white-space: nowrap; min-width: 0px; overflow: hidden; text-overflow: ellipsis;">페이지 추가</div>
+                      </div>
+                    </div>
+                    
+                  {% endif %}
+          <div id="addNewPage" style="display: none; flex-direction: column; gap: 1px; width: 100%;">
+            
+            <div role="tree" aria-labelledby="showPage" class="notion-outliner-private" style="display: block;">
+              <div style="display: flex; flex-direction: column; gap: 1px;">
+                <div style="display: flex; flex-direction: column; gap: 1px;"></div>
+                
+                <div id="ltabGainPage" style="align-items: center; display: flex; flex-direction: column; gap: 4px;">
+                  
+                  {% for page in pageList %}
+                  <div id="path_{{page.pagepath}}" role="button" tabindex="0" class="showPage" onclick="location.href='/page/{{page.id}}'" aria-controls="addPage" aria-expanded="false" style="user-select: none; transition: background 20ms ease-in 0s; display: flex; align-items: center; border-radius: 6px; height: 30px;">
+                    <div style="display: flex; align-items: center; justify-content: center; flex-shrink: 0; flex-grow: 0; width: 22px; height: 18px; margin-right: 8px; position: relative;"><div style="display: grid;"><div style="grid-area: 1 / 1; z-index: 1; order: 0; transition: opacity 150ms ease 0s;"><div role="button" class="alterBtn" tabindex="0" aria-describedby=":rn:" aria-expanded="false" aria-label="열기" style="user-select: none; transition: background 20ms ease-in 0s; cursor: pointer; position: relative; display: flex; align-items: center; justify-content: center; width: 20px; height: 20px; border-radius: 4px;"><svg role="graphics-symbol" viewBox="0 0 12 12" class="chevronDownRoundedThick" style="width: 12px; height: 12px; display: block; fill: rgba(55, 53, 47, 0.35); flex-shrink: 0; transition: transform 200ms ease-out 0s; transform: rotateZ(-90deg); opacity: 1;"><path d="M6.02734 8.80274C6.27148 8.80274 6.47168 8.71484 6.66211 8.51465L10.2803 4.82324C10.4268 4.67676 10.5 4.49609 10.5 4.28125C10.5 3.85156 10.1484 3.5 9.72363 3.5C9.50879 3.5 9.30859 3.58789 9.15234 3.74902L6.03223 6.9668L2.90722 3.74902C2.74609 3.58789 2.55078 3.5 2.33105 3.5C1.90137 3.5 1.55469 3.85156 1.55469 4.28125C1.55469 4.49609 1.62793 4.67676 1.77441 4.82324L5.39258 8.51465C5.58789 8.71973 5.78808 8.80274 6.02734 8.80274Z"></path></svg></div></div><div style="grid-area: 1 / 1; opacity: 1; transition: opacity 150ms ease 0s; order: 1;"><div class="notion-record-icon notranslate" style="display: flex; align-items: center; justify-content: center; height: 20px; width: 20px; border-radius: 0.25em; flex-shrink: 0;"><span role="img" aria-label="페이지 아이콘 변경"><svg role="graphics-symbol" viewBox="0 0 16 16" style="width: 18px; height: 18px; display: block; fill: rgb(145, 145, 142); flex-shrink: 0;"><path d="M4.35645 15.4678H11.6367C13.0996 15.4678 13.8584 14.6953 13.8584 13.2256V7.02539C13.8584 6.0752 13.7354 5.6377 13.1406 5.03613L9.55176 1.38574C8.97754 0.804688 8.50586 0.667969 7.65137 0.667969H4.35645C2.89355 0.667969 2.13477 1.44043 2.13477 2.91016V13.2256C2.13477 14.7021 2.89355 15.4678 4.35645 15.4678ZM4.46582 14.1279C3.80273 14.1279 3.47461 13.7793 3.47461 13.1436V2.99219C3.47461 2.36328 3.80273 2.00781 4.46582 2.00781H7.37793V5.75391C7.37793 6.73145 7.86328 7.20312 8.83398 7.20312H12.5186V13.1436C12.5186 13.7793 12.1836 14.1279 11.5205 14.1279H4.46582ZM8.95703 6.02734C8.67676 6.02734 8.56055 5.9043 8.56055 5.62402V2.19238L12.334 6.02734H8.95703ZM10.4336 9.00098H5.42969C5.16992 9.00098 4.98535 9.19238 4.98535 9.43164C4.98535 9.67773 5.16992 9.86914 5.42969 9.86914H10.4336C10.6797 9.86914 10.8643 9.67773 10.8643 9.43164C10.8643 9.19238 10.6797 9.00098 10.4336 9.00098ZM10.4336 11.2979H5.42969C5.16992 11.2979 4.98535 11.4893 4.98535 11.7354C4.98535 11.9746 5.16992 12.1592 5.42969 12.1592H10.4336C10.6797 12.1592 10.8643 11.9746 10.8643 11.7354C10.8643 11.4893 10.6797 11.2979 10.4336 11.2979Z"></path></svg></span></div></div></div></div>
+                    <div style="padding: 5px 8px;">
+                      <span id="titleSpan" style="text-transform: initial; font-size: 14px; line-height: 1; color: rgb(145, 145, 142); font-weight: 500; transition: color 100ms ease-out 0s;">
+                        {{page.title}}
+                      </span>
+                    </div>
+                    <div style="margin-left: auto;">
+                      <div style="display: flex; align-items: center; pointer-events: pointer; transition: opacity 150ms ease 0s;">
+                      
+                        <div onclick="location.href='/ltab/newpage/{{page.id}}'" role="button" tabindex="0" class="addpage shadow-cursor-new-page-sidebar" aria-label="페이지 추가" style="user-select: none; transition: background 20ms ease-in 0s; cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 1; height: 20px; width: 20px; border-radius: 4px; margin-left: 4px;"><span></span>
+                          <svg role="graphics-symbol" viewBox="0 0 14 14" class="plusThick" style="width: 14px; height: 14px; display: block; fill: rgba(55, 53, 47, 0.45); flex-shrink: 0;">
+                            <path d="M2 7.16357C2 7.59692 2.36011 7.95093 2.78735 7.95093H6.37622V11.5398C6.37622 11.9731 6.73022 12.3271 7.16357 12.3271C7.59692 12.3271 7.95093 11.9731 7.95093 11.5398V7.95093H11.5398C11.9731 7.95093 12.3271 7.59692 12.3271 7.16357C12.3271 6.73022 11.9731 6.37622 11.5398 6.37622H7.95093V2.78735C7.95093 2.36011 7.59692 2 7.16357 2C6.73022 2 6.37622 2.36011 6.37622 2.78735V6.37622H2.78735C2.36011 6.37622 2 6.73022 2 7.16357Z"></path>
+                          </svg>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                    
+                  {% endfor %}
+                      
+  
+                  
+                </div>
+              </div>
+            </div>
           </div>
+          
+            
         </div>
-      </div> 
+      </div>    
   </div>
 </div>
 

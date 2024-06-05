@@ -270,13 +270,13 @@
     
     function toggleChildren(id) {
         var childrenDiv = document.getElementById('children-' + id);
+        console.log(childrenDiv.parentNode.getElementsByClassName('alterBtn'))
         if (childrenDiv == null){
             return;
         } else if (childrenDiv.style.display === 'none') {
-            childrenDiv.parentNode.getElementsByClassName('alterBtn')[0].style.transform = ""
+            
             childrenDiv.style.display = 'block';
         } else {
-            childrenDiv.parentNode.getElementsByClassName('alterBtn')[0].style.transform = "rotate(-90deg);"
             childrenDiv.style.display = 'none';
         }
     }
