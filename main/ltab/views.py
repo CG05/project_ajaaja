@@ -3,7 +3,14 @@ from page.models import Page
 
 def default(request):
     user = request.user
-    username = user.username
+    username = ''
+    if len(username) >= 5:
+        username = user.username[:5]
+        username += ".."
+        print(username)
+    else:
+        username = user.username
+        print(username)
     pages = Page.objects.filter(username=username)
     pageList = list(pages)
     content={
