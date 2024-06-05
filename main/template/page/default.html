@@ -236,7 +236,26 @@
             if (activeElement === textinput) {
                 if (event.key === 'Enter') {
                     if (event.shiftKey) {
-                        
+                        event.preventDefault();
+        
+                        const selection = window.getSelection();
+        const range = selection.getRangeAt(0);
+        let cursorPosition = range.endOffset;
+        console.log("cursorPosition:", cursorPosition);
+
+        
+        let textBeforeCursor = textinput.textContent.slice(0, cursorPosition);
+        let textAfterCursor = textinput.textContent.substring(cursorPosition);
+        if (textAfterCursor[0] === '\r') {
+            textAfterCursor = textAfterCursor.substring(1);
+        }
+        textinput.textContent = textBeforeCursor + '\n\r' + textAfterCursor;
+
+        selection.removeAllRanges();
+        range.setStart(textinput.firstChild, cursorPosition + 1);
+        console.log("range:", range);
+        range.collapse(true);
+        selection.addRange(range);
                     } else {
                         event.preventDefault(); // 기본 Enter 동작을 막음
                         const selection = window.getSelection();
