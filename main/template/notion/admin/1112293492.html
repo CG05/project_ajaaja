@@ -7,7 +7,6 @@
 <script>
     let imageCnt = 0;
     window.onload = function(){
-        updateChildrenPosition();
         imageList = document.querySelectorAll('[id*=previewDiv]')
         for (var i=0;i<imageList.length;i++){
             cnt = imageList[i].id.substr(imageList[i].id.length-1)
@@ -17,39 +16,15 @@
             }
         }
     }
-    function createTextInput(option){
-        input = document.createElement('input');
-        input.setAttribute('class', 'form-control text');
-        input.setAttribute('onkeyup', 'menu(this.value)');
-        input.setAttribute('value', '');
-        if (option == 'checkText') {
-            input.classList.add('check')
-            input.placeholder = '할일'
-        }else if (option == 'subject1') {
-            input.setAttribute('style', 'font-size:30px;font-weight:bold');
-            input.setAttribute('placeholder', '제목을 입력하세요.');
-            input.classList.add('subject1')
-        }else if (option == 'subject2') {
-            input.setAttribute('style', 'font-size:20px;font-weight:bold');
-            input.setAttribute('placeholder', '부제목을 입력하세요.');
-            input.classList.add('subject2')
-        }else if (option == 'file') {
-            input.setAttribute('type', 'file');
-            input.setAttribute('name', 'files');
-            input.setAttribute('id', 'imageInput');
-            input.classList.add('file')
-            input.setAttribute('onChange', 'readURL(this,'+imageCnt+')')
-        }else{
-            input.classList.add('normal')
-            input.placeholder = '텍스트를 입력하세요.'
-        }
-        return input;
-    }
     
     function titleChange(value){
         let id_value = document.getElementById('nowId').value
         if (event.key == 'Enter') {
-            input = createTextInput();
+            input = document.createElement('input');
+            input.setAttribute('class', 'form-control');
+            input.setAttribute('onkeyup', 'menu(this.value)');
+            input.setAttribute('value', '');
+            input.setAttribute('placeholder', '텍스트를 입력하세요.');
             div = document.getElementById('content')
             div.appendChild(input);
             input.focus();
@@ -152,7 +127,11 @@
             } else if (event.target.nextElementSibling != null){
                 event.target.nextElementSibling.focus();
             } else {
-                input = createTextInput();
+                input = document.createElement('input');
+                input.setAttribute('class', 'form-control');
+                input.setAttribute('onkeyup', 'menu(this.value)');
+                input.setAttribute('value', '');
+                input.setAttribute('placeholder', '텍스트를 입력하세요.');
                 div = document.getElementById('content')
                 div.appendChild(input);
                 input.focus();
@@ -163,8 +142,11 @@
             let value_str = event.target.value
             let str = value_str.substring(value_num, value_str.length)
             event.target.value = value_str.substring(0, value_num)
-            input = createTextInput();
+            input = document.createElement('input');
+            input.setAttribute('class', 'form-control');
+            input.setAttribute('onkeyup', 'menu(this.value)');
             input.setAttribute('value', str);
+            input.setAttribute('placeholder', '텍스트를 입력하세요.');
             div = document.getElementById('content')
             div.appendChild(input);
             input.focus();
@@ -239,7 +221,13 @@
             check = document.createElement('input')
             check.setAttribute('type', 'checkbox')
             check.setAttribute('onclick', 'todoText()');
-            input = createTextInput('checkText')
+            input = document.createElement('input');
+            input.setAttribute('type', 'text');
+            input.setAttribute('class', 'form-control');
+            input.setAttribute('style', 'margin-left:5px;')
+            input.setAttribute('onkeyup', 'menu(this.value)');
+            input.setAttribute('value', '');
+            input.setAttribute('placeholder', '할일');
             checkdiv.appendChild(check)
             content.appendChild(checkdiv)
             content.appendChild(input)
@@ -263,16 +251,25 @@
             let id = document.getElementById('nowId').value
             location.href = '/notion/createChild/'+ id  + "/" + url;
         } else if (event.target.value == 'subject1') {
-            input = createTextInput('subject1');
-            
+            input = document.createElement('input');
+            input.setAttribute('type', 'text');
+            input.setAttribute('class', 'form-control');
+            input.setAttribute('style', 'font-size:30px;font-weight:bold');
+            input.setAttribute('onkeyup', 'menu(this.value)');
+            input.setAttribute('value', '');
+            input.setAttribute('placeholder', '제목을 입력하세요.');
             div = document.getElementById('content')
             div.appendChild(input);
             input.focus();
             transBody();
         } else if (event.target.value == 'subject2') {
-            input = createTextInput('subject2');
-            
-            
+            input = document.createElement('input');
+            input.setAttribute('type', 'text');
+            input.setAttribute('class', 'form-control');
+            input.setAttribute('style', 'font-size:20px;font-weight:bold');
+            input.setAttribute('onkeyup', 'menu(this.value)');
+            input.setAttribute('value', '');
+            input.setAttribute('placeholder', '부제목을 입력하세요.');
             div = document.getElementById('content')
             div.appendChild(input);
             input.focus();
@@ -282,8 +279,12 @@
             div_s = document.createElement("div");
             div_s.setAttribute('class', 'input-group')
             div_s.setAttribute('id','imageDiv');
-            input = createTextInput('file');
-            
+            input = document.createElement('input');
+            input.setAttribute('type', 'file');
+            input.setAttribute('name', 'files');
+            input.setAttribute('class', 'form-control');
+            input.setAttribute('id', 'imageInput');
+            input.setAttribute('onChange', 'readURL(this,'+imageCnt+')')
             btn = document.createElement("button")
             btn.setAttribute('onclick', 'uploadImage()');
             btn.setAttribute('class', 'btn btn-outline-secondary')
@@ -347,7 +348,10 @@
     }
     
     function test(){
-        input = createTextInput();
+        input = document.createElement('input');
+        input.setAttribute('class', 'form-control');
+        input.setAttribute('onkeyup', 'menu(this.value)');
+        input.setAttribute('placeholder', '텍스트를 입력하세요.');
         div = document.getElementById('content')
         div.appendChild(input);
         input.focus();
@@ -371,76 +375,22 @@
             event.target.parentElement.parentElement.children[1].setAttribute('style', 'text-decoration:line-through')
         }    
     }
-
-    function updateChildrenPosition() {
-    const body = document.getElementById('body');
-    const content = document.getElementById('content');
-    if (window.innerWidth < 1100) {
-        body.classList.remove('center-aligned');
-        content.classList.remove('center-aligned');
-    } else {
-        body.classList.add('center-aligned');
-        content.classList.add('center-aligned');
-    }
-}
-
-// 초기 위치 설정
-
-
-// 윈도우 크기가 변경될 때마다 위치 업데이트
-window.addEventListener('resize', updateChildrenPosition);
     </script>
 {% endblock %}
 {% block page %}
-<style>
-    #pagebody{
-        width: 100%;
-    }
-    input{
-        border: none;
-        outline: none;
-        box-shadow: none;
-    }
-    input:focus{
-        border: none;
-        outline: none;
-    }
-    input.form-control{
-        border: none;
-        display: flex;
-        padding-top: 5px;
-        font-size: 16px;
-        width: 100%;
-        height: 30px;
-        max-width: 700px;
-
-    }
-    input::placeholder{
-        color: rgba(55, 53, 47, 0.2);
-
-    }
-    input.text::placeholder{
-        visibility: hidden;
-    }
-    input:focus::placeholder{
-        visibility: visible;
-    }
-
-.center-aligned {
-    align-items: center;
-}
-</style>
-<div id="pagebody" style="display: flex; flex-direction: column; align-items: center; margin: 0 auto; ">
-     <div id="body" class="col p-4 vh-100 d-flex flex-column" style="width: 100%;transition-property: width; transition-duration: 200ms; transition-timing-function: ease;">
-      <div id="title mt-10" style="margin-top: 110px; width: 100%; max-width: 700px;">
-
-          <input class='form-control' style="height:50px ; font-size: 40px;font-weight: bold; border: none;" type='text' name='title' id="title" onkeyup="titleChange(this.value)"
-            value='{{ now.title }}' placeholder="제목없음">
+<body>
+     <div id="body" class="col p-4 vh-100 d-flex flex-column" style="overflow-y: scroll;">
+      <hr>
+      <div id="title mt-10">
+        <h1 class="w-100">
+          <input class='form-control' style="font-size: 30px;font-weight: bold;" type='text' name='title' id="title" onkeyup="titleChange(this.value)"
+            value='{{ now.title }}' placeholder="제목없음"></h1>
       </div>        
-      <div id="content" class="mt-10 d-flex flex-column" style="width: 100%;">
+      <div id="content" class="mt-10 d-flex flex-column">
         {{ now.content|safe }}
       </div>
     </div>
+  </div>
   <div id="menuselect" class="col" style="display: none;">
     <select id='selectBox' class='form-select form-lg' size="6">
       <option value="todo">할일목록</option>
@@ -453,7 +403,7 @@ window.addEventListener('resize', updateChildrenPosition);
   </div>
   <input type="hidden" id='nowId' value="{{ now.id }}">
   <input type="hidden" id='parent' value="{{ parent.id }}">
-</d>
+</body>
 </html>
 {% endblock %}
 
