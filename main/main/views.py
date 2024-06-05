@@ -61,6 +61,6 @@ def logout(request):
 
 def index(request):
     if request.user.is_active:
-        return redirect("/page/");
+        return redirect("/notion/");
     else:
         return render(request, "main.html")

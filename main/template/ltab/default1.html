@@ -106,7 +106,7 @@
   </form>
 
   <div style="display: flex; width: 100%; position: relative; top:2px; justify-content: center;">
-    <div id="notionBtn" role="button" style="border-radius: 6px; width: 100%; line-height:30px; height: 30px; position: relative; margin: 4px 5px; display: flex; justify-content: flex-start;">{{ user.username }}의 notion</div>
+    <div id="notionBtn" role="button" style="border-radius: 6px; width: 100%; line-height:30px; height: 30px; position: relative; margin: 4px 5px; display: flex; justify-content: flex-start;">{{ username }}의 notion</div>
 
     <!-- 페이지 생성되야함 /newpage/ -->
     {% load static %}
@@ -143,7 +143,7 @@
     
     <!-- 홈 -->
     <div role="button" tabindex="0" style="display: flex; color: inherit; text-decoration: none; user-select: none; transition: background 150ms ease 0s; cursor: pointer; border-radius: 6px; margin-left: 0px; margin-right: 0px; font-weight: 500;">
-      <div id="changeBackground" onclick="document.location.href='/notion/'" style="display: flex; align-items: center; width: 100%; font-size: 14px; min-height: 27px; margin: 2px 8px; height: 30px;">
+      <div id="changeBackground" onclick="document.location.href='/page/'" style="display: flex; align-items: center; width: 100%; font-size: 14px; min-height: 27px; margin: 2px 8px; height: 30px;">
         <div style="flex-shrink: 0; flex-grow: 0; border-radius: 4px; color: rgba(55, 53, 47, 0.65); width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; margin-right: 8px;">
           <svg role="graphics-symbol" viewBox="0 0 24 24" class="newSidebarHome" style="width: 24px; height: 24px; display: block; fill: rgb(145, 145, 142); flex-shrink: 0;">
             <g>
@@ -174,7 +174,7 @@
             <div style="margin-left: auto;">
               <div style="display: flex; align-items: center; pointer-events: pointer; transition: opacity 150ms ease 0s;">
                 
-                <div id="addpage" role="button" onclick="location.href='/notion/createNewPage/'" tabindex="0" class="shadow-cursor-new-page-sidebar" aria-label="페이지 추가" style="user-select: none; transition: background 20ms ease-in 0s; cursor: pointer; display: flex; align-items: center; justify-content: center; height: 20px; width: 20px; border-radius: 4px; margin-left: 4px;"><span></span>
+                <div id="addpage" role="button" onclick="location.href='/ltab/newpage/'" tabindex="0" class="shadow-cursor-new-page-sidebar" aria-label="페이지 추가" style="user-select: none; transition: background 20ms ease-in 0s; cursor: pointer; display: flex; align-items: center; justify-content: center; height: 20px; width: 20px; border-radius: 4px; margin-left: 4px;"><span></span>
                   <svg role="graphics-symbol" viewBox="0 0 14 14" class="plusThick" style="width: 14px; height: 14px; display: block; fill: rgba(55, 53, 47, 0.45); flex-shrink: 0;">
                     <path d="M2 7.16357C2 7.59692 2.36011 7.95093 2.78735 7.95093H6.37622V11.5398C6.37622 11.9731 6.73022 12.3271 7.16357 12.3271C7.59692 12.3271 7.95093 11.9731 7.95093 11.5398V7.95093H11.5398C11.9731 7.95093 12.3271 7.59692 12.3271 7.16357C12.3271 6.73022 11.9731 6.37622 11.5398 6.37622H7.95093V2.78735C7.95093 2.36011 7.59692 2 7.16357 2C6.73022 2 6.37622 2.36011 6.37622 2.78735V6.37622H2.78735C2.36011 6.37622 2 6.73022 2 7.16357Z"></path>
                   </svg>
@@ -226,9 +226,10 @@
                   </div>
                     
                   {% endfor %}
-
+                      
+  
+                  
                 </div>
-                {{ borderList|safe }}
               </div>
             </div>
           </div>

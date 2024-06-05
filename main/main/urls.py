@@ -12,4 +12,5 @@ urlpatterns = [
     path("page/", include("page.urls")),
     path("utab/", include("utab.urls")),
     path("ltab/", include("ltab.urls")),
+    path('notion/', include('notion.urls')),
 ]

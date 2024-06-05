@@ -86,7 +86,7 @@ body{
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    flex: 1; /* URL 텍스트가 가능한 넓은 공간을 차지할 수 있도록 설정합니다. */
+    flex: 2; /* URL 텍스트가 가능한 넓은 공간을 차지할 수 있도록 설정합니다. */
     font-size: 13px; /* URL 텍스트의 글자 크기를 줄입니다 */
     padding-left: 0;
     text-align: left !important;
@@ -164,16 +164,16 @@ body{
 .small-new-box::after {
     content: '';
     display: block;
-    width: 58%; /* 선의 길이를 조정 */
+    width: 80%; /* 선의 길이를 조정 */
     height: 2px;
     background-color: #000; /* 검은색 선 색상 */
     position: absolute;
-    bottom: -2px; /* 선이 버튼 바로 아래에 위치하도록 설정 */
+    bottom: -2px; /* 선이 버튼 바display:none로 아래에 위치하도록 설정 */
     left: 10px; /* padding-left 값과 동일하게 설정 */
 }
 .small-new-box {
     position: absolute;
-    width: 44px; /* 너비를 44px로 설정 */
+    width:100px; /* 너비를 44px로 설정 */
     height: 28px; /* 높이를 28px로 설정 */
     background-color: #f0f0f0;
     border-radius: 0;
@@ -196,7 +196,29 @@ body{
     background-color: #e0e0e0; /* 호버 시 배경색 변경 */
     border-color: #888; /* 호버 시 테두리 색상 변경 */
 }
-
+#emailBox {
+    width:489px;
+}
+#emailinput {
+    position:absolute;
+    top:43px;
+    width:292px;
+    height:40px;
+    left:30px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 12px;
+}
+#emailbutton {
+    position:relative;
+    left:385px;
+    top:14px;
+    background-color: #2383E2;
+    color:white;
+    font-size: 12px;
+    border-radius: 5px;
+    width:75px;
+}
 </style>
 
 <div class="tab-menu">
@@ -208,8 +230,8 @@ body{
   <!-- 박스 -->
   <div id="shareBox" class="share-box" >
     <div id="newBox" class="new-box"></div>
-    <div class="small-new-box">공유</div>
-    <div id="urlBox" style="border: 1px solid gray; opacity: 0.6; margin-bottom: 10px; margin: 28px auto 0 auto; margin-left:30px; margin-right:20px;  padding: 7px; padding-right: 0px; border-radius: 7px; width: calc(80% - 100px); height: 15px; float: right; display:flex; align-items:center; justify-content:center; ">
+    <div class="small-new-box" onclick="tabChange(this)">URL 공유</div>
+    <div id="urlBox" style="border: 1px solid gray; opacity: 0.6; margin-bottom: 10px; margin: 28px auto 0 auto; margin-left:30px; margin-right:20px;  padding: 7px; padding-right: 0px; border-radius: 7px; width: calc(80% - 100px); height: 40px; float: right; display:flex; align-items:center; justify-content:center;">
         <span id="shareContent"></span>
     </div>
     <!-- 카피 버튼 이미지 -->
@@ -219,19 +241,32 @@ body{
            Copy Link
         </a>
     </button>
-    
+    <div class="small-new-box" style="left:120px;" onclick="tabChange(this)">이메일 공유</div>
+    <form action="{% url 'email' %}" id="emailBox" style="display:none">
+        <input type="hidden" name="url" value="{{ now.url }}">
+        <div class="d-inline-flex">
+        <input id="emailinput" type="text" name="emails" placeholder="여러 이메일을 보낼 경우 , 를 이용하세요." onkeyup="sendemail(this)">
+        <button id="emailbutton" type="submit">보내기</button>
+        </div>
+    </form>
 </div>
 </div>
 </div>
 
 <script>
     
-    var smallNewBox = document.querySelector('.small-new-box');
-    smallNewBox.addEventListener('click', function(event) {
+    var smallNewBox1 = document.querySelector('.small-new-box');
+    smallNewBox1.addEventListener('click', function(event) {
     // 이벤트 전파 막기
     event.stopPropagation();
     // 클릭 이벤트 처리
     console.log('작은 뉴 박스가 클릭되었습니다.');
+    urlBox = document.getElementById('urlBox');
+        emailBox = document.getElementById('emailBox');
+        button = document.getElementById('copyButtonContainer')
+        urlBox.style.display='block';
+        button.style.display='block';
+        emailBox.style.display='none';
     });
     var shareButton = document.getElementById("shareButton");
     shareButton.addEventListener("click", toggleShareBox); // 공유 버튼 클릭 시 토글 함수 호출
@@ -240,6 +275,16 @@ body{
     var copyButton = document.getElementById("copyButton");
     copyButton.addEventListener("click", copyURL);
 
+    function tabChange(target){
+        urlBox = document.getElementById('urlBox');
+        emailBox = document.getElementById('emailBox');
+        button = document.getElementById('copyButtonContainer')
+
+        urlBox.style.display='none';
+        button.style.display='none';
+        emailBox.style.display='block';
+
+    }
     function toggleShareBox() {
         var shareBox = document.getElementById("shareBox");
         shareBox.classList.toggle("show"); // 'show' 클래스를 토글하여 나타내거나 숨깁니다.
