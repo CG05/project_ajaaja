@@ -2,6 +2,7 @@
 
 {% load static %}
 {% block bodyscript %}
+<link rel="stylesheet" href="{% static 'css/default.css' %}">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script>
@@ -130,35 +131,7 @@
             } 
             event.target.remove()
             transBody();
-        } else if (value == '/'){
-            event.target.value = '';
-            windowWidth = window.innerWidth;
-            resultWidth = windowWidth - event.target.offsetWidth
-            menuselect = document.getElementById('menuselect');
-            menuselect.style.display='block';
-            menuselect.style.position='absolute';
-            if (Number(event.target.offsetTop) > 790) {
-                menuselect.style.top = 780 + 'px';
-            } else {
-                menuselect.style.top = event.target.offsetTop + 30 + 'px';
-            }
-            menuselect.style.left = resultWidth + 'px';
-            
-            menuselect.removeEventListener('click', slash)
-            menuselect.addEventListener('click', slash);
-        }  else if (event.keyCode == 13 && !event.shiftKey) {
-            if (event.target.tagName == 'TEXTAREA'){
-    
-            } else if (event.target.nextElementSibling != null){
-                event.target.nextElementSibling.focus();
-            } else {
-                input = createTextInput();
-                div = document.getElementById('content')
-                div.appendChild(input);
-                input.focus();
-                transBody();
-            }
-        } else if (event.key == 'Enter' && event.shiftKey){
+        }else if (event.key == 'Enter' && event.shiftKey){
             let value_num = event.target.selectionStart
             let value_str = event.target.value
             let str = value_str.substring(value_num, value_str.length)
@@ -201,7 +174,7 @@
     
     function menuWindow(value){
         menuselect = document.getElementById('menuselect');
-        menuselect.style.display='none';
+        menuselect.remove();
     }
     
     function searchTitle(value) {
@@ -230,8 +203,8 @@
        
     }
     
-    function slash(){
-        if (event.target.value == 'todo'){
+    function slash(event){
+        if (document.getElementById('todo').contains(event.target)){
             content = document.createElement('div')
             content.setAttribute('class', 'input-group')
             checkdiv = document.createElement('div')
@@ -245,31 +218,21 @@
             content.appendChild(input)
             div = document.getElementById('content')
             div.appendChild(content);
-        } else if (event.target.value == 'text') {
-            input = document.createElement('textarea');
-            input.setAttribute('class', 'form-control');
-            input.setAttribute('onkeyup', 'menu(this.value)');
-            input.setAttribute('rows', 10)
-            input.style.visiable = false
-            input.innerHTML = ''
-            input.setAttribute('placeholder', '텍스트를 입력하세요.');
-            div = document.getElementById('content')
-            div.appendChild(input);
-            input.focus();
-            transBody();
-        } else if (event.target.value == 'page') {
+        } else if (document.getElementById('text').contains(event.target)) {
+            return menuWindow('close');
+        } else if (document.getElementById('page').contains(event.target)) {
             url_find = window.location.pathname.split('/')
             url = url_find[2]
             let id = document.getElementById('nowId').value
             location.href = '/notion/createChild/'+ id  + "/" + url;
-        } else if (event.target.value == 'subject1') {
+        } else if (document.getElementById('subject1').contains(event.target)) {
             input = createTextInput('subject1');
             
             div = document.getElementById('content')
             div.appendChild(input);
             input.focus();
             transBody();
-        } else if (event.target.value == 'subject2') {
+        } else if (document.getElementById('subject2').contains(event.target)) {
             input = createTextInput('subject2');
             
             
@@ -277,7 +240,7 @@
             div.appendChild(input);
             input.focus();
             transBody();
-        } else if (event.target.value == 'files') {
+        } else if (document.getElementById('files').contains(event.target)) {
     
             div_s = document.createElement("div");
             div_s.setAttribute('class', 'input-group')
@@ -302,7 +265,7 @@
                 div_s.previousElementSibling.remove();
             }
         }
-        menuWindow('close')
+        return menuWindow('close');
     }
     
     function toggleChildren(id) {
@@ -388,6 +351,140 @@
 
 
 // 윈도우 크기가 변경될 때마다 위치 업데이트
+window.addEventListener('keyup', function(event) {
+    if (event.key === '/' && document.getElementById('menuselect') == null) {
+        console.log(event.target)
+        menuselect = document.createElement('div');
+            menuselect.innerHTML = `<div id="menuselect" 
+      data-overlay="true" style="pointer-events: auto; position: relative; z-index: 1;">
+      <div>
+          <div style="position: fixed; pointer-events: none;">
+              <div style="width: 0px; height: 21px;"></div>
+              <div style="position: absolute; top: 0px; left: 0px; width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; align-items: flex-start;">
+                  <div style="position: relative; pointer-events: auto; bottom: 100%;">
+                      <div style="display: flex; align-items: center; position: relative; flex-direction: column; transform-origin: 0% bottom; left: 0px; opacity: 1; bottom: 4px; transition-property: opacity, transform; transition-duration: 200ms; transition-timing-function: ease;">
+                          <div role="dialog" style="border-radius: 6px; background: white; backdrop-filter: none; position: relative; max-width: calc(-24px + 100vw); box-shadow: rgba(15, 15, 15, 0.05) 0px 0px 0px 1px, rgba(15, 15, 15, 0.1) 0px 3px 6px, rgba(15, 15, 15, 0.2) 0px 9px 24px; overflow: hidden;">
+                              <div style="display: flex; flex-direction: column; width: 324px; min-width: 180px; max-width: calc(-24px + 100vw); height: 100%; max-height: 40vh;">
+                                  <div class="notion-scroller vertical" style="z-index: 1; flex-grow: 1; min-height: 0px; transform: translateZ(0px); overflow: hidden auto; margin-right: 0px; margin-bottom: 0px;">
+                                      <div id=":r1d:" tabindex="0" role="menu" aria-activedescendant=":r1i:">
+                                          <div style="padding-top: 6px; padding-bottom: 6px;">
+                                              <div style="display: flex; padding-left: 14px; padding-right: 14px; margin-top: 6px; margin-bottom: 8px; color: rgba(55, 53, 47, 0.65); fill: rgba(55, 53, 47, 0.45); font-size: 12px; font-weight: 500; line-height: 120%; user-select: none;">
+                                                  <div style="align-self: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">기본 블록</div>
+                                                  <div style="margin-left: auto;">
+                                                      <div contenteditable="false" class="pseudoSelection" data-content-editable-void="true" style="user-select: none; --pseudoSelection--background: transparent; display: contents;"><img role="progressbar" class="loading-spinner" alt="로딩 중..." 
+                                                          aria-busy="true" aria-live="polite" 
+                                                          src="data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20xmlns%3Asketch%3D%22http%3A%2F%2Fwww.bohemiancoding.com%2Fsketch%2Fns%22%20width%3D%22100%25%22%20height%3D%22100%25%22%20viewBox%3D%220%200%2024%2024%22%20version%3D%221.1%22%20data-ember-extension%3D%221%22%3E%3Cdefs%3E%3ClinearGradient%20x1%3D%2228.1542969%25%22%20y1%3D%2263.7402344%25%22%20x2%3D%2274.6289062%25%22%20y2%3D%2217.7832031%25%22%20id%3D%22linearGradient-1%22%3E%3Cstop%20stop-color%3D%22rgba(164%2C%20164%2C%20164%2C%201)%22%20offset%3D%220%25%22%2F%3E%3Cstop%20stop-color%3D%22rgba(164%2C%20164%2C%20164%2C%200)%22%20stop-opacity%3D%220%22%20offset%3D%22100%25%22%2F%3E%3C%2FlinearGradient%3E%3C%2Fdefs%3E%3Cg%20id%3D%22Page-1%22%20stroke%3D%22none%22%20stroke-width%3D%221%22%20fill%3D%22none%22%20%3E%3Cg%20transform%3D%22translate(-236.000000%2C%20-286.000000)%22%3E%3Cg%20transform%3D%22translate(238.000000%2C%20286.000000)%22%3E%3Ccircle%20id%3D%22Oval-2%22%20stroke%3D%22url(%23linearGradient-1)%22%20stroke-width%3D%224%22%20cx%3D%2210%22%20cy%3D%2212%22%20r%3D%2210%22%2F%3E%3Cpath%20d%3D%22M10%2C2%20C4.4771525%2C2%200%2C6.4771525%200%2C12%22%20id%3D%22Oval-2%22%20stroke%3D%22rgba(164%2C%20164%2C%20164%2C%201)%22%20stroke-width%3D%224%22%2F%3E%3Crect%20id%3D%22Rectangle-1%22%20fill%3D%22rgba(164%2C%20164%2C%20164%2C%201)%22%20x%3D%228%22%20y%3D%220%22%20width%3D%224%22%20height%3D%224%22%20rx%3D%228%22%2F%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E" style="visibility: hidden;"></div>
+                                                  </div>
+                                              </div>
+                                              <div role="menuitem" tabindex="-1" class="tableindex" id="text">
+                                                  <div class="tableindex_1">
+                                                      <div class="tableindex_2">
+                                                          <div style="width: 100%; height: 100%;"><img src="{% static 'ko-KR.png' %}" referrerpolicy="same-origin" class="tablebox"></div>
+                                                      </div>
+                                                      <div class="tableapp">
+                                                          <div class="tableapp_1">
+                                                              <div style="display: flex; align-items: center;"><span style="margin-right: 6px;">텍스트</span></div>
+                                                          </div>
+                                                          <div class="tableapp_2">일반 텍스트를 사용해 쓰기를 시작하세요.</div>
+                                                          </div>
+                                                      </div>
+                                                  </div>
+                                                  <div role="menuitem" tabindex="-1" class="tableindex" id="page">
+                                                      <div class="tableindex_1">
+                                                          <div class="tableindex_2">
+                                                              <div style="width: 100%; height: 100%;"><img src="{% static 'page.83b0bf31.png' %}" referrerpolicy="same-origin" class="tablebox"></div>
+                                                          </div>
+                                                          <div class="tableapp">
+                                                              <div class="tableapp_1">
+                                                                  <div style="display: flex; align-items: center;"><span style="margin-right: 6px;">페이지</span></div>
+                                                              </div>
+                                                              <div class="tableapp_2">이 페이지 안에 하위 페이지를 만드세요.</div>
+                                                          </div>
+                                                      </div>
+                                                  </div>
+                                                  <div role="menuitem" tabindex="-1" class="tableindex" id="todo">
+                                                      <div class="tableindex_1">
+                                                          <div class="tableindex_2">
+                                                              <div style="width: 100%; height: 100%;"><img src="{% static 'todolist.png' %}" referrerpolicy="same-origin" class="tablebox"></div>
+                                                          </div>
+                                                          <div class="tableapp">
+                                                              <div class="tableapp_1">
+                                                                  <div style="display: flex; align-items: center;"><span style="margin-right: 6px;">할 일 목록</span></div>
+                                                              </div>
+                                                              <div class="tableapp_2">할 일 목록으로 작업을 추적하세요.</div>
+                                                          </div>
+                                                      </div>
+                                                  </div>
+                                                  <div role="menuitem" tabindex="-1" class="tableindex" id="subject1">
+                                                      <div class="tableindex_1">
+                                                          <div class="tableindex_2">
+                                                              <div style="width: 100%; height: 100%;"><img src="{% static 'bigtitle.png' %}" referrerpolicy="same-origin" class="tablebox"></div>
+                                                          </div>
+                                                          <div class="tableapp">
+                                                              <div class="tableapp_1">
+                                                                  <div style="display: flex; align-items: center;"><span style="margin-right: 6px;">제목 1</span></div>
+                                                              </div>
+                                                              <div class="tableapp_2">큰 섹션 제목</div>
+                                                          </div>
+                                                      </div>
+                                                  </div>
+                                                  <div role="menuitem" tabindex="-1" class="tableindex" id="subject2">
+                                                      <div class="tableindex_1">
+                                                          <div class="tableindex_2">
+                                                              <div style="width: 100%; height: 100%;"><img src="{% static 'middletitle.png' %}" referrerpolicy="same-origin" class="tablebox"></div>
+                                                          </div>
+                                                          <div class="tableapp">
+                                                              <div class="tableapp_1">
+                                                                  <div style="display: flex; align-items: center;"><span style="margin-right: 6px;">제목 2</span></div>
+                                                              </div>
+                                                              <div class="tableapp_2">중간 섹션 제목</div>
+                                                          </div>
+                                                      </div>
+                                                  </div>
+                                                  <div role="menuitem" tabindex="-1" class="tableindex" id="subject3">
+                                                      <div class="tableindex_1">
+                                                          <div class="tableindex_2">
+                                                              <div style="width: 100%; height: 100%;"><img src="{% static 'smalltitle.png' %}" referrerpolicy="same-origin" class="tablebox"></div>
+                                                          </div>
+                                                          <div class="tableapp">
+                                                              <div class="tableapp_1">
+                                                                  <div style="display: flex; align-items: center;"><span style="margin-right: 6px;">제목 3</span></div>
+                                                              </div>
+                                                              <div class="tableapp_2">작은 섹션 제목</div>
+                                                          </div>
+                                                      </div>
+                                                  </div>
+                                              </div>
+                                          </div>
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>`
+  const rect = event.target
+                let x = rect.offsetLeft+250;
+                if (window.innerWidth - rect.offsetLeft < 324){
+                    x = rect.offsetLeft + 74;
+                }
+                let y = rect.offsetTop + 450;
+                if (rect.offsetTop > 450){
+                    y = rect.offsetTop;
+                }
+            menuselect.children[0].children[0].children[0].style.left = x + 'px';
+            menuselect.children[0].children[0].children[0].style.top = y + 'px';
+
+            document.body.appendChild(menuselect);
+            menuselect.addEventListener('click', slash);
+    }else{
+        menuWindow('close')
+    
+    }
+});
 window.addEventListener('resize', updateChildrenPosition);
     </script>
 {% endblock %}
@@ -441,7 +538,7 @@ window.addEventListener('resize', updateChildrenPosition);
         {{ now.content|safe }}
       </div>
     </div>
-  <div id="menuselect" class="col" style="display: none;">
+  <!-- <div id="menuselect" class="col" style="display: none;">
     <select id='selectBox' class='form-select form-lg' size="6">
       <option value="todo">할일목록</option>
       <option value="text">텍스트</option>
@@ -450,10 +547,10 @@ window.addEventListener('resize', updateChildrenPosition);
       <option value="subject2">제목2</option>
       <option value="files">이미지파일</option>
     </select>
-  </div>
+  </div> -->
   <input type="hidden" id='nowId' value="{{ now.id }}">
   <input type="hidden" id='parent' value="{{ parent.id }}">
-</d>
+</div>
 </html>
 {% endblock %}
 
