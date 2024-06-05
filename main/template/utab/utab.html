@@ -222,9 +222,22 @@ body{
 </style>
 
 <div class="tab-menu">
-  <button class="tablinks" onclick="openTab('tab1')">아자아자 3조!</button>
+	<div style="display: flex; align-items: center; line-height: 1.2; font-size: 14px; height: 100%; flex-grow: 0; margin-right: 8px; min-width: 0px;">
+		{% if listLength != 0 %}
+			{% for page in pageList %}
+				{% if Parent != none %}
+					<div></div>
+				{% endif %}
+			{% endfor %}
+		{% endif %}
+	</div>
+
+
+  <!-- <button class="tablinks" onclick="openTab('tab1')">아자아자 3조!</button>
   <button class="tablinks" onclick="openTab('tab2')">KG프로젝트</button>
-  <button class="tablinks" onclick="openTab('tab3')">요구사항 분석</button>
+  <button class="tablinks" onclick="openTab('tab3')">요구사항 분석</button> -->
+
+
   <!-- 공유 탭 -->
   <button id="shareButton" class="tablinks share-button">공유</button>
   <!-- 박스 -->

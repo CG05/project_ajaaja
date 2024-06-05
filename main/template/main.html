@@ -13,6 +13,7 @@
 {% else %}
     <header class="header">
         <a href = "/"><img src="{% static 'notion.png' %}" height="55px"></a>
+        <!-- 버튼누르면 이동 안되고, <a> 내용을 눌러야 이동이됨 -->
         <button class = "create">
             <a href="{% url 'create' %}">Get Notion Free</a>
         </button>
