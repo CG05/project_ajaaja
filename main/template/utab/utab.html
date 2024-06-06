@@ -222,9 +222,20 @@ body{
 </style>
 
 <div class="tab-menu">
-  <button class="tablinks" onclick="openTab('tab1')">아자아자 3조!</button>
-  <button class="tablinks" onclick="openTab('tab2')">KG프로젝트</button>
-  <button class="tablinks" onclick="openTab('tab3')">요구사항 분석</button>
+  <div style="margin-left: 12px; width: 600px; height: 44px; align-content: center; position: relative;">
+    {% for i in reparents %}
+      <div role="button" style="display: inline;">{{ i.title }}</div>
+      {% if not forloop.last %}
+        <div style="display: inline;"><span> / </span></div>
+      {% endif %}
+      
+    {% endfor %}
+    
+  </div>
+
+  
+
+
   <!-- 공유 탭 -->
   <button id="shareButton" class="tablinks share-button">공유</button>
   <!-- 박스 -->

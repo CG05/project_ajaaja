@@ -138,7 +138,7 @@ def parentList(list, notion):
     # 부모가 있으면 부모를 찾아서 계속 재귀 호출
     else:
         list.append(notion.parent)
-        parentList(list, notion.parent)
+        return parentList(list, notion.parent)
 
 
 def pageNum(request, pageNum):
@@ -149,7 +149,8 @@ def pageNum(request, pageNum):
         now = get_object_or_404(Notion, url=pageNum)
         
         parent = parent_find(now)
-        parents = parentList([], now)
+        parents = []
+        parents = parentList(parents, now)
 
         border_list = '<div style=" color: rgba(55, 53, 47, 0.8); font-size:14px; font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol";">'
         for notion in notions:
@@ -170,6 +171,7 @@ def pageNum(request, pageNum):
             'parent':parent,
             'username':username_,
             'parents':parents,
+            'reparents':reversed(parents),
         }
         return render(request, f'notion/{username}/{pageNum}', content)
     else:
