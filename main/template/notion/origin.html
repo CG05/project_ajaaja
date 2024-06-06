@@ -9,233 +9,325 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script>
     let imageCnt = 0;
-    window.onload = function (){
+    window.onload = function () {
         updateChildrenPosition();
         imageList = document.querySelectorAll('[id*=previewDiv]')
-        for (var i=0;i<imageList.length;i++){
-            cnt = imageList[i].id.substr(imageList[i].id.length-1)
+        for (var i = 0; i < imageList.length; i++) {
+            cnt = imageList[i].id.substr(imageList[i].id.length - 1)
             if (Number(cnt) > imageCnt) {
                 imageCnt = Number(cnt) + 1;
                 console.log(imageCnt)
             }
         }
+        setCheck();
     }
     window.addEventListener('DOMContentLoaded', async (event) => {
+        setCheck();
         await rotateSvg();
     });
 
-    async function loopArea(area){
+    function setCheck() {
+        $('input.checked').each(function (index, check) {
+            check.parentElement.children[1].style.textDecoration = "line-through"
+            check.checked = true;
+        });
+    }
+
+    async function loopArea(area) {
         var div = $(area).find('.showPage:eq(0)');
-        if(div.length == 0){
+        if (div.length == 0) {
             return;
         }
         console.log(div);
         childareas = $(area).find('.childarea');
         console.log(childareas);
-        
+
         var svg = $(div).find('.alterBtn:eq(0)').find('svg:eq(0)')
-        if (childareas.length == 0){
+        if (childareas.length == 0) {
             svg.css('rotate', '-90deg');
             console.log('close');
         }
-        $(childareas).each(async function(index, area){
+        $(childareas).each(async function (index, area) {
             console.log(area);
             console.log($(area).css('display'));
-            if($(area).css('display') == 'none'){
+            if ($(area).css('display') == 'none') {
                 svg.css('rotate', '-90deg');
                 console.log('close');
-            }else{
+            } else {
                 svg.css('rotate', '0deg');
                 console.log('open');
             }
-            
+
             await loopArea(area);
         });
-        
+
     }
 
-    async function rotateSvg(){
+    async function rotateSvg() {
         var families = Array.from(document.getElementsByClassName('family'));
-        for(var family of families){
+        for (var family of families) {
             await loopArea(family);
         }
-        
+
     }
-    function createTextInput(option){
+    function createTextInput(option) {
         input = document.createElement('input');
         input.setAttribute('class', 'form-control text');
         input.setAttribute('onkeyup', 'menu(this.value)');
         input.setAttribute('value', '');
         if (option == 'checkText') {
             input.classList.add('check')
+            input.setAttribute('style', 'font-size:16px;');
             input.placeholder = '할일'
-        }else if (option == 'subject1') {
+        } else if (option == 'subject1') {
             input.setAttribute('style', 'font-size:30px;font-weight:bold');
             input.setAttribute('placeholder', '제목을 입력하세요.');
             input.classList.add('subject1')
-        }else if (option == 'subject2') {
+        } else if (option == 'subject2') {
             input.setAttribute('style', 'font-size:20px;font-weight:bold');
             input.setAttribute('placeholder', '부제목을 입력하세요.');
             input.classList.add('subject2')
-        }else if (option == 'file') {
+        } else if (option == 'file') {
             input.setAttribute('type', 'file');
             input.setAttribute('name', 'files');
             input.setAttribute('id', 'imageInput');
             input.classList.add('file')
-            input.setAttribute('onChange', 'readURL(this,'+imageCnt+')')
-        }else{
-            input.classList.add('normal')
-            input.placeholder = '텍스트를 입력하세요.'
+            input.setAttribute('onChange', 'readURL(this,' + imageCnt + ')')
+        } else {
+            input.classList.add('normal');
+            input.setAttribute('style', 'font-size:16px;');
+            input.placeholder = "텍스트를 입력하세요. 명령어를 입력하려면 '/'를 입력하세요."
         }
         return input;
     }
-    
-    function titleChange(value){
+
+    function titleChange(value) {
         let id_value = document.getElementById('nowId').value
         if (event.key == 'Enter') {
-            input = createTextInput();
-            div = document.getElementById('content')
-            div.appendChild(input);
-            input.focus();
+            const obj = createTextInput();
+            const content = document.getElementById('content');
+            $("#content").prepend(obj);
+            obj.focus();
             transBody();
         } else {
             if (value.length == 10) {
                 text = document.getElementById('titleSpan_' + id_value).innerText
                 document.getElementById('titleSpan_' + id_value).innerText = text + '...';
-            } else if (value.length < 10){
+            } else if (value.length < 10) {
                 document.getElementById('titleSpan_' + id_value).innerText = value;
             } else {
-    
+
             }
             transTitle(value);
         }
     }
-    
+
     function getCookie(name) {
         var value = document.cookie.match('(^|;) ?' + name + '=([^;]*)(;|$)');
-        return value? value[2] : null;
+        return value ? value[2] : null;
     }
-    
-    
-    function transTitle(value){
+
+
+    function transTitle(value) {
         let bodyContent = document.getElementById('content')
         const csrftoken = getCookie('csrftoken');
         let nowId = document.getElementById('nowId').value
-        fetch('/notion/save/'+nowId+'/', {
-            method:'POST',
+        fetch('/notion/save/' + nowId + '/', {
+            method: 'POST',
             headers: {
-                'Content-Type':'application/json',
+                'Content-Type': 'application/json',
                 'X-CSRFToken': csrftoken,
             },
-            body: JSON.stringify({ title:value })
+            body: JSON.stringify({ title: value })
         })
-        .then(response => response.json())
-        .then(data => {
-            console.log('Success: s');
-        })
-        .catch((error) => {
-            console.log('Error : e');
-        });
+            .then(response => response.json())
+            .then(data => {
+                console.log('Success: s');
+            })
+            .catch((error) => {
+                console.log('Error : e');
+            });
     }
-    
-    function transBody(){
+
+    function transBody() {
         let bodyContent = document.getElementById('content').innerHTML
+        console.log(bodyContent)
         const csrftoken = getCookie('csrftoken');
         let nowId = document.getElementById('nowId').value
-        fetch('/notion/saveBody/'+nowId+'/', {
-            method:'POST',
+        fetch('/notion/saveBody/' + nowId + '/', {
+            method: 'POST',
             headers: {
-                'Content-Type':'application/json',
+                'Content-Type': 'application/json',
                 'X-CSRFToken': csrftoken,
             },
-            body: JSON.stringify({ content:bodyContent })
+            body: JSON.stringify({ content: bodyContent })
         })
-        .then(response => response.json())
-        .then(data => {
-            console.log('Success : s2');
-        })
-        .catch((error) => {
-            console.log('Error : e2');
-        });
+            .then(response => response.json())
+            .then(data => {
+                console.log('Success : s2');
+            })
+            .catch((error) => {
+                console.log('Error : e2');
+            });
     }
     i = 1;
-    function menu(value){
+    function menu(value) {
         if (event.target.selectionStart == 0 && event.key == 'Backspace') {
-            if(event.target.placeholder == '할일') {
-                return;
-            } else if(event.target.previousElementSibling != null) {
-                now_value = event.target.value
-                size = event.target.previousElementSibling.value
-                num_size = size.length
-                event.target.previousElementSibling.value += now_value
-                event.target.previousElementSibling.focus();
-                event.target.previousElementSibling.selectionStart = Number(num_size)
-                event.target.previousElementSibling.selectionEnd = Number(num_size)
-            } 
-            event.target.remove()
-            transBody();
-        }else if (event.key == 'Enter' && event.shiftKey){
+            let target;
+            now_value = event.target.value
+            
+            if(event.target.classList.contains('normal')){
+                target = targetPrev(event.target);
+                event.target.remove();
+                
+            }else{
+                target = createTextInput();
+                appendLine(target, event.target)
+                event.target.parentElement.remove();
+                
+            }
+            size = target.value
+            num_size = size.length
+            target.value += now_value;
+            target.focus();
+            target.selectionStart = Number(num_size)
+            target.selectionEnd = Number(num_size)
+            
+        } else if (event.key == 'Enter') {
             let value_num = event.target.selectionStart
             let value_str = event.target.value
             let str = value_str.substring(value_num, value_str.length)
+            let num_size = str.length
             event.target.value = value_str.substring(0, value_num)
-            input = createTextInput();
-            input.setAttribute('value', str);
-            div = document.getElementById('content')
-            div.appendChild(input);
+            let content;
+            if (event.target.classList.contains('check')) {
+                content = genCheck(str);
+            } else {
+                content = createTextInput();
+                content.setAttribute('value', str);
+            }
+            appendLine(content, event.target)
             input.focus();
-            transBody();
-        } else if (event.key == 'Escape'){
+            input.selectionStart = Number(num_size)
+            input.selectionEnd = Number(num_size)
+        } else if (event.key == 'Escape') {
             console.log(event.target);
             menuWindow('Escape');
-        } else if (event.key == 'Delete' && event.shiftKey){
-            if (event.target.previousElementSibling != null){
+        } else if (event.key == 'Delete' && event.shiftKey) {
+            if (event.target.previousElementSibling != null) {
                 event.target.previousElementSibling.focus();
-            } else if (event.target.nextElementSibling != null){
+            } else if (event.target.nextElementSibling != null) {
                 event.target.nextElementSibling.focus();
             }
             event.target.remove();
-        } else if (event.key == 'ArrowUp' && event.shiftKey){
-            if (event.target.previousElementSibling != null){
-                event.target.previousElementSibling.focus();        
+        } else if (event.key == 'ArrowUp') {
+            const target = targetPrev(event.target);
+            console.log(target)
+            if (target != null) {
+                target.focus();
             }
-        } else if (event.key == 'ArrowDown' && event.shiftKey){
-            if (event.target.nextElementSibling != null) {
-                event.target.nextElementSibling.focus();
+        } else if (event.key == 'ArrowDown') {
+            const target = targetAfter(event.target);
+            console.log(target)
+            if (target != null && target != undefined) {
+                target.focus();
             }
         } else {
             let target_value = event.target.value;
             let target_input = event.target;
-            if (target_input.tagName != 'TEXTAREA'){
+            if (target_input.tagName != 'TEXTAREA') {
                 target_input.setAttribute('value', target_value);
             } else {
                 target_input.innerHTML = target_value;
             }
-            transBody();
         }
     }
-    
-    function menuWindow(value){
+    function targetPrev(eventfrom) {
+        let targetBase;
+        let target;
+        if (eventfrom.previousElementSibling != null) {
+
+            if (eventfrom.classList.contains('normal')) {
+                targetBase = eventfrom;
+            } else {
+                targetBase = eventfrom.parentElement;
+            }
+            console.log(targetBase)
+            if (!targetBase.previousElementSibling.classList.contains('normal')) {
+                target = targetBase.previousElementSibling.children[1];
+            } else {
+                target = targetBase.previousElementSibling
+            }
+            console.log(target)
+        } else {
+            target = null;
+        }
+        return target;
+    }
+    function targetAfter(eventfrom) {
+        let targetBase;
+        let target;
+        console.log(eventfrom);
+        if (eventfrom.nextElementSibling != null) {
+            console.log(eventfrom.nextElementSibling.classList.contains('normal'))
+            if (eventfrom.nextElementSibling.classList.contains('normal')) {
+                target = eventfrom.nextElementSibling
+            } else {
+
+                if (!eventfrom.classList.contains('normal')) {
+                    targetBase = eventfrom.parentElement;
+                } else {
+                    targetBase = eventfrom;
+                }
+                if (!targetBase.nextElementSibling.classList.contains('normal')) {
+                    target = targetBase.nextElementSibling.children[1];
+                } else {
+                    target = targetBase.nextElementSibling
+                }
+            }
+        } else {
+            if (!eventfrom.classList.contains('normal')) {
+                targetBase = eventfrom.parentElement;
+            } else {
+                return target = null;
+            }
+            if(targetBase.nextElementSibling == null){
+                target = null;
+            }else{
+                if (!targetBase.nextElementSibling.classList.contains('normal')) {
+                    target = targetBase.nextElementSibling.children[1];
+
+                } else {
+                    target = targetBase.nextElementSibling;
+                }
+            }
+
+        }
+        console.log(target)
+        return target;
+    }
+
+    function menuWindow(value) {
         const menuselect = document.getElementById('menuselect');
-        if(menuselect != null){
+        if (menuselect != null) {
             menuselect.remove();
         }
     }
-    
+
     function searchTitle(value) {
         console.log(value)
     }
-    
+
     function sendEmailBox() {
         emailBox = document.getElementById('emailbox')
-        if(emailBox.style.display == 'none') {
+        if (emailBox.style.display == 'none') {
             windowWidth = window.innerWidth;
             resultWidth = windowWidth - 910
-        console.log(resultWidth)
+            console.log(resultWidth)
             emailBox.style.border = '1px solid black';
-            emailBox.style.background='white';
-            emailBox.style.display='block';
-            emailBox.style.position='absolute';
+            emailBox.style.background = 'white';
+            emailBox.style.display = 'block';
+            emailBox.style.position = 'absolute';
             emailBox.style.width = '350px';
             emailBox.style.height = '100px';
             emailBox.setAttribute('class', 'text-center d-flex flex-column justify-content-center')
@@ -245,58 +337,74 @@
             emailBox.style.display = 'none';
             emailBox.removeAttribute('class');
         }
-       
+
     }
-    
-    function slash(event){
-        if (document.getElementById('todo').contains(event.target)){
-            content = document.createElement('div')
-            content.setAttribute('class', 'input-group')
-            checkdiv = document.createElement('div')
-            checkdiv.setAttribute('class', 'input-group-text')
-            check = document.createElement('input')
-            check.setAttribute('type', 'checkbox')
-            check.setAttribute('onclick', 'todoText()');
-            input = createTextInput('checkText')
-            checkdiv.appendChild(check)
-            content.appendChild(checkdiv)
-            content.appendChild(input)
-            div = document.getElementById('content')
-            div.appendChild(content);
+
+    function appendLine(obj, eventfrom) {
+        let appendTo = document.getElementById('content');
+        
+            const next = targetAfter(eventfrom);
+            console.log("next", next)
+            if (next == null || next == undefined) {
+                appendTo.appendChild(obj);
+            } else if(next.classList.contains('normal')) {
+                appendTo.insertBefore(obj, next);
+            }else{
+                appendTo.insertBefore(obj, next.parentElement);
+            }
+        
+    }
+    function genCheck(str) {
+        checkdiv = document.createElement('div')
+        checkdiv.setAttribute('class', 'form-control input-group-text')
+        check = document.createElement('input')
+        check.setAttribute('type', 'checkbox')
+        check.setAttribute('onclick', 'todoText()');
+        input = createTextInput('checkText')
+        input.setAttribute('value', str)
+        checkdiv.appendChild(check)
+        checkdiv.appendChild(input)
+        return checkdiv
+    }
+
+    function slash(event) {
+        console.log(this);
+        console.log(event);
+        if (document.getElementById('todo').contains(event.target)) {
+            const content = genCheck('');
+            appendLine(content, this)
+            content.children[1].focus();
         } else if (document.getElementById('text').contains(event.target)) {
+            this.focus();
             return menuWindow('close');
         } else if (document.getElementById('page').contains(event.target)) {
             url_find = window.location.pathname.split('/')
             url = url_find[2]
             let id = document.getElementById('nowId').value
-            location.href = '/notion/createChild/'+ id  + "/" + url;
+            location.href = '/notion/createChild/' + id + "/" + url;
         } else if (document.getElementById('subject1').contains(event.target)) {
             input = createTextInput('subject1');
-            
-            div = document.getElementById('content')
-            div.appendChild(input);
+
+            appendLine(input, this)
             input.focus();
             transBody();
         } else if (document.getElementById('subject2').contains(event.target)) {
             input = createTextInput('subject2');
-            
-            
-            div = document.getElementById('content')
-            div.appendChild(input);
+            appendLine(input, this)
             input.focus();
             transBody();
         } else if (document.getElementById('files').contains(event.target)) {
-    
+
             div_s = document.createElement("div");
             div_s.setAttribute('class', 'input-group')
-            div_s.setAttribute('id','imageDiv');
+            div_s.setAttribute('id', 'imageDiv');
             input = createTextInput('file');
-            
+
             btn = document.createElement("button")
             btn.setAttribute('onclick', 'uploadImage()');
             btn.setAttribute('class', 'btn btn-outline-secondary')
             btn.innerText = "업로드"
-    
+
             div_s.appendChild(input)
             div_s.appendChild(btn)
             div_p = document.createElement("div");
@@ -305,8 +413,8 @@
             div = document.getElementById('content')
             div.appendChild(div_s);
             div.appendChild(div_p);
-    
-            if (div_s.previousElementSibling != null){
+
+            if (div_s.previousElementSibling != null) {
                 div_s.previousElementSibling.remove();
             }
         }
@@ -317,7 +425,7 @@
         var childrenDiv = document.getElementById('children-' + id);
         v = e.children[0].children[0].children[0].children[0];
         console.log(v.style.transform)
-        if (childrenDiv == null){
+        if (childrenDiv == null) {
             return;
         } else if (childrenDiv.style.display === 'none') {
             v.style.rotate = "0deg"
@@ -327,11 +435,11 @@
             childrenDiv.style.display = 'none';
         }
     }
-    
+
     function readURL(obj, imageCnt) {
         document.getElementById('imageDiv').remove();
         let reader = new FileReader();
-        if(!obj.files.length) {
+        if (!obj.files.length) {
             return;
         }
         reader.readAsDataURL(obj.files[0]);
@@ -341,29 +449,29 @@
             img.setAttribute('src', e.target.result);
             img.setAttribute('onclick', 'test()')
             let btn = document.createElement('button')
-            btn.setAttribute('onclick', 'imageRemove("previewDiv'+imageCnt+'")')
+            btn.setAttribute('onclick', 'imageRemove("previewDiv' + imageCnt + '")')
             btn.innerText = '이미지삭제'
             btn.setAttribute('class', 'form-control btn btn-danger w-80')
-            document.getElementById('previewDiv'+imageCnt).append(img);
-            document.getElementById('previewDiv'+imageCnt).append(btn);
+            document.getElementById('previewDiv' + imageCnt).append(img);
+            document.getElementById('previewDiv' + imageCnt).append(btn);
             imageCnt++;
             transBody();
         }
     }
-    
-    function imageRemove(id){
+
+    function imageRemove(id) {
         document.getElementById(id).innerHTML = "";
         transBody();
     }
-    
-    function test(){
+
+    function test() {
         input = createTextInput();
         div = document.getElementById('content')
         div.appendChild(input);
         input.focus();
         transBody();
     }
-    
+
     function sendemail(target) {
         if (event.key == 'Escape') {
             emailBox = document.getElementById('emailbox')
@@ -371,37 +479,40 @@
             emailBox.style.display = 'none';
         }
     }
-    
+
     function todoText() {
-        value = event.target.parentElement.parentElement.children[1].style.textDecoration
-        console.log(value.length)
-        if (value.length != 0) {
-            event.target.parentElement.parentElement.children[1].removeAttribute('style');
+        if (event.target.checked) {
+            event.target.parentElement.children[1].style.textDecoration = "line-through"
+            event.target.classList.add('checked')
         } else {
-            event.target.parentElement.parentElement.children[1].setAttribute('style', 'text-decoration:line-through')
-        }    
+            event.target.parentElement.children[1].style.textDecoration = "none"
+            event.target.classList.remove('checked')
+        }
+        transBody();
+        event.target.parentElement.children[1].focus();
     }
 
     function updateChildrenPosition() {
-    const body = document.getElementById('body');
-    const content = document.getElementById('content');
-    if (window.innerWidth < 1100) {
-        body.classList.remove('center-aligned');
-        content.classList.remove('center-aligned');
-    } else {
-        body.classList.add('center-aligned');
-        content.classList.add('center-aligned');
+        const body = document.getElementById('body');
+        const content = document.getElementById('content');
+        if (window.innerWidth < 1100) {
+            body.classList.remove('center-aligned');
+            content.classList.remove('center-aligned');
+        } else {
+            body.classList.add('center-aligned');
+            content.classList.add('center-aligned');
+        }
     }
-}
 
-// 초기 위치 설정
+    // 초기 위치 설정
 
 
-// 윈도우 크기가 변경될 때마다 위치 업데이트
-window.addEventListener('keyup', function(event) {
-    if (event.key === '/' && document.getElementById('menuselect') == null) {
-        console.log(event.target)
-        menuselect = document.createElement('div');
+    // 윈도우 크기가 변경될 때마다 위치 업데이트
+    window.addEventListener('keyup', function (event) {
+        transBody();
+        if (event.key === '/' && document.getElementById('menuselect') == null) {
+            console.log(event.target)
+            menuselect = document.createElement('div');
             menuselect.innerHTML = `<div id="menuselect" 
       data-overlay="true" style="pointer-events: auto; position: relative; z-index: 1;">
       <div>
@@ -513,91 +624,105 @@ window.addEventListener('keyup', function(event) {
           </div>
       </div>
   </div>`
-  const rect = event.target
-                let x = rect.offsetLeft+250;
-                if (window.innerWidth - rect.offsetLeft < 324){
-                    x = rect.offsetLeft + 74;
-                }
-                let y = rect.offsetTop + 450;
-                if (rect.offsetTop > 450){
-                    y = rect.offsetTop;
-                }
+            const rect = event.target
+            let x = rect.offsetLeft + 250;
+            if (window.innerWidth - rect.offsetLeft < 324) {
+                x = rect.offsetLeft + 74;
+            }
+            let y = rect.offsetTop + 450;
+            if (rect.offsetTop > 450) {
+                y = rect.offsetTop;
+            }
             menuselect.children[0].children[0].children[0].style.left = x + 'px';
             menuselect.children[0].children[0].children[0].style.top = y + 'px';
 
             document.body.appendChild(menuselect);
-            menuselect.addEventListener('click', slash);
-    }else{
-        menuWindow('close')
-    
-    }
-});
-window.addEventListener('resize', updateChildrenPosition);
-    </script>
+            const eventfrom = event.target;
+            console.log(eventfrom)
+            menuselect.addEventListener('click', function (event) {
+                slash.call(eventfrom, event);
+            });
+        } else {
+            menuWindow('close')
+
+        }
+    });
+    window.addEventListener('resize', updateChildrenPosition);
+</script>
 {% endblock %}
 {% block page %}
 <style>
-    #pagebody{
+    #pagebody {
         width: 100%;
     }
-    input{
+
+
+    input.form-control {
         border: none;
         outline: none;
-        box-shadow: none;
-    }
-    input:focus{
-        border: none;
-        outline: none;
-    }
-    input.form-control{
-        border: none;
         display: flex;
         padding-top: 5px;
         font-size: 16px;
         width: 100%;
         height: 30px;
         max-width: 700px;
+        color: rgb(55, 53, 47);
 
     }
-    input::placeholder{
+
+    div.form-control.input-group-text {
+        border: none;
+        outline: none;
+        display: flex;
+        padding-top: 5px;
+        font-size: 16px;
+        width: 100%;
+        height: 30px;
+        max-width: 700px;
+        color: rgb(55, 53, 47);
+        background-color: transparent;
+    }
+
+    input.form-control:focus {
+        border: none;
+        outline: none;
+        -webkit-box-shadow: none !important;
+        box-shadow: none !important;
+    }
+
+    input.form-control::placeholder {
         color: rgba(55, 53, 47, 0.2);
 
     }
-    input.text::placeholder{
+
+    input.form-control.text::placeholder {
         visibility: hidden;
+        -webkit-text-fill-color: rgba(55, 53, 47, 0.5);
+
     }
-    input:focus::placeholder{
+
+    input.form-control:focus::placeholder {
         visibility: visible;
     }
 
-.center-aligned {
-    align-items: center;
-}
+    .center-aligned {
+        align-items: center;
+    }
 </style>
 <div id="pagebody" style="display: flex; flex-direction: column; align-items: center; margin: 0 auto; ">
-     <div id="body" class="col p-4 vh-100 d-flex flex-column" style="width: 100%;transition-property: width; transition-duration: 200ms; transition-timing-function: ease;">
-      <div id="title mt-10" style="margin-top: 110px; width: 100%; max-width: 700px;">
+    <div id="body" class="col p-4 vh-100 d-flex flex-column"
+        style="width: 100%;transition-property: width; transition-duration: 200ms; transition-timing-function: ease;">
+        <div id="title mt-10" style="margin-top: 110px; width: 100%; max-width: 700px;">
 
-          <input class='form-control' style="height:50px ; font-size: 40px;font-weight: bold; border: none;" type='text' name='title' id="title" onkeyup="titleChange(this.value)"
-            value='{{ now.title }}' placeholder="제목없음">
-      </div>        
-      <div id="content" class="mt-10 d-flex flex-column" style="width: 100%;">
-        {{ now.content|safe }}
-      </div>
+            <input class='form-control' style="height:50px ; font-size: 40px;font-weight: bold; border: none;"
+                type='text' name='title' id="title" onkeyup="titleChange(this.value)" value='{{ now.title }}'
+                placeholder="제목없음">
+        </div>
+        <div id="content" class="mt-10 d-flex flex-column" style="width: 100%;">
+            {{ now.content|safe }}
+        </div>
     </div>
-  <!-- <div id="menuselect" class="col" style="display: none;">
-    <select id='selectBox' class='form-select form-lg' size="6">
-      <option value="todo">할일목록</option>
-      <option value="text">텍스트</option>
-      <option value="page">페이지</option>
-      <option value="subject1">제목1</option>
-      <option value="subject2">제목2</option>
-      <option value="files">이미지파일</option>
-    </select>
-  </div> -->
-  <input type="hidden" id='nowId' value="{{ now.id }}">
-  <input type="hidden" id='parent' value="{{ parent.id }}">
+    <input type="hidden" id='nowId' value="{{ now.id }}">
+    <input type="hidden" id='parent' value="{{ parent.id }}">
 </div>
-</html>
 {% endblock %}
-
