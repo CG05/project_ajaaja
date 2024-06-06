@@ -260,44 +260,13 @@ function toggleContent(event) {
   
 }
 
-const showPageBtns = document.querySelectorAll("#ltabGainPage .showPage")
+const showPageBtns = document.querySelectorAll(".showPage")
 for(btn of showPageBtns){
   btn.addEventListener("click", toggleContent);
   btn.addEventListener("mouseenter", iconChange);
   btn.addEventListener("mouseleave", iconChange);
   
 }
-
-const showAllBtn = document.getElementById("showPage");
-showAllBtn.addEventListener("click", togglePage);
-function togglePage(e){
-  target =  document.getElementById("showPage")
-  target.setAttribute("aria-expanded", !target.getAttribute("aria-expanded"))
-  if(document.getElementById("addNewPage").style.display == "none"){
-    document.getElementById("addNewPage").style.display = "flex";
-  }else{
-    document.getElementById("addNewPage").style.display = "none";
-  }
-}
-
-const addBtn = document.getElementsByClassName("addpage");
-for(btn of addBtn){
-  btn.addEventListener("mouseenter", function(e){
-    e.target.style.backgroundColor = "rgba(55, 53, 47, 0.08)";
-  });
-  btn.addEventListener("mouseleave", function(e){
-    e.target.style.backgroundColor = "transparent";
-  });
-
-}
-const addBtn0 = document.getElementById("addpage");
-  addBtn0.addEventListener("mouseenter", function(e){
-    e.target.style.backgroundColor = "rgba(55, 53, 47, 0.08)";
-  });
-  addBtn0.addEventListener("mouseleave", function(e){
-    e.target.style.backgroundColor = "transparent";
-  });
-
 
 function iconChange(e){
   grid1 = e.target.children[0].children[0].children[0];
@@ -310,35 +279,6 @@ function iconChange(e){
   addPageBtn.style.opacity = 1 - addPageBtn.style.opacity;
   
 }
-function toggleVisible(e){
-
-}
-
-function addaddpage(pageid) {
-  var newDiv = document.createElement("div");
-    newDiv.className = "dksqhdla";
-    newDiv.style.position = "relative";
-
-    var container = document.getElementsByClassName("imgshow1")
-    container.appendChild(newDiv);
-    document.location.href = `/ltab/newpage/${pageid}/`;
-}
-
-function listing(){
-
-}
-
-  // 누르면 새 페이지를 만드는 함수
-  function addpage(){
-    var newDiv = document.createElement("div");
-    newDiv.className = "listTr";
-
-    var container = document.querySelector("#ltabGainPage table");
-    container.appendChild(newDiv);
-    document.location.href = '/ltab/newpage/';
-  }
-
-
 
 
   function openModal() {

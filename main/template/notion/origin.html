@@ -9,6 +9,7 @@
     let imageCnt = 0;
     window.onload = function(){
         updateChildrenPosition();
+        rotateSvg();
         imageList = document.querySelectorAll('[id*=previewDiv]')
         for (var i=0;i<imageList.length;i++){
             cnt = imageList[i].id.substr(imageList[i].id.length-1)
@@ -17,6 +18,38 @@
                 console.log(imageCnt)
             }
         }
+    }
+    function loopArea(div){
+        console.log('loop...');
+        area = div.getElementsByClassName('childarea')[0];
+        if(area == undefined){
+            var svg = div.querySelector('.alterBtn svg')
+            svg.style.rotate="-90deg";
+            console.log('div', div);
+            console.log('close');
+        }else{
+            if(area.style.display == 'none'){
+                var svg = div.querySelector('.alterBtn svg')
+                svg.style.rotate="-90deg";
+                console.log('div', div);
+                console.log('close');
+            }else{
+                console.log('div', div);
+                console.log('open');
+            }
+            var sp = area.querySelector('div.showPage')
+            loopArea(sp)
+        }  
+        
+    }
+
+    function rotateSvg(){
+        var families = Array.from(document.getElementsByClassName('family'));
+        for(var family of families){
+            var div = family.querySelector('div.showPage');
+            loopArea(div);
+        }
+        
     }
     function createTextInput(option){
         input = document.createElement('input');
@@ -57,10 +90,10 @@
             transBody();
         } else {
             if (value.length == 10) {
-                text = document.getElementById(id_value).innerText
-                document.getElementById(id_value).innerText = text + '...';
+                text = document.getElementById('titleSpan_' + id_value).innerText
+                document.getElementById('titleSpan_' + id_value).innerText = text + '...';
             } else if (value.length < 10){
-                document.getElementById(id_value).innerText = value;
+                document.getElementById('titleSpan_' + id_value).innerText = value;
             } else {
     
             }
@@ -173,8 +206,10 @@
     }
     
     function menuWindow(value){
-        menuselect = document.getElementById('menuselect');
-        menuselect.remove();
+        const menuselect = document.getElementById('menuselect');
+        if(menuselect != null){
+            menuselect.remove();
+        }
     }
     
     function searchTitle(value) {
@@ -267,16 +302,18 @@
         }
         return menuWindow('close');
     }
-    
-    function toggleChildren(id) {
+
+    function toggleChildren(e, id) {
         var childrenDiv = document.getElementById('children-' + id);
+        v = e.children[0].children[0].children[0].children[0];
+        console.log(v.style.transform)
         if (childrenDiv == null){
             return;
         } else if (childrenDiv.style.display === 'none') {
-            childrenDiv.parentNode.getElementsByClassName('alterBtn')[0].style.transform = ""
+            v.style.rotate = "0deg"
             childrenDiv.style.display = 'block';
         } else {
-            childrenDiv.parentNode.getElementsByClassName('alterBtn')[0].style.transform = "rotate(-90deg);"
+            v.style.rotate = "-90deg"
             childrenDiv.style.display = 'none';
         }
     }

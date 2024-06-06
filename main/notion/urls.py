@@ -7,9 +7,9 @@ urlpatterns = [
     path('save/<notionId>/', views.save),
     path('saveBody/<notionId>/', views.saveBody),
     path('sendEmail/', views.sendEmail, name='email'),
-    path('remove/<notionId>', views.remove),
+    path('remove/<notionId>/', views.remove),
     path("", views.index),
     path("createNewPage/", views.createNewPage),
-    path('createChild/<notionId>/<url>', views.createChild),
+    path('createChild/<notionId>/<url>/', views.createChild),
     path('<pageNum>/', views.pageNum),
 ]

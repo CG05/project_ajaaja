@@ -2,43 +2,46 @@
 
 {% block style %}
 <style>
-  form{
+  form {
     z-index: 111;
   }
+
   .modal {
-  display: none; /* 모달 창 초기에는 숨김 */
-  position:fixed ; /* 고정 위치 */
-  z-index: inherit;
-   /* 다른 요소 위에 표시 */
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  overflow: auto; /* 화면 크기를 벗어날 경우 스크롤 가능 */
-  background-color: rgba(0,0,0,0.4); /* 배경 어둡게 처리 */
-}
+    display: none;
+    /* 모달 창 초기에는 숨김 */
+    position: fixed;
+    /* 고정 위치 */
+    z-index: inherit;
+    /* 다른 요소 위에 표시 */
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    /* 화면 크기를 벗어날 경우 스크롤 가능 */
+    background-color: rgba(0, 0, 0, 0.4);
+    /* 배경 어둡게 처리 */
+  }
 
-/* 모달 내용 스타일 */
-.modal-content {
-  border-radius: 16px;
-  border: 1px solid #888;
-  background-color: #fefefe;
-  margin: 90px auto; /* 모달 창을 수직 가운데로 정렬 */
-  padding-top: 8px;
-  padding-left: 1px;
-  padding-right: 1px;
-  height: 500px;
-  min-width: 100px;
-  max-width: 700px;
-}
+  /* 모달 내용 스타일 */
+  .modal-content {
+    border-radius: 16px;
+    border: 1px solid #888;
+    background-color: #fefefe;
+    margin: 90px auto;
+    /* 모달 창을 수직 가운데로 정렬 */
+    padding-top: 8px;
+    padding-left: 1px;
+    padding-right: 1px;
+    height: 500px;
+    min-width: 100px;
+    max-width: 700px;
+  }
 
-/* 닫기 버튼 스타일 */
-.close {
-  display: none;
-}
-
-
-
+  /* 닫기 버튼 스타일 */
+  .close {
+    display: none;
+  }
 </style>
 {% endblock style %}
 
@@ -49,12 +52,16 @@
     border: none;
     background-color: rgb(247, 247, 245);
   }
+
   button:hover {
     background-color: rgb(239, 239, 237);
   }
+
   #changeBackground {
-    border: none; /* 테두리 없음 */
-    background-color: rgb(247, 247, 245); /* 배경색 설정 */
+    border: none;
+    /* 테두리 없음 */
+    background-color: rgb(247, 247, 245);
+    /* 배경색 설정 */
     display: flex;
     align-items: center;
     width: 100%;
@@ -63,38 +70,58 @@
     margin: 2px 5px;
     height: 30px;
     padding: 4px 8px;
-    z-index:3px;
+    z-index: 3px;
   }
+
   #changeBackground:hover {
-    background-color: rgb(239, 239, 237); /* 마우스를 올렸을 때 배경색 변경 */
+    background-color: rgb(239, 239, 237);
+    /* 마우스를 올렸을 때 배경색 변경 */
   }
+
   .dksqhdla {
-    border: none; /* 테두리 없음 */
-    background-color: rgb(247, 247, 245); /* 배경색 설정 */
+    border: none;
+    /* 테두리 없음 */
+    background-color: rgb(247, 247, 245);
+    /* 배경색 설정 */
   }
+
   .dksqhdla:hover {
-    background-color: rgb(239, 239, 237); /* 마우스를 올렸을 때 배경색 변경 */
+    background-color: rgb(239, 239, 237);
+    /* 마우스를 올렸을 때 배경색 변경 */
   }
+
   div[role="button"] {
-    width: 100%; 
-    font-size: 14px; 
-    min-height: 17px; 
-    height: 30px; 
+    width: 100%;
+    font-size: 14px;
+    min-height: 17px;
+    height: 30px;
     border-radius: 6px;
   }
+
   div[role="button"]:hover {
     background-color: rgb(239, 239, 237);
   }
-  div[role="button"].alterBtn:hover{
+
+  div[role="button"].alterBtn:hover {
     background-color: rgba(55, 53, 47, 0.08);
   }
+
+  div[role="button"].addpage:hover {
+    background-color: rgba(55, 53, 47, 0.08);
+  }
+
+  div[role="button"]#addpage:hover {
+    background-color: rgba(55, 53, 47, 0.08);
+  }
+
   .tableTr {
     width: 100%;
-    position: relative; 
-    display: flex; 
+    position: relative;
+    display: flex;
     flex-direction: column;
   }
-  .notion-app{
+
+  .notion-app {
     color: rgb(55, 53, 47);
     fill: currentcolor;
     line-height: 1.5;
@@ -106,24 +133,27 @@
     width: 230px;
     height: 100%;
   }
-  #notionBtn{
+
+  #notionBtn {
     border-radius: 6px;
     width: 100%;
-    line-height:30px;
+    line-height: 30px;
     height: 30px;
     position: relative;
     margin: 4px 5px;
     display: flex;
     justify-content: flex-start;
-    overflow:hidden;
+    overflow: hidden;
     z-index: 1px;
   }
-  .listbutton{
-    width:100%;
+
+  .listbutton {
+    width: 100%;
     height: 30px;
     padding: 1px 4px;
     border-radius: 4px;
   }
+
   .listbutton:hover {
     background-color: rgb(239, 239, 237);
   }
@@ -149,189 +179,176 @@
 
     <!-- 페이지 생성되야함 /newpage/ -->
     {% load static %}
-    <div role="button" tabindex="0" aria-label="새 페이지" style="position: absolute; user-select: none; transition: background 20ms ease-in 0s; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; border-radius: 4px; height: 24px; width: 24px; padding: 0px; left: 197px; top:7px" onclick="document.location.href='/notion/createNewPage/'">
-      <svg role="graphics-symbol" viewBox="0 0 24 24" class="createPage" style="width: 24px; height: 24px; display: block; fill: rgb(55, 53, 47); flex-shrink: 0;">
+    <div role="button" tabindex="0" aria-label="새 페이지"
+      style="position: absolute; user-select: none; transition: background 20ms ease-in 0s; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; border-radius: 4px; height: 24px; width: 24px; padding: 0px; left: 197px; top:7px"
+      onclick="document.location.href='/notion/createNewPage/'">
+      <svg role="graphics-symbol" viewBox="0 0 24 24" class="createPage"
+        style="width: 24px; height: 24px; display: block; fill: rgb(55, 53, 47); flex-shrink: 0;">
         <g>
-          <path fill-rule="evenodd" d="M9.944 14.721c.104.094.216.12.336.079l1.703-.688 6.844-6.844-1.406-1.398-6.836 6.836-.711 1.68c-.052.13-.029.242.07.335zm8.102-9.484l1.414 1.406.515-.523a.917.917 0 00.282-.633.76.76 0 00-.258-.61l-.25-.25a.702.702 0 00-.578-.187.975.975 0 00-.617.297l-.508.5zm-9.453.127a3.85 3.85 0 00-3.85 3.85v6.5a3.85 3.85 0 003.85 3.85h6.5a3.85 3.85 0 003.85-3.85V12.95a.85.85 0 10-1.7 0v2.764a2.15 2.15 0 01-2.15 2.15h-6.5a2.15 2.15 0 01-2.15-2.15v-6.5a2.15 2.15 0 012.15-2.15h3.395a.85.85 0 000-1.7H8.593z" clip-rule="evenodd">
+          <path fill-rule="evenodd"
+            d="M9.944 14.721c.104.094.216.12.336.079l1.703-.688 6.844-6.844-1.406-1.398-6.836 6.836-.711 1.68c-.052.13-.029.242.07.335zm8.102-9.484l1.414 1.406.515-.523a.917.917 0 00.282-.633.76.76 0 00-.258-.61l-.25-.25a.702.702 0 00-.578-.187.975.975 0 00-.617.297l-.508.5zm-9.453.127a3.85 3.85 0 00-3.85 3.85v6.5a3.85 3.85 0 003.85 3.85h6.5a3.85 3.85 0 003.85-3.85V12.95a.85.85 0 10-1.7 0v2.764a2.15 2.15 0 01-2.15 2.15h-6.5a2.15 2.15 0 01-2.15-2.15v-6.5a2.15 2.15 0 012.15-2.15h3.395a.85.85 0 000-1.7H8.593z"
+            clip-rule="evenodd">
           </path>
         </g>
       </svg>
     </div>
-    
-      
+
+
     <!-- 로그아웃 / 로그인 - 글자가 칸 벗어남, left: 160px -->
     {% if user.is_active %}
-    <div id="logBtn" role="button" style="font-size:12px; font-weight:500; width: auto; height: 24px; border-radius: 4px; display: flex; justify-content: center; align-items: center;  position: absolute; left: 154px; top:7px;" onclick="document.location.href='/account/logout/'">Logout</div>
-    {% else %}  
-    <div id="logBtn" role="button" style="font-size:12px; font-weight:500; width: auto; height: 24px; border-radius: 4px; display: flex; justify-content: center; align-items: center;  position: absolute; left: 154px; top:7px;" onclick="document.location.href='/account/login/'">Login</div>
+    <div id="logBtn" role="button"
+      style="font-size:12px; font-weight:500; width: auto; height: 24px; border-radius: 4px; display: flex; justify-content: center; align-items: center;  position: absolute; left: 154px; top:7px;"
+      onclick="document.location.href='/account/logout/'">Logout</div>
+    {% else %}
+    <div id="logBtn" role="button"
+      style="font-size:12px; font-weight:500; width: auto; height: 24px; border-radius: 4px; display: flex; justify-content: center; align-items: center;  position: absolute; left: 154px; top:7px;"
+      onclick="document.location.href='/account/login/'">Login</div>
     {% endif %}
   </div>
 
-    
-    <!-- 검색 -->
-    <div tabindex="0" style="display: flex; user-select: none; transition: background 150ms ease 0s; cursor: pointer; border-radius: 6px; margin-left: 0px; margin-right: 0px; font-weight: 500;">
-      <div role="button" id="changeBackground" onclick="openModal()">
-        <div style="flex-shrink: 0; flex-grow: 0; border-radius: 4px; color: rgba(55, 53, 47, 0.65); width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; margin-right: 8px;">
-          <svg role="graphics-symbol" viewBox="0 0 24 24" class="newSidebarSearch" style="width: 24px; height: 24px; display: block; fill: rgb(145, 145, 142); flex-shrink: 0;">
-            <g><path d="M4.212 10.915a6.053 6.053 0 016.05-6.057c3.34 0 6.05 2.71 6.05 6.058 0 1.245-.38 2.394-1.04 3.34l3.157 3.17c.234.235.359.55.359.887 0 .703-.528 1.252-1.245 1.252-.337 0-.66-.117-.901-.359l-3.186-3.186a5.843 5.843 0 01-3.194.945c-3.34 0-6.05-2.71-6.05-6.05zm1.788 0a4.262 4.262 0 004.262 4.263 4.268 4.268 0 004.27-4.263 4.27 4.27 0 00-4.27-4.27A4.264 4.264 0 006 10.916z"></path></g>
-          </svg>
-        </div>
-        <div style="font-weight:500; color:#5F5E5B; flex: 1 1 auto; white-space: nowrap; min-width: 0px; overflow: hidden; text-overflow: ellipsis;">Search</div>
+
+  <!-- 검색 -->
+  <div tabindex="0"
+    style="display: flex; user-select: none; transition: background 150ms ease 0s; cursor: pointer; border-radius: 6px; margin-left: 0px; margin-right: 0px; font-weight: 500;">
+    <div role="button" id="changeBackground" onclick="openModal()">
+      <div
+        style="flex-shrink: 0; flex-grow: 0; border-radius: 4px; color: rgba(55, 53, 47, 0.65); width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; margin-right: 8px;">
+        <svg role="graphics-symbol" viewBox="0 0 24 24" class="newSidebarSearch"
+          style="width: 24px; height: 24px; display: block; fill: rgb(145, 145, 142); flex-shrink: 0;">
+          <g>
+            <path
+              d="M4.212 10.915a6.053 6.053 0 016.05-6.057c3.34 0 6.05 2.71 6.05 6.058 0 1.245-.38 2.394-1.04 3.34l3.157 3.17c.234.235.359.55.359.887 0 .703-.528 1.252-1.245 1.252-.337 0-.66-.117-.901-.359l-3.186-3.186a5.843 5.843 0 01-3.194.945c-3.34 0-6.05-2.71-6.05-6.05zm1.788 0a4.262 4.262 0 004.262 4.263 4.268 4.268 0 004.27-4.263 4.27 4.27 0 00-4.27-4.27A4.264 4.264 0 006 10.916z">
+            </path>
+          </g>
+        </svg>
       </div>
+      <div
+        style="font-weight:500; color:#5F5E5B; flex: 1 1 auto; white-space: nowrap; min-width: 0px; overflow: hidden; text-overflow: ellipsis;">
+        Search</div>
     </div>
-    
-    <!-- 홈 -->
-    <div  tabindex="0" style="display: flex; color: inherit; text-decoration: none; user-select: none; transition: background 150ms ease 0s; cursor: pointer; border-radius: 6px; margin-left: 0px; margin-right: 0px; font-weight: 500;">
-      <div role="button" id="changeBackground" onclick="document.location.href='/notion/'">
-        <div style="flex-shrink: 0; flex-grow: 0; border-radius: 4px; color: rgba(55, 53, 47, 0.65); width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; margin-right: 8px;">
-          <svg role="graphics-symbol" viewBox="0 0 24 24" class="newSidebarHome" style="width: 24px; height: 24px; display: block; fill: rgb(145, 145, 142); flex-shrink: 0;">
-            <g>
-              <path d="M13.049 4.56l-1.05-.41-1.047.413.865 1.493.185-.155 2.564 2.15-1.517-3.49z"></path>
-              <path d="M10.952 4.563L4.828 9.698a2.759 2.759 0 00-.986 2.114v5.315c0 .76.228 1.46.772 1.987l.005.005c.543.518 1.249.731 2.012.731h3.53c.47 0 .85-.38.85-.85v-4.782c0-.058.047-.104.104-.104h1.774c.058 0 .104.046.104.104V19c0 .47.381.85.85.85h3.53c.76 0 1.461-.215 2.003-.731l-.95-1.642a.785.785 0 01-.223.411c-.152.146-.395.262-.83.262h-2.68v-3.932c0-.997-.807-1.804-1.804-1.804h-1.774c-.996 0-1.804.807-1.804 1.804v3.932h-2.68c-.44 0-.685-.116-.837-.26-.138-.135-.252-.352-.252-.763v-5.315c0-.313.139-.61.379-.811l5.896-4.945-.865-1.493zm8.223 5.135L13.05 4.56l1.517 3.49L18.084 11c.24.2.378.498.378.81v5.202l.916 2.106c.551-.526.784-1.228.784-1.992v-5.315c0-.816-.36-1.59-.986-2.114z"></path>
-              <path d="M18.426 17.477l.95 1.642-.915-2.106v.114c0 .137-.013.252-.035.35zM13.049 4.56c-.273-.228-.627-.41-1.05-.41l1.05.41z"></path>
-              <path d="M12 4.15c-.422 0-.776.182-1.048.413L12 4.15z"></path>
-            </g>
-          </svg>
-        </div>
-        <div style="font-weight:500; color:#5F5E5B; flex: 1 1 auto; white-space: nowrap; min-width: 0px; overflow: hidden; text-overflow: ellipsis;">Home</div>
+  </div>
+
+  <!-- 홈 -->
+  <div tabindex="0"
+    style="display: flex; color: inherit; text-decoration: none; user-select: none; transition: background 150ms ease 0s; cursor: pointer; border-radius: 6px; margin-left: 0px; margin-right: 0px; font-weight: 500;">
+    <div role="button" id="changeBackground" onclick="document.location.href='/notion/'">
+      <div
+        style="flex-shrink: 0; flex-grow: 0; border-radius: 4px; color: rgba(55, 53, 47, 0.65); width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; margin-right: 8px;">
+        <svg role="graphics-symbol" viewBox="0 0 24 24" class="newSidebarHome"
+          style="width: 24px; height: 24px; display: block; fill: rgb(145, 145, 142); flex-shrink: 0;">
+          <g>
+            <path d="M13.049 4.56l-1.05-.41-1.047.413.865 1.493.185-.155 2.564 2.15-1.517-3.49z"></path>
+            <path
+              d="M10.952 4.563L4.828 9.698a2.759 2.759 0 00-.986 2.114v5.315c0 .76.228 1.46.772 1.987l.005.005c.543.518 1.249.731 2.012.731h3.53c.47 0 .85-.38.85-.85v-4.782c0-.058.047-.104.104-.104h1.774c.058 0 .104.046.104.104V19c0 .47.381.85.85.85h3.53c.76 0 1.461-.215 2.003-.731l-.95-1.642a.785.785 0 01-.223.411c-.152.146-.395.262-.83.262h-2.68v-3.932c0-.997-.807-1.804-1.804-1.804h-1.774c-.996 0-1.804.807-1.804 1.804v3.932h-2.68c-.44 0-.685-.116-.837-.26-.138-.135-.252-.352-.252-.763v-5.315c0-.313.139-.61.379-.811l5.896-4.945-.865-1.493zm8.223 5.135L13.05 4.56l1.517 3.49L18.084 11c.24.2.378.498.378.81v5.202l.916 2.106c.551-.526.784-1.228.784-1.992v-5.315c0-.816-.36-1.59-.986-2.114z">
+            </path>
+            <path
+              d="M18.426 17.477l.95 1.642-.915-2.106v.114c0 .137-.013.252-.035.35zM13.049 4.56c-.273-.228-.627-.41-1.05-.41l1.05.41z">
+            </path>
+            <path d="M12 4.15c-.422 0-.776.182-1.048.413L12 4.15z"></path>
+          </g>
+        </svg>
       </div>
+      <div
+        style="font-weight:500; color:#5F5E5B; flex: 1 1 auto; white-space: nowrap; min-width: 0px; overflow: hidden; text-overflow: ellipsis;">
+        Home</div>
     </div>
-    
-
-    <!-- 빈공간 -->
-    <div style="display: flex; flex-shrink: 0; width: 100%; box-shadow: transparent 0px 0px 0px; transition: box-shadow 300ms ease 0s; height: 100px; margin-top: -2px;"></div>
+  </div>
 
 
-    <!-- 개인 페이지 -->
-    <div style="z-index: 1; padding: 6px 8px 20px; overflow: hidden auto; margin-right: 0px; margin-bottom: 0px;">
+  <!-- 빈공간 -->
+  <div
+    style="display: flex; flex-shrink: 0; width: 100%; box-shadow: transparent 0px 0px 0px; transition: box-shadow 300ms ease 0s; height: 100px; margin-top: -2px;">
+  </div>
+
+
+  <!-- 개인 페이지 -->
+  <div style="z-index: 1; padding: 6px 8px 20px; overflow: hidden auto; margin-right: 0px; margin-bottom: 0px;">
     <div style="width: 100%;">
-        <div class="notion-outliner-private-header-container" style="width: 100%; display: flex; flex-direction: column; gap: 1px; margin-bottom: 12px;">
-          <div role="button" tabindex="0" id="showPage" aria-controls="addPage" aria-expanded="false" style="user-select: none; transition: background 20ms ease-in 0s; display: flex; align-items: center; border-radius: 6px; height: 30px;">
-            <div style="padding: 5px 8px;">
-              <span style="text-transform: initial; font-size: 14px; line-height: 1; color: rgb(145, 145, 142); font-weight: 500; transition: color 100ms ease-out 0s;">개인 페이지</span>
-            </div>
-            <div style="margin-left: auto;">
-              <div style="display: flex; align-items: center; pointer-events: pointer; transition: opacity 150ms ease 0s;">
-                <div id="addpage" role="button" onclick="location.href='/notion/createNewPage/'" tabindex="0" class="shadow-cursor-new-page-sidebar" aria-label="페이지 추가" style="user-select: none; transition: background 20ms ease-in 0s; cursor: pointer; display: flex; align-items: center; justify-content: center; height: 20px; width: 20px; border-radius: 5px; margin-right: 4px;"><span></span>
-                  <svg role="graphics-symbol" viewBox="0 0 14 14" class="plusThick" style="width: 14px; height: 14px; display: block; fill: rgba(55, 53, 47, 0.45); flex-shrink: 0;">
-                    <path d="M2 7.16357C2 7.59692 2.36011 7.95093 2.78735 7.95093H6.37622V11.5398C6.37622 11.9731 6.73022 12.3271 7.16357 12.3271C7.59692 12.3271 7.95093 11.9731 7.95093 11.5398V7.95093H11.5398C11.9731 7.95093 12.3271 7.59692 12.3271 7.16357C12.3271 6.73022 11.9731 6.37622 11.5398 6.37622H7.95093V2.78735C7.95093 2.36011 7.59692 2 7.16357 2C6.73022 2 6.37622 2.36011 6.37622 2.78735V6.37622H2.78735C2.36011 6.37622 2 6.73022 2 7.16357Z"></path>
-                  </svg>
-                </div>
+      <div class="notion-outliner-private-header-container"
+        style="width: 100%; display: flex; flex-direction: column; gap: 1px; margin-bottom: 12px;">
+        <div role="button" tabindex="0" id="showPage" aria-controls="addPage" aria-expanded="false"
+          style="user-select: none; transition: background 20ms ease-in 0s; display: flex; align-items: center; border-radius: 6px; height: 30px;">
+          <div style="padding: 5px 8px;">
+            <span
+              style="text-transform: initial; font-size: 14px; line-height: 1; color: rgb(145, 145, 142); font-weight: 500; transition: color 100ms ease-out 0s;">개인
+              페이지</span>
+          </div>
+          <div style="margin-left: auto;">
+            <div
+              style="display: flex; align-items: center; pointer-events: pointer; opacity: 0; transition: opacity 150ms ease 0s;">
+              <div id="addpage" role="button" onclick="location.href='/notion/createNewPage/'" tabindex="0"
+                class="shadow-cursor-new-page-sidebar" aria-label="페이지 추가"
+                style="user-select: none; transition: background 20ms ease-in 0s; cursor: pointer; display: flex; align-items: center; justify-content: center; height: 20px; width: 20px; border-radius: 5px; margin-right: 6px;">
+                <span></span>
+                <svg role="graphics-symbol" viewBox="0 0 14 14" class="plusThick"
+                  style="width: 14px; height: 14px; display: block; fill: rgba(55, 53, 47, 0.45); flex-shrink: 0;">
+                  <path
+                    d="M2 7.16357C2 7.59692 2.36011 7.95093 2.78735 7.95093H6.37622V11.5398C6.37622 11.9731 6.73022 12.3271 7.16357 12.3271C7.59692 12.3271 7.95093 11.9731 7.95093 11.5398V7.95093H11.5398C11.9731 7.95093 12.3271 7.59692 12.3271 7.16357C12.3271 6.73022 11.9731 6.37622 11.5398 6.37622H7.95093V2.78735C7.95093 2.36011 7.59692 2 7.16357 2C6.73022 2 6.37622 2.36011 6.37622 2.78735V6.37622H2.78735C2.36011 6.37622 2 6.73022 2 7.16357Z">
+                  </path>
+                </svg>
               </div>
             </div>
           </div>
-          <div style="width:100%;">
-          {{ borderList|safe}}
-          </div>
         </div>
-      </div> 
+        <div style="width:100%;">
+          {{ borderList|safe}}
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 
 <script>
+  function toggleContent(event) {
+    var element = event.target.parentNode.parentNode.parentNode;
+    console.log(element);
 
-
-function toggleContent(event) {
-  var element = event.target.parentNode.parentNode.parentNode;
-  console.log(element);
-  
-}
-
-const showPageBtns = document.querySelectorAll("#ltabGainPage .showPage")
-for(btn of showPageBtns){
-  btn.addEventListener("click", toggleContent);
-  btn.addEventListener("mouseenter", iconChange);
-  btn.addEventListener("mouseleave", iconChange);
-  
-}
-
-const showAllBtn = document.getElementById("showPage");
-showAllBtn.addEventListener("click", togglePage);
-function togglePage(e){
-  target =  document.getElementById("showPage")
-  target.setAttribute("aria-expanded", !target.getAttribute("aria-expanded"))
-  if(document.getElementById("addNewPage").style.display == "none"){
-    document.getElementById("addNewPage").style.display = "flex";
-  }else{
-    document.getElementById("addNewPage").style.display = "none";
-  }
-}
-
-const addBtn = document.getElementsByClassName("addpage");
-for(btn of addBtn){
-  btn.addEventListener("mouseenter", function(e){
-    e.target.style.backgroundColor = "rgba(55, 53, 47, 0.08)";
-  });
-  btn.addEventListener("mouseleave", function(e){
-    e.target.style.backgroundColor = "transparent";
-  });
-
-}
-const addBtn0 = document.getElementById("addpage");
-  addBtn0.addEventListener("mouseenter", function(e){
-    e.target.style.backgroundColor = "rgba(55, 53, 47, 0.08)";
-  });
-  addBtn0.addEventListener("mouseleave", function(e){
-    e.target.style.backgroundColor = "transparent";
-  });
-
-
-function iconChange(e){
-  grid1 = e.target.children[0].children[0].children[0];
-  grid2 = e.target.children[0].children[0].children[1];
-  grid1.style.opacity = 1 - grid1.style.opacity;
-  grid2.style.opacity = 1 - grid2.style.opacity;
-  grid1.order = 1 - grid1.order;
-  grid2.order = 1 - grid2.order;
-  addPageBtn = e.target.querySelector(".addpage");
-  addPageBtn.style.opacity = 1 - addPageBtn.style.opacity;
-  
-}
-function toggleVisible(e){
-
-}
-
-function addaddpage(pageid) {
-  var newDiv = document.createElement("div");
-    newDiv.className = "dksqhdla";
-    newDiv.style.position = "relative";
-
-    var container = document.getElementsByClassName("imgshow1")
-    container.appendChild(newDiv);
-    document.location.href = `/ltab/newpage/${pageid}/`;
-}
-
-function listing(){
-
-}
-
-  // 누르면 새 페이지를 만드는 함수
-  function addpage(){
-    var newDiv = document.createElement("div");
-    newDiv.className = "listTr";
-
-    var container = document.querySelector("#ltabGainPage table");
-    container.appendChild(newDiv);
-    document.location.href = '/ltab/newpage/';
   }
 
+  function iconChange(e) {
+    grid1 = e.target.children[0].children[0].children[0];
+    grid2 = e.target.children[0].children[0].children[1];
+    grid1.style.opacity = 1 - grid1.style.opacity;
+    grid2.style.opacity = 1 - grid2.style.opacity;
+    grid1.order = 1 - grid1.order;
+    grid2.order = 1 - grid2.order;
+    addPageBtn = e.target.querySelector(".addpage");
+    addPageBtn.style.opacity = 1 - addPageBtn.style.opacity;
 
+  }
 
 
   function openModal() {
-  document.getElementById("myModal").style.display = "block";
-}
-function closeModal() {
-  document.getElementById("myModal").style.display = "none";
-}
-window.onclick = function(event) {
-  var modal = document.getElementById("myModal");
-  if (event.target == modal) {
-    closeModal();
+    document.getElementById("myModal").style.display = "block";
   }
-}
+  function closeModal() {
+    document.getElementById("myModal").style.display = "none";
+  }
+  window.onclick = function (event) {
+    var modal = document.getElementById("myModal");
+    if (event.target == modal) {
+      closeModal();
+    }
+  }
+
+  window.addEventListener('DOMContentLoaded', (event) => {
+    const showPageBtns = document.querySelectorAll(".showPage")
+    for (btn of showPageBtns) {
+      btn.addEventListener("click", toggleContent);
+      btn.addEventListener("mouseenter", iconChange);
+      btn.addEventListener("mouseleave", iconChange);
+
+    }
+    document.querySelector("#showPage").addEventListener("mouseenter", function (e) {
+      addPageBtn = e.target.querySelector("#addpage").parentNode;
+      addPageBtn.style.opacity = 1 - addPageBtn.style.opacity;
+    });
+    document.querySelector("#showPage").addEventListener("mouseleave", function (e) {
+      addPageBtn = e.target.querySelector("#addpage").parentNode;
+      addPageBtn.style.opacity = 1 - addPageBtn.style.opacity;
+    });
+
+  });
 </script>
 
 {% endblock ltab %}
-
-  
