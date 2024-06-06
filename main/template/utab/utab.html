@@ -267,7 +267,6 @@ body{
       <!-- 현재페이지 -->
       <div role="button" style="display: inline; max-width: 240px; max-height: 38px;" onclick="location.href='/notion/{{now}}'">
         <span>
-          {{ now.title }}
           {% if now.title|length > 15 %}
             {{ now.title|slice:":15" }} ...
           {% else %}
