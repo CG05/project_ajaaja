@@ -219,25 +219,43 @@ body{
     border-radius: 5px;
     width:75px;
 }
+
+
+
+
+
+
 </style>
 
 <div class="tab-menu">
-  <div style="margin-left: 12px; width: 600px; height: 44px; align-content: center; position: relative;">
+  <div style="display: inline; margin-left: 12px; max-width: 500px; height: 44px; align-content: center; position: relative;">
+    <!-- 부모페이지들 -->
     {% for i in reparents %}
-      <div role="button" style="display: inline;">{{ i.title }}</div>
-      {% if not forloop.last %}
+      {% if forloop.first %}
+        <div role="button" style="display: inline; height: 30px;" onclick="location.href='/notion/{{i.url}}'"><span>{{ i.title }}</span></div>
+        <div style="display: inline;"><span> / </span></div>
+      {% elif forloop.last %}
+        <div role="button" style="display: inline;" onclick="location.href='/notion/{{i.url}}'"><span>{{ i.title }}</span></div>
+        <div style="display: inline;"><span> / </span></div>
+      {% elif forloop.counter == 2%}
+        <div role="button" style="display: inline;" onclick="location.href='/notion/{{now.parent.parent.url}}'"><span>...</span></div>
         <div style="display: inline;"><span> / </span></div>
       {% endif %}
-      
     {% endfor %}
-    
+    <!-- 현재페이지 -->
+    <div role="button" style="display: inline;" onclick="location.href='/notion/{{now}}'"><span>{{ now.title }}</span></div>
   </div>
+   
 
+  
+  <div id="shareButton" class="tablinks share-button">공유</div>
   
 
 
+
+
   <!-- 공유 탭 -->
-  <button id="shareButton" class="tablinks share-button">공유</button>
+  <!-- <button id="shareButton" class="tablinks share-button">공유</button> -->
   <!-- 박스 -->
   <div id="shareBox" class="share-box" >
     <div id="newBox" class="new-box"></div>
