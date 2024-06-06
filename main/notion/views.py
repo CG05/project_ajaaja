@@ -14,8 +14,11 @@ from django.core.mail import EmailMessage
 import json
 from django.conf import settings
 
+
 def index(request):
     username = request.user.username
+    notions = Notion.objects.filter(user=request.user)
+
     if len(username) > 5:
         username = username[:5]
         username += ".."
@@ -25,13 +28,14 @@ def index(request):
         notions = Notion.objects.filter(user=request.user)
         parent = parent_find(notions[0])
         print(parent);
-        border_list = '<div class="px-4">'
+        border_list = '<div style=" color: rgba(55, 53, 47, 0.8); font-size:14px; font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol";">'
         for notion in notions:
             if notion.parent == None:
                 border_list += borderListFunction(notion, parent)
         border_list += "</div>"
     
         content={
+            "notions": notions,
             "username":username,
             "borderList":border_list,
         }

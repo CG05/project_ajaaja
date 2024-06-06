@@ -57,3 +57,72 @@
     margin-top: 2px;
     font-size: 12px;
 }
+form {
+    z-index: 111;
+    border-radius: 6px;
+  }
+  .modal-button{
+    font-weight: 500;
+    margin: 2px 9px;
+    border-radius: 8px;
+  }
+  .modal {
+    display: none;
+    /* 모달 창 초기에는 숨김 */
+    position: fixed;
+    /* 고정 위치 */
+    z-index: inherit;
+    /* 다른 요소 위에 표시 */
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    /* 화면 크기를 벗어날 경우 스크롤 가능 */
+    background-color: rgba(0, 0, 0, 0.4);
+    /* 배경 어둡게 처리 */
+  }
+
+  /* 모달 내용 스타일 */
+  .modal-content {
+    border-radius: 16px;
+    border: 1px solid #888;
+    background-color: #fefefe;
+    margin: 90px auto;
+    /* 모달 창을 수직 가운데로 정렬 */
+    padding-top: 8px;
+    padding-left: 1px;
+    padding-right: 1px;
+    height: 500px;
+    min-width: 100px;
+    max-width: 700px;
+  }
+  input{
+    border: none;
+    outline: none;
+    box-shadow: none;
+}
+input:focus{
+    border: none;
+    outline: none;
+}
+input.form-control{
+    border: none;
+    display: flex;
+    padding-top: 5px;
+    font-size: 16px;
+    width: 100%;
+    height: 30px;
+    max-width: 700px;
+
+}
+input::placeholder{
+    color: rgba(55, 53, 47, 0.2);
+
+}
+input.text::placeholder{
+    visibility: hidden;
+}
+input:focus::placeholder{
+    visibility: visible;
+}

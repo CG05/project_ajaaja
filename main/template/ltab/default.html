@@ -1,175 +1,21 @@
 {% extends 'default.html' %}
-
+{% load static %}
 {% block style %}
-<style>
-  form {
-    z-index: 111;
-  }
-
-  .modal {
-    display: none;
-    /* 모달 창 초기에는 숨김 */
-    position: fixed;
-    /* 고정 위치 */
-    z-index: inherit;
-    /* 다른 요소 위에 표시 */
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    /* 화면 크기를 벗어날 경우 스크롤 가능 */
-    background-color: rgba(0, 0, 0, 0.4);
-    /* 배경 어둡게 처리 */
-  }
-
-  /* 모달 내용 스타일 */
-  .modal-content {
-    border-radius: 16px;
-    border: 1px solid #888;
-    background-color: #fefefe;
-    margin: 90px auto;
-    /* 모달 창을 수직 가운데로 정렬 */
-    padding-top: 8px;
-    padding-left: 1px;
-    padding-right: 1px;
-    height: 500px;
-    min-width: 100px;
-    max-width: 700px;
-  }
-
-  /* 닫기 버튼 스타일 */
-  .close {
-    display: none;
-  }
-</style>
+<link rel="stylesheet" href="{% static 'css/ltabdefault.css' %}">
 {% endblock style %}
 
 {% block ltab %}
-<style>
-  /* 모든 버튼에 적용될 스타일 */
-  button {
-    border: none;
-    background-color: rgb(247, 247, 245);
-  }
-
-  button:hover {
-    background-color: rgb(239, 239, 237);
-  }
-
-  #changeBackground {
-    border: none;
-    /* 테두리 없음 */
-    background-color: rgb(247, 247, 245);
-    /* 배경색 설정 */
-    display: flex;
-    align-items: center;
-    width: 100%;
-    font-size: 14px;
-    min-height: 27px;
-    margin: 2px 5px;
-    height: 30px;
-    padding: 4px 8px;
-    z-index: 3px;
-  }
-
-  #changeBackground:hover {
-    background-color: rgb(239, 239, 237);
-    /* 마우스를 올렸을 때 배경색 변경 */
-  }
-
-  .dksqhdla {
-    border: none;
-    /* 테두리 없음 */
-    background-color: rgb(247, 247, 245);
-    /* 배경색 설정 */
-  }
-
-  .dksqhdla:hover {
-    background-color: rgb(239, 239, 237);
-    /* 마우스를 올렸을 때 배경색 변경 */
-  }
-
-  div[role="button"] {
-    width: 100%;
-    font-size: 14px;
-    min-height: 17px;
-    height: 30px;
-    border-radius: 6px;
-  }
-
-  div[role="button"]:hover {
-    background-color: rgb(239, 239, 237);
-  }
-
-  div[role="button"].alterBtn:hover {
-    background-color: rgba(55, 53, 47, 0.08);
-  }
-
-  div[role="button"].addpage:hover {
-    background-color: rgba(55, 53, 47, 0.08);
-  }
-
-  div[role="button"]#addpage:hover {
-    background-color: rgba(55, 53, 47, 0.08);
-  }
-
-  .tableTr {
-    width: 100%;
-    position: relative;
-    display: flex;
-    flex-direction: column;
-  }
-
-  .notion-app {
-    color: rgb(55, 53, 47);
-    fill: currentcolor;
-    line-height: 1.5;
-    font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol";
-    -webkit-font-smoothing: auto;
-    background-color: rgba(0, 0, 0, 0);
-    display: flex;
-    flex-direction: column;
-    width: 230px;
-    height: 100%;
-  }
-
-  #notionBtn {
-    border-radius: 6px;
-    width: 100%;
-    line-height: 30px;
-    height: 30px;
-    position: relative;
-    margin: 4px 5px;
-    display: flex;
-    justify-content: flex-start;
-    overflow: hidden;
-    z-index: 1px;
-  }
-
-  .listbutton {
-    width: 100%;
-    height: 30px;
-    padding: 1px 4px;
-    border-radius: 4px;
-  }
-
-  .listbutton:hover {
-    background-color: rgb(239, 239, 237);
-  }
-</style>
 <!-- 전체 -->
 <div class="notion-app">
-  <form method="post" enctype="multipart/form-data"> {% csrf_token %}
+  <form method="post" enctype="multipart/form-data" onsubmit="submitForm(event)"> {% csrf_token %}
     <div id="myModal" class="modal">
-      <!-- 모달 내용 -->
       <div class="modal-content">
-        <span class="close" onclick="closeModal()"></span>
-        <table>
-          <tr>
-            <td><input type="text" name="searchtitle" style="font-size: 24px;"></td>
-          </tr>
-        </table>
+        <span class="close" onclick="closeModal()">닫기</span>
+        <!-- 모달 콘텐츠 시작 -->
+        <input  type="text" name="inputField1" id="inputField1" placeholder="Search in {{username}}의 Notion..." style="border:none; outline: none;box-shadow: none; width: 100%; padding: 8px; margin-bottom: 10px;">
+        <button type="submit" class="modal-button" style="padding: 10px 20px;">Search</button>
+        <div id="searchResults"></div>
+        <!-- 모달 콘텐츠 끝 -->
       </div>
     </div>
   </form>
@@ -248,9 +94,7 @@
           </g>
         </svg>
       </div>
-      <div
-        style="font-weight:500; color:#5F5E5B; flex: 1 1 auto; white-space: nowrap; min-width: 0px; overflow: hidden; text-overflow: ellipsis;">
-        Home</div>
+      <div style="font-weight:500; color:#5F5E5B; flex: 1 1 auto; white-space: nowrap; min-width: 0px; overflow: hidden; text-overflow: ellipsis;">Home</div>
     </div>
   </div>
 
@@ -301,8 +145,6 @@
 <script>
   function toggleContent(event) {
     var element = event.target.parentNode.parentNode.parentNode;
-    console.log(element);
-
   }
 
   function iconChange(e) {
@@ -324,12 +166,86 @@
   function closeModal() {
     document.getElementById("myModal").style.display = "none";
   }
-  window.onclick = function (event) {
+  
+
+// 모달 창 밖을 클릭했을 때 실행되는 함수
+  function closeModalOutside(event) {
     var modal = document.getElementById("myModal");
-    if (event.target == modal) {
-      closeModal();
+    if (event.target === modal) {
+        closeModal();
     }
   }
+
+// 윈도우가 로드될 때 이벤트 리스너를 추가합니다.
+window.addEventListener('click', closeModalOutside);
+
+  function getCSRFToken() {
+    var cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = cookies[i].trim();
+            if (cookie.substring(0, 10) === 'csrftoken=') {
+                cookieValue = decodeURIComponent(cookie.substring(10));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+function submitForm(event) {
+  event.preventDefault(); // 폼의 기본 동작을 막습니다.
+  var inputText = document.getElementById("inputField1").value;
+  var formData = new FormData(event.target); // 폼 데이터를 가져옵니다.
+  searchNotion()
+}
+
+  // 이 함수는 모달 창이 열려 있을 때 호출되어야 합니다.
+  function searchNotion() {
+    // 여기에 검색 기능을 구현합니다.
+    var inputText = document.getElementById("inputField1").value;
+  // AJAX나 Fetch API를 사용하여 백엔드로 검색 요청을 보냅니다.
+    fetch('/ltab/search-notion/', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      // 만약 CSRF 토큰을 사용하고 있다면 헤더에 추가해야 합니다.
+      'X-CSRFToken': getCookie('csrftoken')
+    },
+    body: JSON.stringify({ search_text: inputText })
+  })
+  .then(response => response.json())
+  .then(data => {
+    console.log(data); // 검색 결과 출력 예시
+    // 검색 결과를 받아서 프론트엔드에서 처리합니다.
+    // 이 부분에서 검색 결과를 화면에 출력하거나 다른 작업을 수행할 수 있습니다.
+    displaySearchResults(data);
+  })
+  .catch(error => console.error('Error:', error));
+}
+
+function displaySearchResults(data) {
+  var resultsContainer = document.getElementById("searchResults");
+
+  // 이전에 출력된 결과를 지웁니다.
+  resultsContainer.innerHTML = "";
+
+  // 받은 JSON 데이터를 반복하여 각 타이틀과 URL을 출력합니다.
+  data.results.forEach(result => {
+    var title = result.title;
+    var url = result.url;
+
+    // 결과를 화면에 출력합니다.
+    var titleElement = document.createElement("p");
+    titleElement.textContent = title;
+    resultsContainer.appendChild(titleElement);
+
+    var urlElement = document.createElement("a");
+    urlElement.textContent = "Go to page";
+    urlElement.href = url;
+    resultsContainer.appendChild(urlElement);
+  });
+}
 
   window.addEventListener('DOMContentLoaded', (event) => {
     const showPageBtns = document.querySelectorAll(".showPage")
