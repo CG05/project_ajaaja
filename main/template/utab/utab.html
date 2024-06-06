@@ -9,20 +9,18 @@ body{
     line-height: 1.5;
     font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol";
 }
-.tab-menu {
-    display: flex; /* 탭들을 가로로 배열하기 위해 Flexbox 사용 */
-    align-items: center; /* 세로 중앙 정렬 */
-    position: sticky;
-    top: 0;
-    background-color: #fff;
-    padding: 0;
-    z-index: 1000;
-    max-height: 38px;
-}
 /* 폰트 */
 .tablinks {
     font-family: 'Roboto', sans-serif;
 }
+
+.tab-menu {
+    display: flex; /* 탭들을 가로로 배열하기 위해 Flexbox 사용 */
+    align-items: center; /* 세로 중앙 정렬 */
+    background-color: #fff;
+    height: 38px;
+}
+
 
 .tab-menu button {
     background-color: inherit;
@@ -30,7 +28,6 @@ body{
     border: none;
     outline: none;
     cursor: pointer;
-    padding: 10px 16px;
     transition: 0.3s;
 }
 
@@ -46,13 +43,12 @@ body{
 /* 오른쪽 정렬 스타일 */
 .share-button {
     position: fixed; /* 페이지 스크롤에 따라 고정되도록 설정 */
-    top: 0;
-    right: 0; /* 페이지의 오른쪽에 고정 */
+    right: 60px; /* 페이지의 오른쪽에 고정 */
     background-color: inherit;
     border: none;
     outline: none;
     cursor: pointer;
-    padding: 14px 16px;
+    
     transition: 0.3s;
 }
 
@@ -60,10 +56,11 @@ body{
     background-color: #ddd;
 }
 
+/* 공유창나온거 */
 .share-box {
     position: fixed; /* 페이지 스크롤에 따라 고정되도록 설정 */
-    top: 4%;
-    right: 0;
+    top: 38px;
+    right: 12px;
     min-width: 100px;
     background-color: #fff;
     border: 1px solid #ccc;
@@ -220,67 +217,103 @@ body{
     width:75px;
 }
 
-
-
-
-
-
 </style>
 
+
+
+
+<!-- 전체 -->
 <div class="tab-menu">
-  <div style="display: inline; margin-left: 12px; max-width: 500px; height: 44px; align-content: center; position: relative;">
+
+  <!-- 경로표시창 -->
+  <div style="display: inline; max-width: 500px; max-height: 32px; overflow: hidden; align-content: center; position: relative;">
     <!-- 부모페이지들 -->
-    {% for i in reparents %}
-      {% if forloop.first %}
-        <div role="button" style="display: inline; height: 30px;" onclick="location.href='/notion/{{i.url}}'"><span>{{ i.title }}</span></div>
-        <div style="display: inline;"><span> / </span></div>
-      {% elif forloop.last %}
-        <div role="button" style="display: inline;" onclick="location.href='/notion/{{i.url}}'"><span>{{ i.title }}</span></div>
-        <div style="display: inline;"><span> / </span></div>
-      {% elif forloop.counter == 2%}
-        <div role="button" style="display: inline;" onclick="location.href='/notion/{{now.parent.parent.url}}'"><span>...</span></div>
-        <div style="display: inline;"><span> / </span></div>
-      {% endif %}
-    {% endfor %}
-    <!-- 현재페이지 -->
-    <div role="button" style="display: inline;" onclick="location.href='/notion/{{now}}'"><span>{{ now.title }}</span></div>
+    <div style="margin-left: 12px; margin-right: 12px; height: 24px; ">
+      {% for i in reparents %}
+        {% if forloop.first %}
+          <div role="button" style="display: inline; height: 100%;" onclick="location.href='/notion/{{i.url}}'">
+            <span>
+              {% if i.title|length > 10 %}
+                {{ i.title|slice:":10" }} ...
+              {% else %}
+                {{ i.title }}
+              {% endif %}
+            </span>
+          </div>
+          <div style="display: inline;"><span> / </span></div>
+        {% elif forloop.last %}
+          <div role="button" style="display: inline; height: 100%;" onclick="location.href='/notion/{{i.url}}'">
+            <span>
+              {% if i.title|length > 8 %}
+                {{ i.title|slice:":8" }} ...
+              {% else %}
+                {{ i.title }}
+              {% endif %}
+            </span>
+          </div>
+          <div style="display: inline;"><span> / </span></div>
+        {% elif forloop.counter == 2%}
+          <div role="button" style="display: inline; height: 100%;" onclick="location.href='/notion/{{now.parent.parent.url}}'">
+            <span>...</span>
+          </div>
+          <div style="display: inline;"><span> / </span></div>
+        {% endif %}
+      {% endfor %}
+      <!-- 현재페이지 -->
+      <div role="button" style="display: inline; max-width: 240px; max-height: 38px;" onclick="location.href='/notion/{{now}}'">
+        <span>
+          {{ now.title }}
+          {% if now.title|length > 15 %}
+            {{ now.title|slice:":15" }} ...
+          {% else %}
+            {{ now.title }}
+          {% endif %}
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 지우기 -->
+  <div role="button" style="display: flex; align-items: center; justify-content: center; align-content: center; width: 24px; height: 24px; position: fixed; right: 10px;" onclick="location.href='/notion/remove/{{now.id}}/'">
+    <svg role='graphics-symbol' viewBox='0 0 16 16' class='trash' style='width: 16px; height: 16px; display: block; fill: rgba(55, 53, 47, 0.85); flex-shrink: 0;'>
+      <path d='M4.8623 15.4287H11.1445C12.1904 15.4287 12.8672 14.793 12.915 13.7402L13.3799 3.88965H14.1318C14.4736 3.88965 14.7402 3.62988 14.7402 3.28809C14.7402 2.95312 14.4736 2.69336 14.1318 2.69336H11.0898V1.66797C11.0898 0.62207 10.4268 0 9.29199 0H6.69434C5.56641 0 4.89648 0.62207 4.89648 1.66797V2.69336H1.86133C1.5332 2.69336 1.25977 2.95312 1.25977 3.28809C1.25977 3.62988 1.5332 3.88965 1.86133 3.88965H2.62012L3.08496 13.7471C3.13281 14.7998 3.80273 15.4287 4.8623 15.4287ZM6.1543 1.72949C6.1543 1.37402 6.40039 1.14844 6.7832 1.14844H9.20312C9.58594 1.14844 9.83203 1.37402 9.83203 1.72949V2.69336H6.1543V1.72949ZM4.99219 14.2188C4.61621 14.2188 4.34277 13.9453 4.32227 13.542L3.86426 3.88965H12.1152L11.6709 13.542C11.6572 13.9453 11.3838 14.2188 10.9941 14.2188H4.99219ZM5.9834 13.1182C6.27051 13.1182 6.45508 12.9336 6.44824 12.667L6.24316 5.50293C6.23633 5.22949 6.04492 5.05176 5.77148 5.05176C5.48438 5.05176 5.2998 5.23633 5.30664 5.50293L5.51172 12.667C5.51855 12.9404 5.70996 13.1182 5.9834 13.1182ZM8 13.1182C8.28711 13.1182 8.47852 12.9336 8.47852 12.667V5.50293C8.47852 5.23633 8.28711 5.05176 8 5.05176C7.71289 5.05176 7.52148 5.23633 7.52148 5.50293V12.667C7.52148 12.9336 7.71289 13.1182 8 13.1182ZM10.0166 13.1182C10.29 13.1182 10.4746 12.9404 10.4814 12.667L10.6934 5.50293C10.7002 5.23633 10.5088 5.05176 10.2285 5.05176C9.95508 5.05176 9.76367 5.22949 9.75684 5.50293L9.54492 12.667C9.53809 12.9336 9.72949 13.1182 10.0166 13.1182Z'></path>
+    </svg>
   </div>
    
-
   
-  <div id="shareButton" class="tablinks share-button">공유</div>
-  
-
-
-
-
   <!-- 공유 탭 -->
+  <div id="shareButton" class="tablinks share-button" style="align-items: center;"><span>공유</span></div>
   <!-- <button id="shareButton" class="tablinks share-button">공유</button> -->
   <!-- 박스 -->
   <div id="shareBox" class="share-box" >
     <div id="newBox" class="new-box"></div>
     <div class="small-new-box" onclick="tabChange(this)">URL 공유</div>
     <div id="urlBox" style="border: 1px solid gray; opacity: 0.6; margin-bottom: 10px; margin: 28px auto 0 auto; margin-left:30px; margin-right:20px;  padding: 7px; padding-right: 0px; border-radius: 7px; width: calc(80% - 100px); height: 40px; float: right; display:flex; align-items:center; justify-content:center;">
-        <span id="shareContent"></span>
+      <span id="shareContent"></span>
     </div>
+
     <!-- 카피 버튼 이미지 -->
     <button id="copyButtonContainer" style="background-color:#2383E2; margin-top: 28px; margin-right:30px; margin-left:10px; border-radius:4px; padding: 7px; float: right;">
-        <a id="copyButton" style="text-decoration: none; color: white; font-size: 10px;">
-            <svg role="graphics-symbol" viewBox="0 0 16 16" class="link" style="width: 10px; height: 10px; display: block; fill: rgba(55, 53, 47, 0.85); flex-shrink: 0; margin-left: 0px; margin-right: 5px;"><path d="M7.69922 10.8945L8.73828 9.84863C7.91797 9.77344 7.34375 9.51367 6.91992 9.08984C5.76465 7.93457 5.76465 6.29395 6.91309 5.14551L9.18262 2.87598C10.3379 1.7207 11.9717 1.7207 13.127 2.87598C14.2891 4.04492 14.2822 5.67188 13.1338 6.82031L11.958 7.99609C12.1768 8.49512 12.2451 9.10352 12.1289 9.62988L14.0908 7.6748C15.7725 6 15.7793 3.62109 14.084 1.92578C12.3887 0.223633 10.0098 0.237305 8.33496 1.91211L5.95605 4.29785C4.28125 5.97266 4.26758 8.35156 5.96289 10.0469C6.36621 10.4434 6.90625 10.7441 7.69922 10.8945ZM8.30078 5.13184L7.26855 6.17773C8.08203 6.25293 8.66309 6.51953 9.08008 6.93652C10.2422 8.09863 10.2422 9.73242 9.08691 10.8809L6.81738 13.1504C5.66211 14.3057 4.03516 14.3057 2.87305 13.1504C1.71094 11.9883 1.71777 10.3545 2.87305 9.20605L4.04199 8.03027C3.83008 7.53125 3.75488 6.92969 3.87109 6.39648L1.91602 8.35156C0.234375 10.0264 0.227539 12.4121 1.92285 14.1074C3.61816 15.8027 5.99707 15.7891 7.67188 14.1143L10.0439 11.7354C11.7256 10.0537 11.7324 7.6748 10.0371 5.98633C9.64062 5.58301 9.10059 5.28223 8.30078 5.13184Z"></path></svg>
-           Copy Link
-        </a>
+      <a id="copyButton" style="text-decoration: none; color: white; font-size: 10px;">
+        <svg role="graphics-symbol" viewBox="0 0 16 16" class="link" style="width: 10px; height: 10px; display: block; fill: rgba(55, 53, 47, 0.85); flex-shrink: 0; margin-left: 0px; margin-right: 5px;">
+          <path d="M7.69922 10.8945L8.73828 9.84863C7.91797 9.77344 7.34375 9.51367 6.91992 9.08984C5.76465 7.93457 5.76465 6.29395 6.91309 5.14551L9.18262 2.87598C10.3379 1.7207 11.9717 1.7207 13.127 2.87598C14.2891 4.04492 14.2822 5.67188 13.1338 6.82031L11.958 7.99609C12.1768 8.49512 12.2451 9.10352 12.1289 9.62988L14.0908 7.6748C15.7725 6 15.7793 3.62109 14.084 1.92578C12.3887 0.223633 10.0098 0.237305 8.33496 1.91211L5.95605 4.29785C4.28125 5.97266 4.26758 8.35156 5.96289 10.0469C6.36621 10.4434 6.90625 10.7441 7.69922 10.8945ZM8.30078 5.13184L7.26855 6.17773C8.08203 6.25293 8.66309 6.51953 9.08008 6.93652C10.2422 8.09863 10.2422 9.73242 9.08691 10.8809L6.81738 13.1504C5.66211 14.3057 4.03516 14.3057 2.87305 13.1504C1.71094 11.9883 1.71777 10.3545 2.87305 9.20605L4.04199 8.03027C3.83008 7.53125 3.75488 6.92969 3.87109 6.39648L1.91602 8.35156C0.234375 10.0264 0.227539 12.4121 1.92285 14.1074C3.61816 15.8027 5.99707 15.7891 7.67188 14.1143L10.0439 11.7354C11.7256 10.0537 11.7324 7.6748 10.0371 5.98633C9.64062 5.58301 9.10059 5.28223 8.30078 5.13184Z"></path>
+        </svg>Copy Link
+      </a>
     </button>
     <div class="small-new-box" style="left:120px;" onclick="tabChange(this)">이메일 공유</div>
     <form action="{% url 'email' %}" id="emailBox" style="display:none">
-        <input type="hidden" name="url" value="{{ now.url }}">
-        <div class="d-inline-flex">
+      <input type="hidden" name="url" value="{{ now.url }}">
+      <div class="d-inline-flex">
         <input id="emailinput" type="text" name="emails" placeholder="여러 이메일을 보낼 경우 , 를 이용하세요." onkeyup="sendemail(this)">
         <button id="emailbutton" type="submit">보내기</button>
-        </div>
+      </div>
     </form>
+  </div>
 </div>
-</div>
-</div>
+
+
+
+
 
 <script>
     
