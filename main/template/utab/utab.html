@@ -166,6 +166,17 @@ body{
   justify-content:center;
 }
 
+.utabShowLine{
+  padding: 10px;
+  box-shadow: rgba(55, 53, 47, 0.09) 0px -1px 0px inset;;
+  border-radius: 5px 5px 0 0; /* 위쪽 모서리만 둥글게 설정 */
+  margin-bottom: 10px; /* 아래쪽 여백 추가 */
+  position: absolute;
+  top: 20%;
+  left: 0;
+  width: 100%
+}
+
 .small-new-box {
   position: relative;
   left: 20px;
@@ -279,7 +290,7 @@ body{
   </div>
 
   <!-- 선 -->
-  <div style="width: 100%; margin: 1px 0px;"></div>
+  <div class="utabShowLine"></div>
   
   <div style="width: 100%; display: inline-flex;">
     <!-- URL 창 -->
