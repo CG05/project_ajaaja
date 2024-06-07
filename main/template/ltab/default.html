@@ -243,7 +243,7 @@ function displaySearchResults(data) {
     var titleElement = document.createElement("div");
     titleElement.textContent = title;
     resultDiv.appendChild(titleElement);
-    titleElement.setAttribute('style','display:flex; margin-left:13px; font-size: 14px;font-weight: 500;' )
+    titleElement.setAttribute('style','width: 350px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; display:flex; margin-left:13px; font-size: 14px;font-weight: 500;' )
 
     var urlElement = document.createElement("a");
     urlElement.textContent = "Go to page";
