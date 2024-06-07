@@ -1,0 +1,729 @@
+{% extends 'utab/utab.html' %}
+
+{% load static %}
+{% block bodyscript %}
+<link rel="stylesheet" href="{% static 'css/default.css' %}">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    let imageCnt = 0;
+    window.onload = function () {
+        updateChildrenPosition();
+        imageList = document.querySelectorAll('[id*=previewDiv]')
+        for (var i = 0; i < imageList.length; i++) {
+            cnt = imageList[i].id.substr(imageList[i].id.length - 1)
+            if (Number(cnt) > imageCnt) {
+                imageCnt = Number(cnt) + 1;
+                console.log(imageCnt)
+            }
+        }
+        setCheck();
+    }
+    window.addEventListener('DOMContentLoaded', async (event) => {
+        setCheck();
+        await rotateSvg();
+    });
+
+    function setCheck() {
+        $('input.checked').each(function (index, check) {
+            check.parentElement.children[1].style.textDecoration = "line-through"
+            check.checked = true;
+        });
+    }
+
+    async function loopArea(area) {
+        var div = $(area).find('.showPage:eq(0)');
+        if (div.length == 0) {
+            return;
+        }
+        console.log(div);
+        childareas = $(area).find('.childarea');
+        console.log(childareas);
+
+        var svg = $(div).find('.alterBtn:eq(0)').find('svg:eq(0)')
+        if (childareas.length == 0) {
+            svg.css('rotate', '-90deg');
+            console.log('close');
+        }
+        $(childareas).each(async function (index, area) {
+            console.log(area);
+            console.log($(area).css('display'));
+            if ($(area).css('display') == 'none') {
+                svg.css('rotate', '-90deg');
+                console.log('close');
+            } else {
+                svg.css('rotate', '0deg');
+                console.log('open');
+            }
+
+            await loopArea(area);
+        });
+
+    }
+
+    async function rotateSvg() {
+        var families = Array.from(document.getElementsByClassName('family'));
+        for (var family of families) {
+            await loopArea(family);
+        }
+
+    }
+    function createTextInput(option) {
+        input = document.createElement('input');
+        input.setAttribute('class', 'form-control text');
+        input.setAttribute('onkeyup', 'menu(this.value)');
+        input.setAttribute('value', '');
+        if (option == 'checkText') {
+            input.classList.add('check')
+            input.setAttribute('style', 'font-size:16px;');
+            input.placeholder = '할일'
+        } else if (option == 'subject1') {
+            input.setAttribute('style', 'font-size:30px;font-weight:bold');
+            input.setAttribute('placeholder', '제목을 입력하세요.');
+            input.classList.add('subject1', 'normal')
+        } else if (option == 'subject2') {
+
+            input.setAttribute('style', 'font-size:20px;font-weight:bold');
+            input.setAttribute('placeholder', '부제목을 입력하세요.');
+            input.classList.add('subject2', 'normal')
+        } else if (option == 'file') {
+            input.setAttribute('type', 'file');
+            input.setAttribute('name', 'files');
+            input.setAttribute('id', 'imageInput');
+            input.classList.add('file')
+            input.setAttribute('onChange', 'readURL(this,' + imageCnt + ')')
+        } else {
+            input.classList.add('normal');
+            input.setAttribute('style', 'font-size:16px;');
+            input.placeholder = "텍스트를 입력하세요. 명령어를 입력하려면 '/'를 입력하세요."
+        }
+        return input;
+    }
+
+    function titleChange(value) {
+        let id_value = document.getElementById('nowId').value
+        if (event.key == 'Enter') {
+            const obj = createTextInput();
+            const content = document.getElementById('content');
+            $("#content").prepend(obj);
+            obj.focus();
+            transBody();
+        } else {
+            if (value.length == 10) {
+                text = document.getElementById('titleSpan_' + id_value).innerText
+                document.getElementById('titleSpan_' + id_value).innerText = text + '...';
+            } else if (value.length < 10) {
+                document.getElementById('titleSpan_' + id_value).innerText = value;
+            } else {
+
+            }
+            transTitle(value);
+        }
+    }
+
+    function getCookie(name) {
+        var value = document.cookie.match('(^|;) ?' + name + '=([^;]*)(;|$)');
+        return value ? value[2] : null;
+    }
+
+
+    function transTitle(value) {
+        let bodyContent = document.getElementById('content')
+        const csrftoken = getCookie('csrftoken');
+        let nowId = document.getElementById('nowId').value
+        fetch('/notion/save/' + nowId + '/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrftoken,
+            },
+            body: JSON.stringify({ title: value })
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Success: s');
+            })
+            .catch((error) => {
+                console.log('Error : e');
+            });
+    }
+
+    function transBody() {
+        let bodyContent = document.getElementById('content').innerHTML
+        console.log(bodyContent)
+        const csrftoken = getCookie('csrftoken');
+        let nowId = document.getElementById('nowId').value
+        fetch('/notion/saveBody/' + nowId + '/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrftoken,
+            },
+            body: JSON.stringify({ content: bodyContent })
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Success : s2');
+            })
+            .catch((error) => {
+                console.log('Error : e2');
+            });
+    }
+    i = 1;
+    function menu(value) {
+        if (event.target.selectionStart == 0 && event.key == 'Backspace') {
+            let target;
+            now_value = event.target.value
+            
+            if(event.target.classList.contains('normal')){
+                target = targetPrev(event.target);
+                event.target.remove();
+                
+            }else{
+                target = createTextInput();
+                appendLine(target, event.target)
+                event.target.parentElement.remove();
+                
+            }
+            size = target.value
+            num_size = size.length
+            target.value += now_value;
+            target.focus();
+            target.selectionStart = Number(num_size)
+            target.selectionEnd = Number(num_size)
+            
+        } else if (event.key == 'Enter') {
+            let value_num = event.target.selectionStart
+            let value_str = event.target.value
+            let str = value_str.substring(value_num, value_str.length)
+            let num_size = str.length
+            event.target.value = value_str.substring(0, value_num)
+            let content;
+            if (event.target.classList.contains('check')) {
+                content = genCheck(str);
+            } else {
+                content = createTextInput();
+                content.setAttribute('value', str);
+            }
+            appendLine(content, event.target)
+            input.focus();
+            input.selectionStart = Number(num_size)
+            input.selectionEnd = Number(num_size)
+        } else if (event.key == 'Escape') {
+            console.log(event.target);
+            menuWindow('Escape');
+        } else if (event.key == 'Delete' && event.shiftKey) {
+            if (event.target.previousElementSibling != null) {
+                event.target.previousElementSibling.focus();
+            } else if (event.target.nextElementSibling != null) {
+                event.target.nextElementSibling.focus();
+            }
+            event.target.remove();
+        } else if (event.key == 'ArrowUp') {
+            const target = targetPrev(event.target);
+            console.log(target)
+            if (target != null) {
+                target.focus();
+            }
+        } else if (event.key == 'ArrowDown') {
+            const target = targetAfter(event.target);
+            console.log(target)
+            if (target != null && target != undefined) {
+                target.focus();
+            }
+        } else {
+            let target_value = event.target.value;
+            let target_input = event.target;
+            if (target_input.tagName != 'TEXTAREA') {
+                target_input.setAttribute('value', target_value);
+            } else {
+                target_input.innerHTML = target_value;
+            }
+        }
+    }
+    function targetPrev(eventfrom) {
+        let targetBase;
+        let target;
+        if (eventfrom.previousElementSibling != null) {
+
+            if (eventfrom.classList.contains('normal')) {
+                targetBase = eventfrom;
+            } else {
+                targetBase = eventfrom.parentElement;
+            }
+            console.log(targetBase)
+            if (!targetBase.previousElementSibling.classList.contains('normal')) {
+                target = targetBase.previousElementSibling.children[1];
+            } else {
+                target = targetBase.previousElementSibling
+            }
+            console.log(target)
+        } else {
+            target = null;
+        }
+        return target;
+    }
+    function targetAfter(eventfrom) {
+        let targetBase;
+        let target;
+        console.log(eventfrom);
+        if (eventfrom.nextElementSibling != null) {
+            console.log(eventfrom.nextElementSibling.classList.contains('normal'))
+            if (eventfrom.nextElementSibling.classList.contains('normal')) {
+                target = eventfrom.nextElementSibling
+            } else {
+
+                if (!eventfrom.classList.contains('normal')) {
+                    targetBase = eventfrom.parentElement;
+                } else {
+                    targetBase = eventfrom;
+                }
+                if (!targetBase.nextElementSibling.classList.contains('normal')) {
+                    target = targetBase.nextElementSibling.children[1];
+                } else {
+                    target = targetBase.nextElementSibling
+                }
+            }
+        } else {
+            if (!eventfrom.classList.contains('normal')) {
+                targetBase = eventfrom.parentElement;
+            } else {
+                return target = null;
+            }
+            if(targetBase.nextElementSibling == null){
+                target = null;
+            }else{
+                if (!targetBase.nextElementSibling.classList.contains('normal')) {
+                    target = targetBase.nextElementSibling.children[1];
+
+                } else {
+                    target = targetBase.nextElementSibling;
+                }
+            }
+
+        }
+        console.log(target)
+        return target;
+    }
+
+    function menuWindow(value) {
+        const menuselect = document.getElementById('menuselect');
+        if (menuselect != null) {
+            menuselect.remove();
+        }
+    }
+
+    function searchTitle(value) {
+        console.log(value)
+    }
+
+    function sendEmailBox() {
+        emailBox = document.getElementById('emailbox')
+        if (emailBox.style.display == 'none') {
+            windowWidth = window.innerWidth;
+            resultWidth = windowWidth - 910
+            console.log(resultWidth)
+            emailBox.style.border = '1px solid black';
+            emailBox.style.background = 'white';
+            emailBox.style.display = 'block';
+            emailBox.style.position = 'absolute';
+            emailBox.style.width = '350px';
+            emailBox.style.height = '100px';
+            emailBox.setAttribute('class', 'text-center d-flex flex-column justify-content-center')
+            emailBox.style.top = event.target.offsetTop + 70 + 'px';
+            emailBox.style.left = resultWidth + 'px';
+        } else {
+            emailBox.style.display = 'none';
+            emailBox.removeAttribute('class');
+        }
+
+    }
+
+    function appendLine(obj, eventfrom) {
+        let appendTo = document.getElementById('content');
+        
+            const next = targetAfter(eventfrom);
+            console.log("next", next)
+            if (next == null || next == undefined) {
+                appendTo.appendChild(obj);
+            } else if(next.classList.contains('normal')) {
+                appendTo.insertBefore(obj, next);
+            }else{
+                appendTo.insertBefore(obj, next.parentElement);
+            }
+        
+    }
+    function genCheck(str) {
+        checkdiv = document.createElement('div')
+        checkdiv.setAttribute('class', 'form-control input-group-text')
+        check = document.createElement('input')
+        check.setAttribute('type', 'checkbox')
+        check.setAttribute('onclick', 'todoText()');
+        input = createTextInput('checkText')
+        input.setAttribute('value', str)
+        checkdiv.appendChild(check)
+        checkdiv.appendChild(input)
+        return checkdiv
+    }
+
+    function slash(event) {
+        console.log(this);
+        console.log(event);
+        if (document.getElementById('todo').contains(event.target)) {
+            const content = genCheck('');
+            appendLine(content, this)
+            content.children[1].focus();
+        } else if (document.getElementById('text').contains(event.target)) {
+            this.focus();
+            return menuWindow('close');
+        } else if (document.getElementById('page').contains(event.target)) {
+            url_find = window.location.pathname.split('/')
+            url = url_find[2]
+            let id = document.getElementById('nowId').value
+            location.href = '/notion/createChild/' + id + "/" + url;
+        } else if (document.getElementById('subject1').contains(event.target)) {
+            input = createTextInput('subject1');
+
+            appendLine(input, this)
+            input.focus();
+            transBody();
+        } else if (document.getElementById('subject2').contains(event.target)) {
+            input = createTextInput('subject2');
+            appendLine(input, this)
+            input.focus();
+            transBody();
+        } else if (document.getElementById('files').contains(event.target)) {
+
+            div_s = document.createElement("div");
+            div_s.setAttribute('class', 'input-group')
+            div_s.setAttribute('id', 'imageDiv');
+            input = createTextInput('file');
+
+            btn = document.createElement("button")
+            btn.setAttribute('onclick', 'uploadImage()');
+            btn.setAttribute('class', 'btn btn-outline-secondary')
+            btn.innerText = "업로드"
+
+            div_s.appendChild(input)
+            div_s.appendChild(btn)
+            div_p = document.createElement("div");
+            div_p.setAttribute('id', 'previewDiv' + imageCnt++)
+            div_p.setAttribute('class', 'text-center')
+            div = document.getElementById('content')
+            div.appendChild(div_s);
+            div.appendChild(div_p);
+
+            if (div_s.previousElementSibling != null) {
+                div_s.previousElementSibling.remove();
+            }
+        }
+        return menuWindow('close');
+    }
+
+    async function toggleChildren(e, id) {
+        var childrenDiv = document.getElementById('children-' + id);
+        v = e.children[0].children[0].children[0].children[0];
+        console.log(v.style.transform)
+        if (childrenDiv == null) {
+            return;
+        } else if (childrenDiv.style.display === 'none') {
+            v.style.rotate = "0deg"
+            childrenDiv.style.display = 'block';
+        } else {
+            v.style.rotate = "-90deg"
+            childrenDiv.style.display = 'none';
+        }
+    }
+
+    function readURL(obj, imageCnt) {
+        document.getElementById('imageDiv').remove();
+        let reader = new FileReader();
+        if (!obj.files.length) {
+            return;
+        }
+        reader.readAsDataURL(obj.files[0]);
+        reader.onload = function (e) {
+            let img = document.createElement('img');
+            img.setAttribute('width', '30%')
+            img.setAttribute('src', e.target.result);
+            img.setAttribute('onclick', 'test()')
+            let btn = document.createElement('button')
+            btn.setAttribute('onclick', 'imageRemove("previewDiv' + imageCnt + '")')
+            btn.innerText = '이미지삭제'
+            btn.setAttribute('class', 'form-control btn btn-danger w-80')
+            document.getElementById('previewDiv' + imageCnt).append(img);
+            document.getElementById('previewDiv' + imageCnt).append(btn);
+            imageCnt++;
+            transBody();
+        }
+    }
+
+    function imageRemove(id) {
+        document.getElementById(id).innerHTML = "";
+        transBody();
+    }
+
+    function test() {
+        input = createTextInput();
+        div = document.getElementById('content')
+        div.appendChild(input);
+        input.focus();
+        transBody();
+    }
+
+    function sendemail(target) {
+        if (event.key == 'Escape') {
+            emailBox = document.getElementById('emailbox')
+            emailBox.removeAttribute('class')
+            emailBox.style.display = 'none';
+        }
+    }
+
+    function todoText() {
+        if (event.target.checked) {
+            event.target.parentElement.children[1].style.textDecoration = "line-through"
+            event.target.classList.add('checked')
+        } else {
+            event.target.parentElement.children[1].style.textDecoration = "none"
+            event.target.classList.remove('checked')
+        }
+        transBody();
+        event.target.parentElement.children[1].focus();
+    }
+
+    function updateChildrenPosition() {
+        const body = document.getElementById('body');
+        const content = document.getElementById('content');
+        if (window.innerWidth < 1100) {
+            body.classList.remove('center-aligned');
+            content.classList.remove('center-aligned');
+        } else {
+            body.classList.add('center-aligned');
+            content.classList.add('center-aligned');
+        }
+    }
+
+    // 초기 위치 설정
+
+
+    // 윈도우 크기가 변경될 때마다 위치 업데이트
+    window.addEventListener('keyup', function (event) {
+        transBody();
+        if (event.key === '/' && document.getElementById('menuselect') == null) {
+            console.log(event.target)
+            menuselect = document.createElement('div');
+            menuselect.innerHTML = `<div id="menuselect" 
+      data-overlay="true" style="pointer-events: auto; position: relative; z-index: 1;">
+      <div>
+          <div style="position: fixed; pointer-events: none;">
+              <div style="width: 0px; height: 21px;"></div>
+              <div style="position: absolute; top: 0px; left: 0px; width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; align-items: flex-start;">
+                  <div style="position: relative; pointer-events: auto; bottom: 100%;">
+                      <div style="display: flex; align-items: center; position: relative; flex-direction: column; transform-origin: 0% bottom; left: 0px; opacity: 1; bottom: 4px; transition-property: opacity, transform; transition-duration: 200ms; transition-timing-function: ease;">
+                          <div role="dialog" style="border-radius: 6px; background: white; backdrop-filter: none; position: relative; max-width: calc(-24px + 100vw); box-shadow: rgba(15, 15, 15, 0.05) 0px 0px 0px 1px, rgba(15, 15, 15, 0.1) 0px 3px 6px, rgba(15, 15, 15, 0.2) 0px 9px 24px; overflow: hidden;">
+                              <div style="display: flex; flex-direction: column; width: 324px; min-width: 180px; max-width: calc(-24px + 100vw); height: 100%; max-height: 40vh;">
+                                  <div class="notion-scroller vertical" style="z-index: 1; flex-grow: 1; min-height: 0px; transform: translateZ(0px); overflow: hidden auto; margin-right: 0px; margin-bottom: 0px;">
+                                      <div id=":r1d:" tabindex="0" role="menu" aria-activedescendant=":r1i:">
+                                          <div style="padding-top: 6px; padding-bottom: 6px;">
+                                              <div style="display: flex; padding-left: 14px; padding-right: 14px; margin-top: 6px; margin-bottom: 8px; color: rgba(55, 53, 47, 0.65); fill: rgba(55, 53, 47, 0.45); font-size: 12px; font-weight: 500; line-height: 120%; user-select: none;">
+                                                  <div style="align-self: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">기본 블록</div>
+                                                  <div style="margin-left: auto;">
+                                                      <div contenteditable="false" class="pseudoSelection" data-content-editable-void="true" style="user-select: none; --pseudoSelection--background: transparent; display: contents;"><img role="progressbar" class="loading-spinner" alt="로딩 중..." 
+                                                          aria-busy="true" aria-live="polite" 
+                                                          src="data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20xmlns%3Asketch%3D%22http%3A%2F%2Fwww.bohemiancoding.com%2Fsketch%2Fns%22%20width%3D%22100%25%22%20height%3D%22100%25%22%20viewBox%3D%220%200%2024%2024%22%20version%3D%221.1%22%20data-ember-extension%3D%221%22%3E%3Cdefs%3E%3ClinearGradient%20x1%3D%2228.1542969%25%22%20y1%3D%2263.7402344%25%22%20x2%3D%2274.6289062%25%22%20y2%3D%2217.7832031%25%22%20id%3D%22linearGradient-1%22%3E%3Cstop%20stop-color%3D%22rgba(164%2C%20164%2C%20164%2C%201)%22%20offset%3D%220%25%22%2F%3E%3Cstop%20stop-color%3D%22rgba(164%2C%20164%2C%20164%2C%200)%22%20stop-opacity%3D%220%22%20offset%3D%22100%25%22%2F%3E%3C%2FlinearGradient%3E%3C%2Fdefs%3E%3Cg%20id%3D%22Page-1%22%20stroke%3D%22none%22%20stroke-width%3D%221%22%20fill%3D%22none%22%20%3E%3Cg%20transform%3D%22translate(-236.000000%2C%20-286.000000)%22%3E%3Cg%20transform%3D%22translate(238.000000%2C%20286.000000)%22%3E%3Ccircle%20id%3D%22Oval-2%22%20stroke%3D%22url(%23linearGradient-1)%22%20stroke-width%3D%224%22%20cx%3D%2210%22%20cy%3D%2212%22%20r%3D%2210%22%2F%3E%3Cpath%20d%3D%22M10%2C2%20C4.4771525%2C2%200%2C6.4771525%200%2C12%22%20id%3D%22Oval-2%22%20stroke%3D%22rgba(164%2C%20164%2C%20164%2C%201)%22%20stroke-width%3D%224%22%2F%3E%3Crect%20id%3D%22Rectangle-1%22%20fill%3D%22rgba(164%2C%20164%2C%20164%2C%201)%22%20x%3D%228%22%20y%3D%220%22%20width%3D%224%22%20height%3D%224%22%20rx%3D%228%22%2F%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E" style="visibility: hidden;"></div>
+                                                  </div>
+                                              </div>
+                                              <div role="menuitem" tabindex="-1" class="tableindex" id="text">
+                                                  <div class="tableindex_1">
+                                                      <div class="tableindex_2">
+                                                          <div style="width: 100%; height: 100%;"><img src="{% static 'ko-KR.png' %}" referrerpolicy="same-origin" class="tablebox"></div>
+                                                      </div>
+                                                      <div class="tableapp">
+                                                          <div class="tableapp_1">
+                                                              <div style="display: flex; align-items: center;"><span style="margin-right: 6px;">텍스트</span></div>
+                                                          </div>
+                                                          <div class="tableapp_2">일반 텍스트를 사용해 쓰기를 시작하세요.</div>
+                                                          </div>
+                                                      </div>
+                                                  </div>
+                                                  <div role="menuitem" tabindex="-1" class="tableindex" id="page">
+                                                      <div class="tableindex_1">
+                                                          <div class="tableindex_2">
+                                                              <div style="width: 100%; height: 100%;"><img src="{% static 'page.83b0bf31.png' %}" referrerpolicy="same-origin" class="tablebox"></div>
+                                                          </div>
+                                                          <div class="tableapp">
+                                                              <div class="tableapp_1">
+                                                                  <div style="display: flex; align-items: center;"><span style="margin-right: 6px;">페이지</span></div>
+                                                              </div>
+                                                              <div class="tableapp_2">이 페이지 안에 하위 페이지를 만드세요.</div>
+                                                          </div>
+                                                      </div>
+                                                  </div>
+                                                  <div role="menuitem" tabindex="-1" class="tableindex" id="todo">
+                                                      <div class="tableindex_1">
+                                                          <div class="tableindex_2">
+                                                              <div style="width: 100%; height: 100%;"><img src="{% static 'todolist.png' %}" referrerpolicy="same-origin" class="tablebox"></div>
+                                                          </div>
+                                                          <div class="tableapp">
+                                                              <div class="tableapp_1">
+                                                                  <div style="display: flex; align-items: center;"><span style="margin-right: 6px;">할 일 목록</span></div>
+                                                              </div>
+                                                              <div class="tableapp_2">할 일 목록으로 작업을 추적하세요.</div>
+                                                          </div>
+                                                      </div>
+                                                  </div>
+                                                  <div role="menuitem" tabindex="-1" class="tableindex" id="subject1">
+                                                      <div class="tableindex_1">
+                                                          <div class="tableindex_2">
+                                                              <div style="width: 100%; height: 100%;"><img src="{% static 'bigtitle.png' %}" referrerpolicy="same-origin" class="tablebox"></div>
+                                                          </div>
+                                                          <div class="tableapp">
+                                                              <div class="tableapp_1">
+                                                                  <div style="display: flex; align-items: center;"><span style="margin-right: 6px;">제목 1</span></div>
+                                                              </div>
+                                                              <div class="tableapp_2">큰 섹션 제목</div>
+                                                          </div>
+                                                      </div>
+                                                  </div>
+                                                  <div role="menuitem" tabindex="-1" class="tableindex" id="subject2">
+                                                      <div class="tableindex_1">
+                                                          <div class="tableindex_2">
+                                                              <div style="width: 100%; height: 100%;"><img src="{% static 'middletitle.png' %}" referrerpolicy="same-origin" class="tablebox"></div>
+                                                          </div>
+                                                          <div class="tableapp">
+                                                              <div class="tableapp_1">
+                                                                  <div style="display: flex; align-items: center;"><span style="margin-right: 6px;">제목 2</span></div>
+                                                              </div>
+                                                              <div class="tableapp_2">중간 섹션 제목</div>
+                                                          </div>
+                                                      </div>
+                                                  </div>
+                                                  <div role="menuitem" tabindex="-1" class="tableindex" id="subject3">
+                                                      <div class="tableindex_1">
+                                                          <div class="tableindex_2">
+                                                              <div style="width: 100%; height: 100%;"><img src="{% static 'smalltitle.png' %}" referrerpolicy="same-origin" class="tablebox"></div>
+                                                          </div>
+                                                          <div class="tableapp">
+                                                              <div class="tableapp_1">
+                                                                  <div style="display: flex; align-items: center;"><span style="margin-right: 6px;">제목 3</span></div>
+                                                              </div>
+                                                              <div class="tableapp_2">작은 섹션 제목</div>
+                                                          </div>
+                                                      </div>
+                                                  </div>
+                                              </div>
+                                          </div>
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>`
+            const rect = event.target
+            let x = rect.offsetLeft + 250;
+            if (window.innerWidth - rect.offsetLeft < 324) {
+                x = rect.offsetLeft + 74;
+            }
+            let y = rect.offsetTop + 450;
+            if (rect.offsetTop > 450) {
+                y = rect.offsetTop;
+            }
+            menuselect.children[0].children[0].children[0].style.left = x + 'px';
+            menuselect.children[0].children[0].children[0].style.top = y + 'px';
+
+            document.body.appendChild(menuselect);
+            const eventfrom = event.target;
+            console.log(eventfrom)
+            menuselect.addEventListener('click', function (event) {
+                slash.call(eventfrom, event);
+            });
+        } else {
+            menuWindow('close')
+
+        }
+    });
+    window.addEventListener('resize', updateChildrenPosition);
+</script>
+{% endblock %}
+{% block page %}
+<style>
+    #pagebody {
+        width: 100%;
+    }
+
+
+    input.form-control {
+        border: none;
+        outline: none;
+        display: flex;
+        padding-top: 5px;
+        font-size: 16px;
+        width: 100%;
+        height: 30px;
+        max-width: 700px;
+        color: rgb(55, 53, 47);
+
+    }
+
+    div.form-control.input-group-text {
+        border: none;
+        outline: none;
+        display: flex;
+        padding-top: 5px;
+        font-size: 16px;
+        width: 100%;
+        height: 30px;
+        max-width: 700px;
+        color: rgb(55, 53, 47);
+        background-color: transparent;
+    }
+
+    input.form-control:focus {
+        border: none;
+        outline: none;
+        -webkit-box-shadow: none !important;
+        box-shadow: none !important;
+    }
+
+    input.form-control::placeholder {
+        color: rgba(55, 53, 47, 0.2);
+
+    }
+
+    input.form-control.text::placeholder {
+        visibility: hidden;
+        -webkit-text-fill-color: rgba(55, 53, 47, 0.5);
+
+    }
+
+    input.form-control:focus::placeholder {
+        visibility: visible;
+    }
+
+    .center-aligned {
+        align-items: center;
+    }
+</style>
+<div id="pagebody" style="display: flex; flex-direction: column; align-items: center; margin: 0 auto; ">
+    <div id="body" class="col p-4 vh-100 d-flex flex-column"
+        style="width: 100%;transition-property: width; transition-duration: 200ms; transition-timing-function: ease;">
+        <div id="title mt-10" style="margin-top: 110px; width: 100%; max-width: 700px;">
+
+            <input class='form-control' style="height:50px ; font-size: 40px;font-weight: bold; border: none;"
+                type='text' name='title' id="title" onkeyup="titleChange(this.value)" value='{{ now.title }}'
+                placeholder="제목없음">
+        </div>
+        <div id="content" class="mt-10 d-flex flex-column" style="width: 100%;">
+            {{ now.content|safe }}
+        </div>
+    </div>
+    <input type="hidden" id='nowId' value="{{ now.id }}">
+    <input type="hidden" id='parent' value="{{ parent.id }}">
+</div>
+{% endblock %}
