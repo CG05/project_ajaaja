@@ -16,6 +16,11 @@
     window.addEventListener('DOMContentLoaded', async (event) => {
         setCheck();
         await rotateSvg();
+        const inputElement = document.getElementById("file");
+        inputElement.addEventListener("change", coverUpload);
+        if(document.getElementById('coverUrl').value){
+            setCover(document.getElementById('coverUrl').value);
+        }
     });
 
     function setCheck() {
@@ -519,18 +524,18 @@
         let textAfter = this.value.substring(selectedEnd, this.value.length);
         let content;
         if (document.getElementById('todo').contains(event.target)) {
-            if (this.classList.contains('checkText')){
+            if (this.classList.contains('checkText')) {
                 if (textBefore == '' && textAfter == '') {
                     content = genCheck('');
                     appendLine(content, this)
                 } else {
                     content = genCheck('');
-                    
+
                     appendLine(content, this)
                 }
                 this.value = textBefore + textAfter;
 
-            }else{
+            } else {
                 if (textBefore == '' && textAfter == '') {
                     content = genCheck('');
                     appendLine(content, this)
@@ -540,7 +545,7 @@
                     appendLine(content, this)
                     this.value = textBefore + textAfter;
                 }
-                
+
             }
 
             content.children[1].focus();
@@ -727,7 +732,39 @@
         }
     }
 
-    function coverUpload(){
+    function setCover(cover_url){
+        const coverSpace = document.getElementById('coverSpace');
+        const titleDiv = document.getElementById('title');
+        titleDiv.style.marginTop = '25px';
+        $(titleDiv).find('label:eq(0)').css('display', 'none');
+        coverSpace.innerHTML = `<img src="${cover_url}" referrerpolicy="same-origin" style="display: block; object-fit: cover; border-radius: 0px; width: 100%; height: 30vh; opacity: 1; object-position: center 50%;">`;
+        coverSpace.style.height = '30vh';
+    }
+
+    function coverUpload() {
+        console.log(event.target.files[0]);
+        const csrftoken = getCookie('csrftoken');
+        const coverimg = event.target.files[0];
+        const nowId = document.getElementById('nowId').value;
+        const formData = new FormData();
+        formData.append('file', coverimg);
+
+        fetch(`/notion/saveCover/${nowId}/`, {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-CSRFToken': csrftoken
+            }
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.cover_url) {
+                    setCover(data.cover_url)
+                } else {
+                    console.error('Upload failed');
+                }
+            })
+            .catch(error => console.error('Error:', error));
 
     }
 
@@ -797,38 +834,37 @@
     }
 
     #coverUpload {
-        position: relative; 
-        top: -25px; 
-        left: 100px; 
-        line-height: 28px; 
-        text-align:center; 
-        height: 28px; 
-        width: 100px; 
-        min-width: 100px; 
-        cursor: pointer; 
-        border-radius: 4px; 
-        font-size: 14px; 
+        position: relative;
+        top: -35px;
+        left: 100px;
+        line-height: 28px;
+        text-align: center;
+        height: 28px;
+        width: 75px;
+        min-width: 75px;
+        cursor: pointer;
+        border-radius: 4px;
+        font-size: 14px;
         color: rgba(55, 53, 47, 0.5);
 
     }
+
     input#file {
         display: none;
     }
 </style>
 <div id="pagebody" style="display: flex; flex-direction: column; align-items: center; margin: 0 auto; ">
-    <div id="body" class="col p-4 vh-100 d-flex flex-column"
+    <div id="body" class="col vh-100 d-flex flex-column"
         style="width: 100%;transition-property: width; transition-duration: 200ms; transition-timing-function: ease;">
         <div id="coverSpace" style="display: flex; width: 100%; height: 0px;">
-            <!-- <img src="" referrerpolicy="same-origin" style="display: block; object-fit: cover; border-radius: 0px; width: 100%; height: 30vh; opacity: 1; object-position: center 50%;"> -->
         </div>
         <div id="title mt-10" style="display: flex; margin-top: 110px; width: 100%; max-width: 700px;">
             <label for="file">
-                <div role="button" id="coverUpload">커버 업로드</div>
-              </label>
-              <input type="file" name="file" id="file">
-            <input class='form-control' style="height:50px ; font-size: 40px;font-weight: bold;"
-                type='text' name='title' id="title" onkeyup="titleChange(this.value)" value='{{ now.title }}'
-                placeholder="제목없음">
+                <div role="button" id="coverUpload">커버 추가</div>
+            </label>
+            <input class='form-control' type="file" name="file" id="file">
+            <input class='form-control' style="height:50px ; font-size: 40px;font-weight: bold;" type='text'
+                name='title' id="title" onkeyup="titleChange(this.value)" value='{{ now.title }}' placeholder="제목없음">
         </div>
         <div id="content" class="mt-10 d-flex flex-column" style="width: 100%;">
             {{ now.content|safe }}
@@ -836,6 +872,8 @@
     </div>
     <input type="hidden" id='nowId' value="{{ now.id }}">
     <input type="hidden" id='parent' value="{{ parent.id }}">
+    <input type="hidden" id='coverUrl' value="{{ cover_url }}">
+
 
 </div>
 {% endblock %}

@@ -183,6 +183,9 @@ def pageNum(request, pageNum):
             username_ += ".."
         else:
             username_ = username
+        coverUrl = ''
+        if now.cover:
+            coverUrl = now.cover.url
         content = {
             'notions': notions,
             'now': now,
@@ -191,6 +194,7 @@ def pageNum(request, pageNum):
             'username':username_,
             'parents':parents,
             'reparents':reversed(parents),
+            'cover_url':coverUrl,
         }
         return render(request, f'notion/{username}/{pageNum}', content)
     else:
@@ -278,6 +282,20 @@ def createChild(request, notionId, url):
     shutil.copyfile(originFile, os.path.join(destinationPath, pageNum))
     return redirect(f'/notion/{pageNum}')
 
+def saveCover(request, notionId):
+    if request.method == 'POST':
+        notion = Notion.objects.get(id=notionId)
+        # destinationPath = os.path.join(settings.MEDIA_ROOT, notionId)
+        # if not os.path.isdir(destinationPath):
+        #     os.mkdir(destinationPath)
+        if 'file' in request.FILES:
+            cover = request.FILES['file']
+            notion.cover = cover
+            notion.save();
+            return JsonResponse({'cover_url': notion.cover.url})
+        else:
+            return JsonResponse({'error': 'No file uploaded'}, status=400)
+    return JsonResponse({'error': 'Invalid form'}, status=400) 
 
 def remove(request, notionId):
     notion = Notion.objects.get(id=notionId);
@@ -290,5 +308,8 @@ def remove(request, notionId):
     msg += "location.href='/';"
     msg += "</script>"
     return HttpResponse(msg);
+
+
+
 
 
