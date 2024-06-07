@@ -14,16 +14,17 @@ from django.core.mail import EmailMessage
 import json
 from django.conf import settings
 
-
 def index(request):
     username = request.user.username
     notions = Notion.objects.filter(user=request.user)
     recentList = Notion.objects.filter(user=request.user).order_by('-date')
+    recentList_len = len(recentList)
     if len(username) > 5:
         username = username[:5]
         username += ".."
     else:
         username = username
+        
     try :
         notions = Notion.objects.filter(user=request.user)
         parent = parent_find(notions[0])
@@ -38,7 +39,8 @@ def index(request):
             "notions": notions,
             "username":username,
             "borderList":border_list,
-            "recentList":recentList[:6],
+            "recentList":recentList[:12],
+            "recentList_len" : recentList_len,
         }
         return render(request, "home.html", content)
     except:

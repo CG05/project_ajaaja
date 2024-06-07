@@ -17,11 +17,55 @@
     #pagebody{
         width:100%;
     }
-
+    .scroll-wrapper {
+        position: relative;
+        width: 100%;
+        margin: 0 auto;
+        overflow: visible; /* 버튼이 보이도록 하기 위해 추가 */
+    }
+    .scroll-container {
+        max-width: 100%;
+        height: 195px;
+        display: flex-inline;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden; 
+        position: relative;
+    }
+    .scroll-button {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background-color: #fff;
+        border: 2px solid #ccc;
+        border-radius: 50%;
+        cursor: pointer;
+        padding: 5px;
+        z-index: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        width: 30px;
+        height: 30px;
+    }
+    .scroll-button.left {
+        position:absolute;
+        left: 0;
+    }
+    .scroll-button svg {
+        width: 15px; /* SVG 아이콘 크기를 줄임 */
+        height: 15px; /* SVG 아이콘 크기를 줄임 */
+        fill: #333;
+    }
+    .scroll-content {
+        display: flex;
+        transition: transform 0.3s ease;
+    }
 </style>
 
 <div id="pagebody" style="display: flex; flex-direction: column; align-items: center; margin: 0 auto; ">
-    <div id="body" class="col p-4 vh-100 d-flex flex-column" style="width: 100%;transition-property: width; transition-duration: 200ms; transition-timing-function: ease;">
+    <div id="body" class="col vh-100 d-flex flex-column" style="width: 100%;transition-property: width; transition-duration: 200ms; transition-timing-function: ease; padding: 24px 24px 24px 34px;">
         <div id="content" class="mt-10 d-flex flex-column" style="width: 100%;">
             <div style="width: 100%; height: 100%; z-index: 150; position: relative; align-items: center;">
                 <!-- 인사 -->
@@ -29,7 +73,7 @@
                     <span style="display: flex; pointer-events: all; max-width: 100%;">
                         <div role="button" tabindex="0" style="user-select: none; transition: background 20ms ease-in 0s; cursor: pointer; display: flow; align-items: center; flex-shrink: 1; white-space: nowrap; height: 100%; border-radius: 4px; font-size: inherit; min-width: 0px; padding: 2px 0px; color: transparent; font-weight: inherit; margin: -2px 0px 2px; text-overflow: ellipsis; width: 0px; pointer-events: none;">{{ username }} </div>
                         <div role="button" tabindex="0" style="user-select: none; transition: background 20ms ease-in 0s; cursor: pointer; display: flow; align-items: center; flex-shrink: 1; white-space: nowrap; height: 100%; border-radius: 4px; font-size: inherit; min-width: 0px; padding: 2px 6px; font-weight: inherit; margin: -2px -6px 2px; overflow: hidden; text-overflow: ellipsis; text-shadow: none;">{{ username }} </div>
-                        <span style="flex-shrink: 0;">님,&nbsp;안녕하세요.</span>
+                        <span style="flex-shrink: 0;">님,&nbsp;안녕하세요. &nbsp;🤗</span>
                     </span>
                 </div>
     
@@ -45,16 +89,34 @@
                             </div>
                         </div>
                     </div>
-                    <div style="width: 100%; height: 200px; display: flex-inline; align-items:center;">
-                        {% for recent in recentList %}
-                            <button onclick="location.href=`/notion/{{recent.url}}`" style="width:144px; height:144px; border-radius:16px; margin:6px 16px; flex-direction:column;">
-                                <div style="width:100%; margin:10px;"><svg role="graphics-symbol" viewBox="0 0 16 16" class="pageIconFilledLight" style="width: 26px; height: 26px; display: block; fill: inherit; flex-shrink: 0; margin-left: -3px;"><g><path d="M4.35986 15.3999C2.89697 15.3999 2.13818 14.6343 2.13818 13.1577V2.84229C2.13818 1.37256 2.89697 0.600098 4.35986 0.600098H7.65479C8.50928 0.600098 8.98096 0.736816 9.55518 1.31787L13.144 4.96826C13.7388 5.56982 13.8618 6.00732 13.8618 6.95752V13.1577C13.8618 14.6274 13.103 15.3999 11.6401 15.3999H4.35986Z" fill="white"></path><path d="M4.35986 15.3999C2.89697 15.3999 2.13818 14.6343 2.13818 13.1577V2.84229C2.13818 1.37256 2.89697 0.600098 4.35986 0.600098H7.65479C8.50928 0.600098 8.98096 0.736816 9.55518 1.31787L13.144 4.96826C13.7388 5.56982 13.8618 6.00732 13.8618 6.95752V13.1577C13.8618 14.6274 13.103 15.3999 11.6401 15.3999H4.35986ZM4.46924 14.0601H11.5239C12.187 14.0601 12.522 13.7114 12.522 13.0757V7.13525H8.8374C7.8667 7.13525 7.38135 6.66357 7.38135 5.68604V1.93994H4.46924C3.80615 1.93994 3.47803 2.29541 3.47803 2.92432V13.0757C3.47803 13.7114 3.80615 14.0601 4.46924 14.0601ZM8.96045 5.95947H12.3374L8.56396 2.12451V5.55615C8.56396 5.83643 8.68018 5.95947 8.96045 5.95947ZM10.437 8.93311C10.6831 8.93311 10.8677 9.12451 10.8677 9.36377C10.8677 9.60986 10.6831 9.80127 10.437 9.80127H5.43311C5.17334 9.80127 4.98877 9.60986 4.98877 9.36377C4.98877 9.12451 5.17334 8.93311 5.43311 8.93311H10.437ZM10.437 11.23C10.6831 11.23 10.8677 11.4214 10.8677 11.6675C10.8677 11.9067 10.6831 12.0913 10.437 12.0913H5.43311C5.17334 12.0913 4.98877 11.9067 4.98877 11.6675C4.98877 11.4214 5.17334 11.23 5.43311 11.23H10.437Z" fill="#91918E"></path></g></svg></div>
-                                <div style=" overflow: hidden; text-overflow: ellipsis; white-space: nowrap; width:130px; padding-top:8px; line-height: 26px; font-weight:600;height: 60px; justify-content:center;">
-                                    {{ recent.title|default:'Untitled' }}
-                                </div>
-                                <div style="width:100% ;font-size: 10px; height: 30px;  justify-content:center; text-align:center;">{{ recent.date }}</div>
-                            </button>
-                        {% endfor %}
+                    <div class="scroll-container" >
+                        {% if recentList_len > 6 %}
+                        <button class="scroll-button left" onclick="scrollLeft_1()">
+                            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M15.41 16.59L10.83 12l4.58-4.59L14 6l-6 6 6 6z"/>
+                            </svg>
+                        </button>
+                        {% endif %}
+                        <div class="scroll-container mx-5 d-flex justify-content-center" style="width:85%;">
+                            <div class="scroll-content" id="scroll-content" style="width:100%;">
+                                {% for recent in recentList %}
+                                    <button onclick="location.href=`/notion/{{recent.url}}`" style="width:144px; height:144px; border-radius:16px; margin:6px 16px; flex-direction:column;">
+                                        <div style="width:100%; margin:10px;"><svg role="graphics-symbol" viewBox="0 0 16 16" class="pageIconFilledLight" style="width: 26px; height: 26px; display: block; fill: inherit; flex-shrink: 0; margin-left: -3px;"><g><path d="M4.35986 15.3999C2.89697 15.3999 2.13818 14.6343 2.13818 13.1577V2.84229C2.13818 1.37256 2.89697 0.600098 4.35986 0.600098H7.65479C8.50928 0.600098 8.98096 0.736816 9.55518 1.31787L13.144 4.96826C13.7388 5.56982 13.8618 6.00732 13.8618 6.95752V13.1577C13.8618 14.6274 13.103 15.3999 11.6401 15.3999H4.35986Z" fill="white"></path><path d="M4.35986 15.3999C2.89697 15.3999 2.13818 14.6343 2.13818 13.1577V2.84229C2.13818 1.37256 2.89697 0.600098 4.35986 0.600098H7.65479C8.50928 0.600098 8.98096 0.736816 9.55518 1.31787L13.144 4.96826C13.7388 5.56982 13.8618 6.00732 13.8618 6.95752V13.1577C13.8618 14.6274 13.103 15.3999 11.6401 15.3999H4.35986ZM4.46924 14.0601H11.5239C12.187 14.0601 12.522 13.7114 12.522 13.0757V7.13525H8.8374C7.8667 7.13525 7.38135 6.66357 7.38135 5.68604V1.93994H4.46924C3.80615 1.93994 3.47803 2.29541 3.47803 2.92432V13.0757C3.47803 13.7114 3.80615 14.0601 4.46924 14.0601ZM8.96045 5.95947H12.3374L8.56396 2.12451V5.55615C8.56396 5.83643 8.68018 5.95947 8.96045 5.95947ZM10.437 8.93311C10.6831 8.93311 10.8677 9.12451 10.8677 9.36377C10.8677 9.60986 10.6831 9.80127 10.437 9.80127H5.43311C5.17334 9.80127 4.98877 9.60986 4.98877 9.36377C4.98877 9.12451 5.17334 8.93311 5.43311 8.93311H10.437ZM10.437 11.23C10.6831 11.23 10.8677 11.4214 10.8677 11.6675C10.8677 11.9067 10.6831 12.0913 10.437 12.0913H5.43311C5.17334 12.0913 4.98877 11.9067 4.98877 11.6675C4.98877 11.4214 5.17334 11.23 5.43311 11.23H10.437Z" fill="#91918E"></path></g></svg></div>
+                                        <div style=" overflow: hidden; text-overflow: ellipsis; white-space: nowrap; width:130px; padding-top:8px; line-height: 26px; font-weight:600;height: 60px; justify-content:center;">
+                                            {{ recent.title|default:'Untitled' }}
+                                        </div>
+                                        <div style="width:100% ;font-size: 10px; height: 30px;  justify-content:center; text-align:center;">{{ recent.date }}</div>
+                                    </button>
+                                {% endfor %}    
+                            </div>
+                        </div>
+                        {% if recentList_len > 6 %}
+                        <button class="scroll-button" style="position:absolute;right:87px;" onclick="scrollRight()">
+                            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M8.59 16.59L13.17 12l-4.58-4.59L10 6l6 6-6 6z"/>
+                            </svg>
+                        </button>
+                        {% endif %}
                     </div>
                 </div>
             </div>
@@ -67,9 +129,27 @@
 
 
 
+<script>
+    const scrollContainer = document.getElementById('scroll-content');
+    const scrollButtons = document.querySelectorAll('.scroll-button');
+    let scrollAmount = 0;
+    const scrollStep = 174; // 화살표 버튼 클릭 시 이동할 픽셀 수
 
-   
+        
+    function scrollLeft_1() {
+        scrollAmount -= scrollStep;
+        if (scrollAmount < 0) scrollAmount = 0;
+        scrollContainer.style.transform = `translateX(-${scrollAmount}px)`;
+    }
 
+    function scrollRight() {
+        scrollAmount += scrollStep;
+        const maxScroll = scrollContainer.scrollWidth - scrollContainer.clientWidth;
+        
+        if (scrollAmount > maxScroll) scrollAmount = maxScroll;
+        scrollContainer.style.transform = `translateX(-${scrollAmount}px)`;
+    }
+</script>
 
 
 
