@@ -11,14 +11,6 @@
     let imageCnt = 0;
     window.onload = function () {
         updateChildrenPosition();
-        imageList = document.querySelectorAll('[id*=previewDiv]')
-        for (var i = 0; i < imageList.length; i++) {
-            cnt = imageList[i].id.substr(imageList[i].id.length - 1)
-            if (Number(cnt) > imageCnt) {
-                imageCnt = Number(cnt) + 1;
-                console.log(imageCnt)
-            }
-        }
         setCheck();
     }
     window.addEventListener('DOMContentLoaded', async (event) => {
@@ -77,18 +69,18 @@
         input.setAttribute('onkeyup', 'upmenu(this.value)');
         input.setAttribute('value', '');
         if (option == 'checkText') {
-            input.classList.add('check')
+            input.classList.add('checkText')
             input.setAttribute('style', 'font-size:16px;');
             input.placeholder = '할일'
-        } else if (option == 'subject1') {
+        } else if (option == 'subject1Text') {
             input.setAttribute('style', 'font-size:30px;font-weight:bold');
             input.setAttribute('placeholder', '제목을 입력하세요.');
-            input.classList.add('subject1',)
-        } else if (option == 'subject2') {
+            input.classList.add('subject1Text',)
+        } else if (option == 'subject2Text') {
 
             input.setAttribute('style', 'font-size:20px;font-weight:bold');
             input.setAttribute('placeholder', '부제목을 입력하세요.');
-            input.classList.add('subject2',)
+            input.classList.add('subject2Text',)
         } else if (option == 'file') {
             input.setAttribute('type', 'file');
             input.setAttribute('name', 'files');
@@ -96,7 +88,7 @@
             input.classList.add('file')
             input.setAttribute('onChange', 'readURL(this,' + imageCnt + ')')
         } else {
-            input.classList.add('normal');
+            input.classList.add('normalText');
             input.setAttribute('style', 'font-size:16px;');
             input.placeholder = "텍스트를 입력하세요. 명령어를 입력하려면 '/'를 입력하세요."
         }
@@ -112,15 +104,15 @@
             obj.focus();
             transTitle(value);
             transBody();
-        }else if(event.key == 'ArrowDown'){
+        } else if (event.key == 'ArrowDown') {
             let target = document.getElementById('content').firstElementChild;
-            if(!target.classList.contains('check')){
+            if (target.classList.contains('text')) {
                 target.focus();
-            }else{
+            } else {
                 target.children[1].focus();
             }
             transTitle(value);
-        }else {
+        } else {
             if (value.length == 10) {
                 text = document.getElementById('titleSpan_' + id_value).innerText
                 document.getElementById('titleSpan_' + id_value).innerText = text + '...';
@@ -181,22 +173,22 @@
                 console.log('Error : e2');
             });
     }
-    function downmenu(value){
+    function downmenu(value) {
         const selected = event.target.selectionEnd;
         if (event.target.selectionStart == 0 && event.key == 'Backspace') {
             event.preventDefault();
             let target;
             now_value = event.target.value
-            
-            if(!event.target.classList.contains('check')){
+
+            if (!event.target.classList.contains('checkText')) {
                 target = targetPrev(event.target);
                 event.target.remove();
-                
-            }else{
+
+            } else {
                 target = createTextInput();
                 appendLine(target, event.target)
                 event.target.parentElement.remove();
-                
+
             }
             size = target.value
             num_size = size.length
@@ -204,16 +196,16 @@
             target.focus();
             target.selectionStart = Number(num_size)
             target.selectionEnd = Number(num_size)
-            
-        }else if (event.key == 'ArrowUp') {
+
+        } else if (event.key == 'ArrowUp') {
             event.preventDefault();
             const target = targetPrev(event.target);
             console.log(target)
-            if (target != null) {
+            if (target != null && target != undefined) {
                 target.focus();
                 target.selectionStart = selected;
                 target.selectionEnd = selected;
-            }else{
+            } else {
                 document.getElementById('title').focus();
                 document.getElementById('title').selectionStart = selected;
                 document.getElementById('title').selectionEnd = selected;
@@ -228,7 +220,7 @@
                 target.selectionEnd = selected;
 
             }
-        } 
+        }
     }
 
     function upmenu(value) {
@@ -239,7 +231,7 @@
             let num_size = str.length
             event.target.value = value_str.substring(0, value_num)
             let content;
-            if (event.target.classList.contains('check')) {
+            if (event.target.classList.contains('checkText')) {
                 content = genCheck(str);
             } else {
                 content = createTextInput();
@@ -401,13 +393,13 @@
         let target;
         if (eventfrom.previousElementSibling != null) {
 
-            if (!eventfrom.classList.contains('check')) {
+            if (!eventfrom.classList.contains('checkText')) {
                 targetBase = eventfrom;
             } else {
                 targetBase = eventfrom.parentElement;
             }
             console.log(targetBase)
-            if (targetBase.previousElementSibling.classList.contains('check')) {
+            if (!targetBase.previousElementSibling.classList.contains('text')) {
                 target = targetBase.previousElementSibling.children[1];
             } else {
                 target = targetBase.previousElementSibling
@@ -423,32 +415,31 @@
         let target;
         console.log(eventfrom);
         if (eventfrom.nextElementSibling != null) {
-            console.log(!eventfrom.nextElementSibling.classList.contains('check'))
-            if (!eventfrom.nextElementSibling.classList.contains('check')) {
+            if (eventfrom.nextElementSibling.classList.contains('text')) {
                 target = eventfrom.nextElementSibling
             } else {
 
-                if (eventfrom.classList.contains('check')) {
+                if (eventfrom.classList.contains('checkText')) {
                     targetBase = eventfrom.parentElement;
                 } else {
                     targetBase = eventfrom;
                 }
-                if (targetBase.nextElementSibling.classList.contains('check')) {
+                if (!targetBase.nextElementSibling.classList.contains('text')) {
                     target = targetBase.nextElementSibling.children[1];
                 } else {
                     target = targetBase.nextElementSibling
                 }
             }
         } else {
-            if (eventfrom.classList.contains('check')) {
+            if (eventfrom.classList.contains('checkText')) {
                 targetBase = eventfrom.parentElement;
             } else {
                 return target = null;
             }
-            if(targetBase.nextElementSibling == null){
+            if (targetBase.nextElementSibling == null) {
                 target = null;
-            }else{
-                if (targetBase.nextElementSibling.classList.contains('check')) {
+            } else {
+                if (!targetBase.nextElementSibling.classList.contains('text')) {
                     target = targetBase.nextElementSibling.children[1];
 
                 } else {
@@ -496,17 +487,17 @@
 
     function appendLine(obj, eventfrom) {
         let appendTo = document.getElementById('content');
-        
-            const next = targetAfter(eventfrom);
-            console.log("next", next)
-            if (next == null || next == undefined) {
-                appendTo.appendChild(obj);
-            } else if(!next.classList.contains('check')) {
-                appendTo.insertBefore(obj, next);
-            }else{
-                appendTo.insertBefore(obj, next.parentElement);
-            }
-        
+
+        const next = targetAfter(eventfrom);
+        console.log("next", next)
+        if (next == null || next == undefined) {
+            appendTo.appendChild(obj);
+        } else if (!next.classList.contains('checkText')) {
+            appendTo.insertBefore(obj, next);
+        } else {
+            appendTo.insertBefore(obj, next.parentElement);
+        }
+
     }
     function genCheck(str) {
         checkdiv = document.createElement('div')
@@ -524,69 +515,107 @@
     function slash(event) {
         selectedStart = this.selectionStart;
         selectedEnd = this.selectionEnd;
-        let textBefore = this.value.substring(0, selectedStart-1);
+        let textBefore = this.value.substring(0, selectedStart - 1);
         let textAfter = this.value.substring(selectedEnd, this.value.length);
-        console.log(textBefore);
-        console.log(textAfter);
-        console.log(this);
-        console.log(event);
+        let content;
         if (document.getElementById('todo').contains(event.target)) {
-            let content;
-            if(textBefore == '' && textAfter == ''){
-                content = genCheck('');
-                appendLine(content, this)
-                this.remove();
-            }else if(textBefore == ''){
-                content = genCheck(textAfter);
+            if (this.classList.contains('checkText')){
+                if (textBefore == '' && textAfter == '') {
+                    content = genCheck('');
+                    appendLine(content, this)
+                } else {
+                    content = genCheck('');
+                    
+                    appendLine(content, this)
+                }
                 this.value = textBefore + textAfter;
-                appendLine(content, this)
+
             }else{
-                content = genCheck('');
-                this.value = textBefore + textAfter;
-                appendLine(content, this)
+                if (textBefore == '' && textAfter == '') {
+                    content = genCheck('');
+                    appendLine(content, this)
+                    this.remove();
+                } else {
+                    content = genCheck('');
+                    appendLine(content, this)
+                    this.value = textBefore + textAfter;
+                }
+                
             }
-            
 
             content.children[1].focus();
             transBody();
         } else if (document.getElementById('text').contains(event.target)) {
-            if(!this.classList.contains('normal')){
-                input = createTextInput();
-                this.value = textBefore + textAfter;
-                appendLine(input, this)
-                input.focus();
-            }else{
-                this.focus();
+            if (!this.classList.contains('normalText')) {
+                if (textBefore == '' && textAfter == '') {
+                    content = createTextInput();
+                    appendLine(content, this)
+                    this.remove();
+                } else {
+                    content = createTextInput();
+                    appendLine(content, this)
+                    this.value = textBefore + textAfter;
+                }
+            } else {
+                if (textBefore == '' && textAfter == '') {
+                    this.focus();
+                } else {
+                    content = createTextInput();
+                    appendLine(content, this)
+                    this.value = textBefore + textAfter;
+                }
             }
-            return menuWindow('close');
+            transBody();
+            content.focus();
         } else if (document.getElementById('page').contains(event.target)) {
             url_find = window.location.pathname.split('/')
             url = url_find[2]
             let id = document.getElementById('nowId').value
             location.href = '/notion/createChild/' + id + "/" + url;
         } else if (document.getElementById('subject1').contains(event.target)) {
-            input = createTextInput('subject1');
-
-            if(!this.classList.contains('subject1')){
-                input = createTextInput('subject1');
-                this.value = textBefore + textAfter;
-                appendLine(input, this)
-                input.focus();
-            }else{
-                this.focus();
+            if (!this.classList.contains('subject1Text')) {
+                if (textBefore == '' && textAfter == '') {
+                    content = createTextInput('subject1Text');
+                    appendLine(content, this)
+                    this.remove();
+                } else {
+                    content = createTextInput();
+                    appendLine(content, this)
+                    this.value = textBefore + textAfter;
+                }
+            } else {
+                if (textBefore == '' && textAfter == '') {
+                    this.focus();
+                } else {
+                    content = createTextInput('subject1Text');
+                    appendLine(content, this)
+                    this.value = textBefore + textAfter;
+                }
             }
             transBody();
+            content.focus();
         } else if (document.getElementById('subject2').contains(event.target)) {
-            input = createTextInput('subject2');
-            if(!this.classList.contains('subject2')){
-                input = createTextInput('subject2');
-                this.value = textBefore + textAfter;
-                appendLine(input, this)
-                input.focus();
-            }else{
-                this.focus();
+            if (!this.classList.contains('subject2Text')) {
+                if (textBefore == '' && textAfter == '') {
+                    content = createTextInput('subject2Text');
+                    appendLine(content, this)
+                    this.remove();
+                } else {
+                    content = createTextInput();
+                    appendLine(content, this)
+                    this.value = textBefore + textAfter;
+                }
+            } else {
+                if (textBefore == '' && textAfter == '') {
+                    this.focus();
+                } else {
+                    content = createTextInput('subject2Text');
+                    appendLine(content, this)
+                    this.value = textBefore + textAfter;
+                }
             }
             transBody();
+            content.focus();
         } else if (document.getElementById('files').contains(event.target)) {
 
             div_s = document.createElement("div");
@@ -612,7 +641,7 @@
                 div_s.previousElementSibling.remove();
             }
         }
-        return menuWindow('close');
+        menuWindow('close');
     }
 
     async function toggleChildren(e, id) {
@@ -698,12 +727,14 @@
         }
     }
 
-    // 초기 위치 설정
+    function coverUpload(){
+
+    }
 
 
     // 윈도우 크기가 변경될 때마다 위치 업데이트
     window.addEventListener('resize', updateChildrenPosition);
-    window.addEventListener('onkeyup', transBody);
+    window.addEventListener('keyup', transBody);
 </script>
 {% endblock %}
 {% block page %}
@@ -764,13 +795,38 @@
     .center-aligned {
         align-items: center;
     }
+
+    #coverUpload {
+        position: relative; 
+        top: -25px; 
+        left: 100px; 
+        line-height: 28px; 
+        text-align:center; 
+        height: 28px; 
+        width: 100px; 
+        min-width: 100px; 
+        cursor: pointer; 
+        border-radius: 4px; 
+        font-size: 14px; 
+        color: rgba(55, 53, 47, 0.5);
+
+    }
+    input#file {
+        display: none;
+    }
 </style>
 <div id="pagebody" style="display: flex; flex-direction: column; align-items: center; margin: 0 auto; ">
     <div id="body" class="col p-4 vh-100 d-flex flex-column"
         style="width: 100%;transition-property: width; transition-duration: 200ms; transition-timing-function: ease;">
-        <div id="title mt-10" style="margin-top: 110px; width: 100%; max-width: 700px;">
-
-            <input class='form-control' style="height:50px ; font-size: 40px;font-weight: bold; border: none;"
+        <div id="coverSpace" style="display: flex; width: 100%; height: 0px;">
+            <!-- <img src="" referrerpolicy="same-origin" style="display: block; object-fit: cover; border-radius: 0px; width: 100%; height: 30vh; opacity: 1; object-position: center 50%;"> -->
+        </div>
+        <div id="title mt-10" style="display: flex; margin-top: 110px; width: 100%; max-width: 700px;">
+            <label for="file">
+                <div role="button" id="coverUpload">커버 업로드</div>
+              </label>
+              <input type="file" name="file" id="file">
+            <input class='form-control' style="height:50px ; font-size: 40px;font-weight: bold;"
                 type='text' name='title' id="title" onkeyup="titleChange(this.value)" value='{{ now.title }}'
                 placeholder="제목없음">
         </div>
@@ -780,5 +836,6 @@
     </div>
     <input type="hidden" id='nowId' value="{{ now.id }}">
     <input type="hidden" id='parent' value="{{ parent.id }}">
+
 </div>
 {% endblock %}

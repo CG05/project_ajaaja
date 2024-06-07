@@ -7,6 +7,7 @@ class Notion(models.Model):
     parent = models.ForeignKey('self', on_delete=models.CASCADE, blank=True, null=True, related_name='children')
     content = models.TextField()
     date = models.DateTimeField()
+    cover = models.ImageField(upload_to=f'covers/{url}/', blank=True)
 
     def __str__(self):
         return self.url;
