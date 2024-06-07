@@ -20,8 +20,6 @@ body{
     background-color: #fff;
     height: 38px;
 }
-
-
 .tab-menu button {
     background-color: inherit;
     float: left;
@@ -30,11 +28,9 @@ body{
     cursor: pointer;
     transition: 0.3s;
 }
-
 .tab-menu button:hover {
     background-color: #ddd;
 }
-
 .tab-menu button.active {
     background-color: #fff;
     border-bottom: 2px solid #000;
@@ -57,7 +53,6 @@ body{
     border-radius: 6px;
     font-size: 15px;
 }
-
 .share-button:hover {
     background-color: #ddd;
 }
@@ -67,7 +62,8 @@ body{
     position: fixed; /* 페이지 스크롤에 따라 고정되도록 설정 */
     top: 38px;
     right: 12px;
-    min-width: 100px;
+    width: 402px;
+    height: 100px;
     background-color: #fff;
     border: 1px solid #ccc;
     border-radius: 6px;
@@ -75,11 +71,8 @@ body{
     z-index: 1;
     opacity: 0; /* 초기에는 투명하게 설정 */
     transition: opacity 0.3s ease-in-out; /* 부드러운 나타나기/사라지기 효과를 추가합니다. */
-    height: 100px;   
     pointer-events: none; /* 클릭 이벤트를 비활성화합니다. */
-    display: flex; /* Flexbox 사용하여 내부 요소를 가로로 배열합니다. */
-    justify-content: space-between; /* 내부 요소 사이의 여백을 최대한 확보하고 요소를 동일한 간격으로 배치합니다. */
-    align-items: center; /* 수직 가운데 정렬합니다. */
+    
 }
 
 
@@ -97,23 +90,11 @@ body{
     align-items: center;
 }
 
-/* 카피 버튼 스타일 */
-.copy-button {
-    background-color: #bbb;
-    border: none;
-    outline: none;
-    cursor: pointer;
-    padding: 4px 8px;
-    font-size: 10px;
-    
-}
-
 /* 공유 박스가 나타날 때 */
 .share-box.show {
     opacity: 1; /* 투명도를 1로 설정하여 나타나게 합니다. */
     pointer-events: auto; /* 클릭 이벤트를 활성화합니다. */
 }
-
 /* 박스 내부의 글자 가 일정 길이를 초과할 때 말줄임표 표시 */
 .share-box p {
     overflow: hidden;   
@@ -129,42 +110,84 @@ body{
     white-space: nowrap; /* 한 줄로만 표시하도록 설정 */
     overflow: hidden; /* 내용이 넘치는 경우 가려진 부분을 숨김 */
     text-overflow: ellipsis; 
-    
-}
-#copyButton {
-    display: inline-flex;
-    margin-top: 1px;
-    margin-left: auto;
-    text-decoration: none;
-    text-align: center;
-    justify-content: center;
-    color:white;
-
 }
 
-#copyButtonContainer {
-    margin-right: 9px;
-    margin-top: 32px;
-    background-color: #2383E2; /* 기본 배경색 */
-    border-radius: 4px; /* 둥근 모서리 설정 */
-    transition: background-color 0.3s; /* 배경색 변경 시 부드러운 전환 효과 */
+
+.utabShareBtn {
+  position: relative;
+  right: -100px;
+  font-size: 14px;
+  color: white;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  text-align: center;
+
+  background-color: #2383E2;
+  transition: background-color 0.3s;
+  
+  border-radius: 4px;
+  width: 65px;
+  min-width: 65px;
+  height: 40px;
+}
+.utabShareBtn:hover {
+  background-color: #1b6fb9;
 }
 
-#copyButtonContainer:hover {
-    background-color: #1b6fb9;
+#copy-Button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  text-align: center;
+}
+#email-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  text-align: center;
 }
 
-.new-box {
-    padding: 10px;
-    box-shadow: rgba(55, 53, 47, 0.09) 0px -1px 0px inset;;
-    border-radius: 5px 5px 0 0; /* 위쪽 모서리만 둥글게 설정 */
-    margin-bottom: 10px; /* 아래쪽 여백 추가 */
-    position: absolute;
-    top: 14%;
-    left: 0;
-    width: 100%;
+.showUrlEmail {
+  position: relative;
+  left: 20px;
+  border: 1px solid gray;
+  opacity: 0.6;
+  font-size: 12px;
+  
+  border-radius: 7px;
+  width: calc(80% - 100px);
+  height: 40px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
 }
 
+.small-new-box {
+  position: relative;
+  left: 20px;
+  width:40px;
+  height: 28px;
+  min-width: 0px;
+  background-color: #f0f0f0;
+  border-radius: 4px;
+  line-height: 1.2  ;
+  color: inherit;
+  display: flex; /* Flexbox를 사용하여 중앙 정렬 */
+  justify-content: center; /* 수평 중앙 정렬 */
+  align-items: center; /* 수직 중앙 정렬 */
+  text-align: center; /* 텍스트 중앙 정렬 */
+  font-size: 14px;
+  cursor: pointer; /* 마우스 포인터를 손가락 모양으로 변경 */
+  transition: background-color 0.3s, border-color 0.3s; /* 호버 시 부드러운 전환 */
+}
+.small-new-box:hover {
+    background-color: #e0e0e0; /* 호버 시 배경색 변경 */
+    border-color: #888; /* 호버 시 테두리 색상 변경 */
+}
 .small-new-box::after {
     content: '';
     display: block;
@@ -175,54 +198,7 @@ body{
     bottom: -2px; /* 선이 버튼 바display:none로 아래에 위치하도록 설정 */
     left: 10px; /* padding-left 값과 동일하게 설정 */
 }
-.small-new-box {
-    position: absolute;
-    width:100px; /* 너비를 44px로 설정 */
-    height: 28px; /* 높이를 28px로 설정 */
-    background-color: #f0f0f0;
-    border-radius: 0;
-    margin-top: 5px;
-    top: -1px; /* 원하는 만큼 음수 값으로 조정 */
-    left: 10px; /* 오른쪽으로 5px 이동 */
-    line-height: 1.2;
-    min-width: 0px;
-    color: inherit;
-    display: flex; /* Flexbox를 사용하여 중앙 정렬 */
-    justify-content: center; /* 수평 중앙 정렬 */
-    align-items: center; /* 수직 중앙 정렬 */
-    text-align: center; /* 텍스트 중앙 정렬 */
-    font-size: 14px;
-    cursor: pointer; /* 마우스 포인터를 손가락 모양으로 변경 */
-    transition: background-color 0.3s, border-color 0.3s; /* 호버 시 부드러운 전환 */
-}
 
-.small-new-box:hover {
-    background-color: #e0e0e0; /* 호버 시 배경색 변경 */
-    border-color: #888; /* 호버 시 테두리 색상 변경 */
-}
-#emailBox {
-    width:489px;
-}
-#emailinput {
-    position:absolute;
-    top:43px;
-    width:292px;
-    height:40px;
-    left:30px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-    font-size: 12px;
-}
-#emailbutton {
-    position:relative;
-    left:385px;
-    top:14px;
-    background-color: #2383E2;
-    color:white;
-    font-size: 12px;
-    border-radius: 5px;
-    width:75px;
-}
 
 </style>
 
@@ -231,7 +207,6 @@ body{
 
 <!-- 전체 -->
 <div class="tab-menu">
-
   <!-- 경로표시창 -->
   <div style="display: inline; max-width: 500px; max-height: 32px; overflow: hidden; align-content: center; position: relative;">
     <!-- 부모페이지들 -->
@@ -293,109 +268,124 @@ body{
 </div>
 
 
-  <!-- 박스 -->
-  <div id="shareBox" class="share-box" >
-    <div id="newBox" class="new-box"></div>
-    <div class="small-new-box" onclick="tabChange(this)">URL 공유</div>
-    <div id="urlBox" style="border: 1px solid gray; opacity: 0.6; margin-bottom: 10px; margin: 28px auto 0 auto; margin-left:30px; margin-right:20px;  padding: 7px; padding-right: 0px; border-radius: 7px; width: calc(80% - 100px); height: 40px; float: right; display:flex; align-items:center; justify-content:center;">
+<!-- 공유박스 -->
+<div id="shareBox" class="share-box" >
+  
+  <div style="width: 100%; height: 34px; margin-top:10px; display: flex;">
+    <!-- URL 공유 버튼 -->
+    <div class="small-new-box" onclick="tabChange(this)">URL</div>
+    <!-- 이메일 공유 버튼 -->
+    <div class="small-new-box" style="left:30px;" onclick="tabChange(this)">공유</div>
+  </div>
+  
+  <div style="width: 100%; display: inline-flex;">
+    <!-- URL 창 -->
+    <div class="showUrlEmail" id="urlBox">
       <span id="shareContent"></span>
     </div>
-
-    <!-- 카피 버튼 이미지 -->
-    <button id="copyButtonContainer" style="margin-top: 28px; margin-right:30px; margin-left:10px; border-radius:4px; padding: 7px; float: right;">
-      <a id="copyButton" style="text-decoration: none; color: white; font-size: 10px;">
+    <!-- URL 복사 버튼 -->
+    <button class="utabShareBtn" id="urlCopyBtn">
+      <a id="copy-Button">
         <svg role="graphics-symbol" viewBox="0 0 16 16" class="link" style="width: 10px; height: 10px; display: block; fill: rgba(55, 53, 47, 0.85); flex-shrink: 0; margin-left: 0px; margin-right: 5px;">
           <path d="M7.69922 10.8945L8.73828 9.84863C7.91797 9.77344 7.34375 9.51367 6.91992 9.08984C5.76465 7.93457 5.76465 6.29395 6.91309 5.14551L9.18262 2.87598C10.3379 1.7207 11.9717 1.7207 13.127 2.87598C14.2891 4.04492 14.2822 5.67188 13.1338 6.82031L11.958 7.99609C12.1768 8.49512 12.2451 9.10352 12.1289 9.62988L14.0908 7.6748C15.7725 6 15.7793 3.62109 14.084 1.92578C12.3887 0.223633 10.0098 0.237305 8.33496 1.91211L5.95605 4.29785C4.28125 5.97266 4.26758 8.35156 5.96289 10.0469C6.36621 10.4434 6.90625 10.7441 7.69922 10.8945ZM8.30078 5.13184L7.26855 6.17773C8.08203 6.25293 8.66309 6.51953 9.08008 6.93652C10.2422 8.09863 10.2422 9.73242 9.08691 10.8809L6.81738 13.1504C5.66211 14.3057 4.03516 14.3057 2.87305 13.1504C1.71094 11.9883 1.71777 10.3545 2.87305 9.20605L4.04199 8.03027C3.83008 7.53125 3.75488 6.92969 3.87109 6.39648L1.91602 8.35156C0.234375 10.0264 0.227539 12.4121 1.92285 14.1074C3.61816 15.8027 5.99707 15.7891 7.67188 14.1143L10.0439 11.7354C11.7256 10.0537 11.7324 7.6748 10.0371 5.98633C9.64062 5.58301 9.10059 5.28223 8.30078 5.13184Z"></path>
-        </svg>Copy Link
+        </svg>
       </a>
+      <span>복사</span>
     </button>
-    <div class="small-new-box" style="left:120px;" onclick="tabChange(this)">이메일 공유</div>
-    <form action="{% url 'email' %}" id="emailBox" style="display:none">
+  </div>
+
+  <div style="width: 100%; display: inline-flex;">
+    <!-- 이메일 창 -->
+    <form class="showUrlEmail" action="{% url 'email' %}" id="emailBox" style="display:none">
       <input type="hidden" name="url" value="{{ now.url }}">
       <div class="d-inline-flex">
         <input id="emailinput" type="text" name="emails" placeholder="여러 이메일을 보낼 경우 , 를 이용하세요." onkeyup="sendemail(this)">
-        <button id="emailbutton" type="submit">보내기</button>
       </div>
     </form>
+    <!-- 보내기 버튼 -->
+    <button class="utabShareBtn" id="email-button" type="submit" style="display: none;">
+      <span>보내기</span>
+    </button>
   </div>
 </div>
 
 
 
-
-
 <script>
+
+var smallNewBox1 = document.querySelector('.small-new-box');
+smallNewBox1.addEventListener('click', function(event) {
+  // 이벤트 전파 막기
+  event.stopPropagation();
+  // 클릭 이벤트 처리
+  console.log('작은 뉴 박스가 클릭되었습니다.');
+  urlBox = document.getElementById('urlBox');
+  emailBox = document.getElementById('emailBox');
+  urlbutton = document.getElementById('urlCopyBtn')
+  emailbutton = document.getElementById('email-button')
+  urlBox.style.display='block';
+  urlbutton.style.display='block';
+  emailBox.style.display='none';
+  emailbutton.style.display='none';
+});
+
+var shareButton = document.getElementById("shareButton");
+shareButton.addEventListener("click", toggleShareBox); // 공유 버튼 클릭 시 토글 함수 호출
+// 카피 버튼 클릭 시 URL 복사
+var copyButton = document.getElementById("copy-Button");
+copyButton.addEventListener("click", copyURL);
+
+function tabChange(target){
+  urlBox = document.getElementById('urlBox');
+  emailBox = document.getElementById('emailBox');
+  urlbutton = document.getElementById('urlCopyBtn')
+  emailbutton = document.getElementById('email-button')
+  urlBox.style.display='none';
+  urlbutton.style.display='none';
+  emailBox.style.display='block';
+  emailbutton.style.display='block';
+}
     
-    var smallNewBox1 = document.querySelector('.small-new-box');
-    smallNewBox1.addEventListener('click', function(event) {
-    // 이벤트 전파 막기
-    event.stopPropagation();
-    // 클릭 이벤트 처리
-    console.log('작은 뉴 박스가 클릭되었습니다.');
-    urlBox = document.getElementById('urlBox');
-        emailBox = document.getElementById('emailBox');
-        button = document.getElementById('copyButtonContainer')
-        urlBox.style.display='block';
-        button.style.display='block';
-        emailBox.style.display='none';
-    });
-    var shareButton = document.getElementById("shareButton");
-    shareButton.addEventListener("click", toggleShareBox); // 공유 버튼 클릭 시 토글 함수 호출
+function toggleShareBox() {
+    var shareBox = document.getElementById("shareBox");
+    shareBox.classList.toggle("show"); // 'show' 클래스를 토글하여 나타내거나 숨깁니다.
+    updateShareContent(); // 공유 상자가 열릴 때마다 내용 업데이트
+}
 
-    // 카피 버튼 클릭 시 URL 복사
-    var copyButton = document.getElementById("copyButton");
-    copyButton.addEventListener("click", copyURL);
-
-    function tabChange(target){
-        urlBox = document.getElementById('urlBox');
-        emailBox = document.getElementById('emailBox');
-        button = document.getElementById('copyButtonContainer')
-
-        urlBox.style.display='none';
-        button.style.display='none';
-        emailBox.style.display='block';
-
-    }
-    function toggleShareBox() {
-        var shareBox = document.getElementById("shareBox");
-        shareBox.classList.toggle("show"); // 'show' 클래스를 토글하여 나타내거나 숨깁니다.
-        updateShareContent(); // 공유 상자가 열릴 때마다 내용 업데이트
-    }
+function copyURL() {
     
-    function copyURL() {
-        
-        var url = window.location.href; // 현재 페이지 URL을 가져옵니다.
-        navigator.clipboard.writeText(url); // 클립보드에 URL을 복사합니다.
-    }
+    var url = window.location.href; // 현재 페이지 URL을 가져옵니다.
+    navigator.clipboard.writeText(url); // 클립보드에 URL을 복사합니다.
+}
 
-    function updateShareContent() {
-        var shareContent = document.getElementById("shareContent");
-        var url = window.location.href; // 현재 페이지 URL을 가져옵니다.
-        shareContent.textContent = url; // 공유 상자 내용을 현재 페이지 URL로 설정합니다.
-    }
+function updateShareContent() {
+    var shareContent = document.getElementById("shareContent");
+    var url = window.location.href; // 현재 페이지 URL을 가져옵니다.
+    shareContent.textContent = url; // 공유 상자 내용을 현재 페이지 URL로 설정합니다.
+}
 
-    function truncateText() {
-        var shareContent = document.getElementById("shareContent");
-        console.log("Share content element:", shareContent);
-        
-        var maxLength = 10; // 최대 길이 설정
-        var content = shareContent.textContent.trim(); // 현재 텍스트 가져오기 (공백 제거)
-        console.log("Content before truncation:", content);
-        
-        if (content.length > maxLength) {
-            shareContent.textContent = content.substring(0, maxLength) + '...'; // 길이 초과 시 자르고 말줄임표 추가
-            console.log("Truncated content:", shareContent.textContent);
-        }
-    }
+function truncateText() {
+    var shareContent = document.getElementById("shareContent");
+    console.log("Share content element:", shareContent);
     
-    // 페이지 로드시 텍스트 자르기 함수 호출
-    window.onload = function() {
-        truncateText();
-    };
-
-    function openTab(tabId) {
-        document.location.href = "/utab/" + tabId + "/";
+    var maxLength = 10; // 최대 길이 설정
+    var content = shareContent.textContent.trim(); // 현재 텍스트 가져오기 (공백 제거)
+    console.log("Content before truncation:", content);
+    
+    if (content.length > maxLength) {
+        shareContent.textContent = content.substring(0, maxLength) + '...'; // 길이 초과 시 자르고 말줄임표 추가
+        console.log("Truncated content:", shareContent.textContent);
     }
+}
+
+// 페이지 로드시 텍스트 자르기 함수 호출
+window.onload = function() {
+    truncateText();
+};
+
+function openTab(tabId) {
+    document.location.href = "/utab/" + tabId + "/";
+}
 
 </script>
 {% endblock utab %}
