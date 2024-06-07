@@ -18,7 +18,7 @@ from django.conf import settings
 def index(request):
     username = request.user.username
     notions = Notion.objects.filter(user=request.user)
-
+    recentList = Notion.objects.filter(user=request.user).order_by('-date')
     if len(username) > 5:
         username = username[:5]
         username += ".."
@@ -38,6 +38,7 @@ def index(request):
             "notions": notions,
             "username":username,
             "borderList":border_list,
+            "recentList":recentList[:6],
         }
         return render(request, "home.html", content)
     except:
@@ -161,11 +162,13 @@ def pageNum(request, pageNum):
         notions = Notion.objects.filter(user=request.user)
         # 현재 페이지와 관련된 Notion 객체 가져오기
         now = get_object_or_404(Notion, url=pageNum)
-        
+        now.date = datetime.datetime.now()
+        now.save()
         parent = parent_find(now)
         parents = []
         parents = parentList(parents, now)
 
+  
         border_list = '<div style=" color: rgba(55, 53, 47, 0.8); font-size:14px; font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol";">'
         for notion in notions:
             if notion.parent == None:
