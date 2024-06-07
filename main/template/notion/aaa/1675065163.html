@@ -184,7 +184,6 @@
     function downmenu(value){
         const selected = event.target.selectionEnd;
         if (event.target.selectionStart == 0 && event.key == 'Backspace') {
-            event.preventDefault();
             let target;
             now_value = event.target.value
             
@@ -206,7 +205,7 @@
             target.selectionEnd = Number(num_size)
             
         }else if (event.key == 'ArrowUp') {
-            event.preventDefault();
+            
             const target = targetPrev(event.target);
             console.log(target)
             if (target != null) {
@@ -219,7 +218,6 @@
                 document.getElementById('title').selectionEnd = selected;
             }
         } else if (event.key == 'ArrowDown') {
-            event.preventDefault();
             const target = targetAfter(event.target);
             console.log(target)
             if (target != null && target != undefined) {
@@ -703,7 +701,6 @@
 
     // 윈도우 크기가 변경될 때마다 위치 업데이트
     window.addEventListener('resize', updateChildrenPosition);
-    window.addEventListener('onkeyup', transBody);
 </script>
 {% endblock %}
 {% block page %}
