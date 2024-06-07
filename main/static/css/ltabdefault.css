@@ -133,7 +133,7 @@
   #notionBtn {
     border-radius: 6px;
     width: 100%;
-    line-height: 30px;
+    line-height: 30px;  
     height: 30px;
     position: relative;
     margin: 4px 5px;
@@ -153,3 +153,4 @@
   .listbutton:hover {
     background-color: rgb(239, 239, 237);
   }
+

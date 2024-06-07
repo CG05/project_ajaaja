@@ -13,8 +13,8 @@
         <span class="close" onclick="closeModal()">닫기</span>
         <!-- 모달 콘텐츠 시작 -->
         <input  type="text" name="inputField1" id="inputField1" placeholder="Search in {{username}}의 Notion..." style="border:none; outline: none;box-shadow: none; width: 100%; padding: 8px; margin-bottom: 10px;">
-        <button type="submit" class="modal-button" style="padding: 10px 20px;">Search</button>
-        <div id="searchResults"></div>
+        <button type="submit" class="modal-button" style="margin-bottom:13px; padding: 10px 20px;">Search</button>
+        <div id="searchResults" style="flex-direction:column; height: 390px; overflow: auto; align-items:center;"></div>
         <!-- 모달 콘텐츠 끝 -->
       </div>
     </div>
@@ -235,15 +235,24 @@ function displaySearchResults(data) {
     var title = result.title;
     var url = result.url;
 
+    var resultDiv = document.createElement("div");
+    resultDiv.className = "resultDiv";
+    resultDiv.setAttribute('style', 'display: flex; justify-content: center; align-items: center; line-height: 120%; width: 94%; user-select: none; min-height: 36px;font-size: 14px;margin:13px 13px 13px 20px; padding: 8px; border: 1px solid #ccc;border-radius: 5px;')
+
     // 결과를 화면에 출력합니다.
-    var titleElement = document.createElement("p");
+    var titleElement = document.createElement("div");
     titleElement.textContent = title;
-    resultsContainer.appendChild(titleElement);
+    resultDiv.appendChild(titleElement);
+    titleElement.setAttribute('style','display:flex; margin-left:13px; font-size: 14px;font-weight: 500;' )
 
     var urlElement = document.createElement("a");
     urlElement.textContent = "Go to page";
     urlElement.href = url;
-    resultsContainer.appendChild(urlElement);
+    urlElement.setAttribute('style','margin-left:auto; margin-right:15px; display: flex; color: #ACABA9; text-decoration: none;')
+
+    resultDiv.appendChild(urlElement);
+
+    resultsContainer.appendChild(resultDiv);
   });
 }
 
