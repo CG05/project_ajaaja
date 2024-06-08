@@ -35,6 +35,7 @@
                 .then(response => response.json())
                 .then(data => {
                     alert(data.cover_url);
+                    window.location.reload();
                 })
                 .catch(error => console.error('Error:', error));
         });
@@ -757,7 +758,7 @@
         const titleDiv = document.getElementById('titleSpace');
         const editCover = document.getElementById('editCover');
         titleDiv.style.marginTop = '25px';
-        $(editCover).find('.add:eq(0)').css('display', 'none');
+        $(editCover).find('.add:eq(0)').css('display', 'none').css('margin-left', '0px');
         coverSpace.innerHTML = `<img src="${cover_url}" referrerpolicy="same-origin" style="display: block; object-fit: cover; border-radius: 0px; width: 100%; height: 30vh; opacity: 1; object-position: center 50%;">`
         coverSpace.style.height = '30vh';
         $(editCover).find('.change:eq(0)').css('display', 'flex');
@@ -769,18 +770,18 @@
         const titleDiv = document.getElementById('titleSpace');
         const editCover = document.getElementById('editCover');
         titleDiv.style.marginTop = '110px';
-        $(editCover).find('.add:eq(0)').css('display', 'flex');
+        $(editCover).find('.add:eq(0)').css('display', 'flex').css('margin-left', '50px');
         coverSpace.innerHTML = ``;
         coverSpace.style.height = '0px';
         $(editCover).find('.change:eq(0)').css('display', 'none');
         $(editCover).find('.remove:eq(0)').css('display', 'none');
-        document.getElementById('coverUrl').value = '';
     }
 
     function coverUpload() {
         console.log(event.target.files[0]);
         const csrftoken = getCookie('csrftoken');
         const coverimg = event.target.files[0];
+        event.target.files[0] = null;
         const nowId = document.getElementById('nowId').value;
         const formData = new FormData();
         formData.append('file', coverimg);
