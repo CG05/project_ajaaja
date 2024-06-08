@@ -77,16 +77,28 @@ body{
 
 
 #shareContent {
-    display: flex;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    flex: 2; /* URL 텍스트가 가능한 넓은 공간을 차지할 수 있도록 설정합니다. */
-    font-size: 13px; /* URL 텍스트의 글자 크기를 줄입니다 */
-    padding-left: 0;
-    text-align: left !important;
-    padding-right: 40px;
-    align-items: center;
+  height: 40px;
+  display: flex;
+  padding-left: 2px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 13px;
+  text-align: left !important;
+  align-items: center;
+}
+
+#emailinput{
+  height: 38px;
+  border-radius: 7px;
+  display: flex;
+  padding-left: 2px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 13px;
+  text-align: left !important;
+  align-items: center;
 }
 
 /* 공유 박스가 나타날 때 */
@@ -114,8 +126,7 @@ body{
 
 .utabShareBtn {
   position: relative;
-  top: 8px;
-  right: -100px;
+  right: -30px;
   font-size: 14px;
   color: white;
   display: inline-flex;
@@ -153,30 +164,40 @@ body{
 
 .showUrlEmail {
   position: relative;
-  top: 8px;
-  left: 20px;
+  left: 16px;
   border: 1px solid gray;
   opacity: 0.6;
-  font-size: 12px;
+  font-size: 13px;
   
   border-radius: 7px;
-  width: calc(80% - 100px);
+  width: 284px;
   height: 40px;
   display:flex;
   align-items:center;
-  justify-content:center;
 }
 
 .utabShowLine{
+  z-index: -1;
   padding: 20px;
   box-shadow: rgba(55, 53, 47, 0.09) 0px -1px 0px inset;;
   border-radius: 5px 5px 0 0; /* 위쪽 모서리만 둥글게 설정 */
   margin-bottom: 10px; /* 아래쪽 여백 추가 */
   position: absolute;
   top: 0px;
-  left: 0;
+  left: 0px;
   width: 100%
 }
+
+.utabShowBottom{
+  padding-top: 5px;
+  width: 100%;
+  display: inline-flex;
+  height: 60px;
+  position: relative;
+  
+  
+}
+
 
 .small-new-box {
   position: relative;
@@ -293,7 +314,8 @@ body{
   <!-- 선 -->
   <div class="utabShowLine"></div>
   
-  <div style="width: 100%; display: inline-flex; height: 60px;">
+  <!-- 선 아래 내용 -->
+  <div class="utabShowBottom">
     <!-- URL 창 -->
     <div class="showUrlEmail" id="urlBox">
       <span id="shareContent"></span>
@@ -309,16 +331,15 @@ body{
     </button>
   </div>
 
-  <div style="width: 100%; display: inline-flex;">
+  <div class="utabShowBottom">
     <!-- 이메일 창 -->
-    <form class="showUrlEmail" action="{% url 'email' %}" id="emailBox" style="display:none">
-      <input type="hidden" name="url" value="{{ now.url }}">
+    <form class="showUrlEmail" action="{% url 'email' %}" id="emailBox" style="top: -65px; display:none">
       <div class="d-inline-flex">
         <input id="emailinput" type="text" name="emails" placeholder="여러 이메일을 보낼 경우 , 를 이용하세요." onkeyup="sendemail(this)">
       </div>
     </form>
     <!-- 보내기 버튼 -->
-    <button class="utabShareBtn" id="email-button" type="submit" style="display: none;">
+    <button class="utabShareBtn" id="email-button" type="submit" style="top: -65px; display: none;">
       <span>보내기</span>
     </button>
   </div>
