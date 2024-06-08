@@ -245,7 +245,16 @@
                 target.selectionEnd = selected;
 
             }
+        }else {
+            let target_value = event.target.value;
+            let target_input = event.target;
+            if (target_input.tagName != 'TEXTAREA') {
+                target_input.setAttribute('value', target_value);
+            } else {
+                target_input.innerHTML = target_value;
+            }
         }
+
     }
 
     function upmenu() {
@@ -409,10 +418,14 @@
                 slash.call(eventfrom, event);
             });
         } else {
-            menuWindow('close')
-
+            let target_value = event.target.value;
+            let target_input = event.target;
+            if (target_input.tagName != 'TEXTAREA') {
+                target_input.setAttribute('value', target_value);
+            } else {
+                target_input.innerHTML = target_value;
+            }
         }
-        transBody();
     }
     function targetPrev(eventfrom) {
         let targetBase;
@@ -809,6 +822,7 @@
     // 윈도우 크기가 변경될 때마다 위치 업데이트
     window.addEventListener('resize', updateChildrenPosition);
     document.body.addEventListener('keyup', transBody);
+
 </script>
 {% endblock %}
 {% block page %}
