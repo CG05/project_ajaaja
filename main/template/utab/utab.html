@@ -223,6 +223,35 @@ body{
     width:75px;
 }
 
+div[role="button"].editCover {
+    width: 50px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    align-content: center;
+    border-radius: 4px;
+    font-size: 10px;
+    color: rgba(55, 53, 47, 0.5);
+    cursor: pointer;
+
+}
+input.form-control.cover{
+  display: none;
+}
+
+#editCover {
+  display: flex; 
+  align-items: center; 
+  justify-content:space-around; 
+  align-content: center; 
+  width: max-content;
+  height: 28px; 
+  width: 120px;
+  position: fixed; 
+  right: 100px;
+}
+
 </style>
 
 
@@ -277,6 +306,19 @@ body{
       </div>
     </div>
   </div>
+  <div id="editCover">
+    
+    <label for="changeCover">
+      <div role="button" class="editCover change" style="display: none;">커버 변경</div>
+    </label>
+    <input class='form-control cover' type="file" name="file" id="changeCover">
+    <div role="button" id="removeCover" class="editCover remove" style="display: none;">커버 삭제</div>
+    <label for="addCover">
+      <div role="button" class="editCover add" style="display: flex;">커버 추가</div>
+    </label>
+      <input class='form-control cover' type="file" name="file" id="addCover">
+  </div>
+  
 
   <!-- 지우기 -->
   <div role="button" style="display: flex; align-items: center; justify-content: center; align-content: center; width: 30px; height: 28px; position: fixed; right: 62px;" onclick="location.href='/notion/remove/{{now.id}}/'">

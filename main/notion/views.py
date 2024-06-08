@@ -297,6 +297,15 @@ def saveCover(request, notionId):
             return JsonResponse({'error': 'No file uploaded'}, status=400)
     return JsonResponse({'error': 'Invalid form'}, status=400) 
 
+def removeCover(request, notionId):
+    if request.method == 'POST':
+        notion = Notion.objects.get(id=notionId)
+        os.remove(notion.cover.path);
+        notion.cover = None
+        print("notion.cover:", notion.cover)
+        notion.save()
+        return JsonResponse({'cover_url': 'remove success'})
+
 def remove(request, notionId):
     notion = Notion.objects.get(id=notionId);
     title = notion.title;
