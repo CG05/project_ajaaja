@@ -63,7 +63,7 @@ body{
     top: 38px;
     right: 12px;
     width: 402px;
-    height: 100px;
+    height: 101px;
     background-color: #fff;
     border: 1px solid #ccc;
     border-radius: 6px;
@@ -88,9 +88,14 @@ body{
   align-items: center;
 }
 
-#emailinput{
-  height: 38px;
+#emailinput {
+  position: absolute;
+  left: 16px;
+  width: 292px;
+  height: 40px;
   border-radius: 7px;
+  border: 1px solid gray;
+  opacity: 0.6;
   display: flex;
   padding-left: 2px;
   overflow: hidden;
@@ -160,6 +165,7 @@ body{
   justify-content: center;
   text-decoration: none;
   text-align: center;
+  left: 322px;
 }
 
 .showUrlEmail {
@@ -170,7 +176,7 @@ body{
   font-size: 13px;
   
   border-radius: 7px;
-  width: 284px;
+  width: 292px;
   height: 40px;
   display:flex;
   align-items:center;
@@ -189,7 +195,8 @@ body{
 }
 
 .utabShowBottom{
-  padding-top: 5px;
+  padding-top: 10px;
+  padding-bottom: 10px;
   width: 100%;
   display: inline-flex;
   height: 60px;
@@ -202,7 +209,7 @@ body{
 .small-new-box {
   position: relative;
   left: 20px;
-  width:40px;
+  width: 40px;
   height: 28px;
   min-width: 0px;
   background-color: #f0f0f0;
@@ -221,15 +228,15 @@ body{
     background-color: #e0e0e0; /* 호버 시 배경색 변경 */
     border-color: #888; /* 호버 시 테두리 색상 변경 */
 }
-.small-new-box::after {
-    content: '';
-    display: block;
-    width: 80%; /* 선의 길이를 조정 */
-    height: 2px;
-    background-color: #000; /* 검은색 선 색상 */
-    position: absolute;
-    bottom: -2px; /* 선이 버튼 바display:none로 아래에 위치하도록 설정 */
-    left: 10px; /* padding-left 값과 동일하게 설정 */
+.small-new-box-after {
+  content: '';
+  display: none;
+  width: 32px;
+  height: 2px;
+  background-color: #000;
+  position: absolute;
+  bottom: -7px;
+  left: 4px;
 }
 
 
@@ -301,21 +308,26 @@ body{
 </div>
 
 
-<!-- 공유박스 -->
+<!-- 박스 -->
 <div id="shareBox" class="share-box" >
   
   <div style="width: 100%; height: 34px; margin-top:6px; display: flex;">
     <!-- URL 공유 버튼 -->
-    <div class="small-new-box" onclick="tabChange(this)">URL</div>
+    <div class="small-new-box" id="urltab" onclick="tabChange(this)">URL
+      <div class="small-new-box-after urltab" style="display: block;"></div>
+    </div>
     <!-- 이메일 공유 버튼 -->
-    <div class="small-new-box" style="left:30px;" onclick="tabChange(this)">공유</div>
+    <div class="small-new-box" id="emailtab" style="left:30px;" onclick="tabChange(this)">공유
+      <div class="small-new-box-after emailtab" style="display: none;"></div>
+    </div>
+    
   </div>
 
   <!-- 선 -->
   <div class="utabShowLine"></div>
   
   <!-- 선 아래 내용 -->
-  <div class="utabShowBottom">
+  <div class="utabShowBottom url">
     <!-- URL 창 -->
     <div class="showUrlEmail" id="urlBox">
       <span id="shareContent"></span>
@@ -331,17 +343,19 @@ body{
     </button>
   </div>
 
-  <div class="utabShowBottom">
+  <div class="utabShowBottom email">
     <!-- 이메일 창 -->
-    <form class="showUrlEmail" action="{% url 'email' %}" id="emailBox" style="top: -65px; display:none">
+    <form action="{% url 'email' %}" id="emailBox" style="display:none;">
+      <input type="hidden" name="url" value="{{ now.url }}">
       <div class="d-inline-flex">
         <input id="emailinput" type="text" name="emails" placeholder="여러 이메일을 보낼 경우 , 를 이용하세요." onkeyup="sendemail(this)">
+        <!-- 보내기 버튼 -->
+        <button class="utabShareBtn" id="email-button" type="submit" style="display: none;">
+          <span>보내기</span>
+        </button>
       </div>
     </form>
-    <!-- 보내기 버튼 -->
-    <button class="utabShareBtn" id="email-button" type="submit" style="top: -65px; display: none;">
-      <span>보내기</span>
-    </button>
+    
   </div>
 </div>
 
@@ -359,16 +373,21 @@ smallNewBox1.addEventListener('click', function(event) {
   emailBox = document.getElementById('emailBox');
   urlbutton = document.getElementById('urlCopyBtn')
   emailbutton = document.getElementById('email-button')
+  var urldiv=document.getElementsByClassName('url')[0]
+  var emaildiv=document.getElementsByClassName('email')[0]
+  urldiv.style.display='inline-flex';
+  emaildiv.style.display='none';
   urlBox.style.display='block';
   urlbutton.style.display='block';
   emailBox.style.display='none';
   emailbutton.style.display='none';
+  
 });
 
 var shareButton = document.getElementById("shareButton");
 shareButton.addEventListener("click", toggleShareBox); // 공유 버튼 클릭 시 토글 함수 호출
 // 카피 버튼 클릭 시 URL 복사
-var copyButton = document.getElementById("copy-Button");
+var copyButton = document.getElementById("urlCopyBtn");
 copyButton.addEventListener("click", copyURL);
 
 function tabChange(target){
@@ -380,6 +399,20 @@ function tabChange(target){
   urlbutton.style.display='none';
   emailBox.style.display='block';
   emailbutton.style.display='block';
+  var urldiv=document.getElementsByClassName('url')[0]
+  var emaildiv=document.getElementsByClassName('email')[0]
+  urldiv.style.display='none';
+  emaildiv.style.display='inline-flex';
+
+  after = document.getElementsByClassName('small-new-box-after')
+  for(a of after) {
+    if(a.classList.contains(target.id)){
+      a.style.display='block';
+    }
+    else{
+      a.style.display='none';
+    }
+  }
 }
     
 function toggleShareBox() {
@@ -389,9 +422,10 @@ function toggleShareBox() {
 }
 
 function copyURL() {
-    
-    var url = window.location.href; // 현재 페이지 URL을 가져옵니다.
-    navigator.clipboard.writeText(url); // 클립보드에 URL을 복사합니다.
+  var url = window.location.href; // 현재 페이지 URL을 가져옵니다.
+  console.log(url)
+  console.log(event.target)
+  navigator.clipboard.writeText(url); // 클립보드에 URL을 복사합니다.
 }
 
 function updateShareContent() {
