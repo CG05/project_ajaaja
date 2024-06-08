@@ -11,7 +11,6 @@
     let imageCnt = 0;
     window.onload = function () {
         updateChildrenPosition();
-        setCheck();
     }
     window.addEventListener('DOMContentLoaded', async (event) => {
         setCheck();
@@ -90,9 +89,10 @@
     }
     function createTextInput(option) {
         input = document.createElement('input');
+        input.setAttribute('type', 'text');
         input.setAttribute('class', 'form-control text');
-        input.setAttribute('onkeydown', 'downmenu(this.value)');
-        input.setAttribute('onkeyup', 'upmenu(this.value)');
+        input.setAttribute('onkeydown', 'downmenu()');
+        input.setAttribute('onkeyup', 'upmenu()');
         input.setAttribute('value', '');
         if (option == 'checkText') {
             input.classList.add('checkText')
@@ -180,7 +180,6 @@
 
     function transBody() {
         let bodyContent = document.getElementById('content').innerHTML
-        console.log(bodyContent)
         const csrftoken = getCookie('csrftoken');
         let nowId = document.getElementById('nowId').value
         fetch('/notion/saveBody/' + nowId + '/', {
@@ -199,7 +198,7 @@
                 console.log('Error : e2');
             });
     }
-    function downmenu(value) {
+    function downmenu() {
         const selected = event.target.selectionEnd;
         if (event.target.selectionStart == 0 && event.key == 'Backspace') {
             event.preventDefault();
@@ -249,7 +248,7 @@
         }
     }
 
-    function upmenu(value) {
+    function upmenu() {
         if (event.key == 'Enter') {
             let value_num = event.target.selectionStart
             let value_str = event.target.value
@@ -413,6 +412,7 @@
             menuWindow('close')
 
         }
+        transBody();
     }
     function targetPrev(eventfrom) {
         let targetBase;
@@ -808,7 +808,7 @@
 
     // 윈도우 크기가 변경될 때마다 위치 업데이트
     window.addEventListener('resize', updateChildrenPosition);
-    window.addEventListener('keyup', transBody);
+    document.body.addEventListener('keyup', transBody);
 </script>
 {% endblock %}
 {% block page %}
