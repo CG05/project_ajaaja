@@ -26,6 +26,7 @@ def index(request):
         else:
             recentList_cover.append('0')
     print('cover', recentList_cover)
+    final_list=zip(recentList, recentList_cover)
     if len(username) > 5:
         username = username[:5]
         username += ".."
@@ -49,6 +50,7 @@ def index(request):
             "recentList":recentList[:12],
             "recentList_len" : recentList_len,
             "recentList_cover" : recentList_cover,
+            "final_list": final_list,
         }
         return render(request, "home.html", content)
     except:
