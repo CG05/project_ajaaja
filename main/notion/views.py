@@ -19,6 +19,13 @@ def index(request):
     notions = Notion.objects.filter(user=request.user)
     recentList = Notion.objects.filter(user=request.user).order_by('-date')
     recentList_len = len(recentList)
+    recentList_cover =[]
+    for recent in recentList:
+        if recent.cover:
+            recentList_cover.append(recent.cover.url)
+        else:
+            recentList_cover.append('0')
+    print('cover', recentList_cover)
     if len(username) > 5:
         username = username[:5]
         username += ".."
@@ -41,6 +48,7 @@ def index(request):
             "borderList":border_list,
             "recentList":recentList[:12],
             "recentList_len" : recentList_len,
+            "recentList_cover" : recentList_cover,
         }
         return render(request, "home.html", content)
     except:
