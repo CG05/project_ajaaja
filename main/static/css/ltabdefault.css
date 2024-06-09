@@ -110,6 +110,14 @@
     background-color: rgba(55, 53, 47, 0.08);
   }
 
+  div[role="button"].logBtn:hover {
+    background-color: rgba(55, 53, 47, 0.08);
+  }
+
+  div[role="button"].pagePlusBtn:hover {
+    background-color: rgba(55, 53, 47, 0.08);
+  }
+
   .tableTr {
     width: 100%;
     position: relative;
@@ -130,7 +138,7 @@
     height: 100%;
   }
 
-  #notionBtn {
+  /* #notionBtn {
     border-radius: 6px;
     width: 100%;
     line-height: 30px;  
@@ -141,7 +149,7 @@
     justify-content: flex-start;
     overflow: hidden;
     z-index: 1px;
-  }
+  } */
 
   .listbutton {
     width: 100%;

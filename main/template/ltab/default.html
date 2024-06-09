@@ -20,37 +20,42 @@
     </div>
   </form>
 
-  <div style="display: flex; width: 100%; position: relative; top:2px; justify-content: center;">
-    <div id="notionBtn" style="display: flex; align-items: center;" role="button">💖 {{ username }} 님의 Notion</div>
+  <div class="" style="display: flex; width: 100%; position: relative; top:2px; justify-content: center;">
+    <div role="button" style="display: flex; width: 220px; height: 30px; margin: 4px 5px; align-content: center;">
+      <!-- ~의 노션 -->
+      <div id="notionBtn" style="display: flex; align-items: center;" role="button">💖{{ username }} 님의 Notion</div>
 
-    <!-- 페이지 생성되야함 /newpage/ -->
-    {% load static %}
-    <div role="button" tabindex="0" aria-label="새 페이지"
-      style="position: absolute; user-select: none; transition: background 20ms ease-in 0s; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; border-radius: 4px; height: 24px; width: 24px; padding: 0px; left: 197px; top:7px"
-      onclick="document.location.href='/notion/createNewPage/'">
-      <svg role="graphics-symbol" viewBox="0 0 24 24" class="createPage"
-        style="width: 24px; height: 24px; display: block; fill: rgb(55, 53, 47); flex-shrink: 0;">
-        <g>
-          <path fill-rule="evenodd"
-            d="M9.944 14.721c.104.094.216.12.336.079l1.703-.688 6.844-6.844-1.406-1.398-6.836 6.836-.711 1.68c-.052.13-.029.242.07.335zm8.102-9.484l1.414 1.406.515-.523a.917.917 0 00.282-.633.76.76 0 00-.258-.61l-.25-.25a.702.702 0 00-.578-.187.975.975 0 00-.617.297l-.508.5zm-9.453.127a3.85 3.85 0 00-3.85 3.85v6.5a3.85 3.85 0 003.85 3.85h6.5a3.85 3.85 0 003.85-3.85V12.95a.85.85 0 10-1.7 0v2.764a2.15 2.15 0 01-2.15 2.15h-6.5a2.15 2.15 0 01-2.15-2.15v-6.5a2.15 2.15 0 012.15-2.15h3.395a.85.85 0 000-1.7H8.593z"
-            clip-rule="evenodd">
-          </path>
-        </g>
-      </svg>
+      <!-- 페이지 생성 -->
+      {% load static %}
+      <div role="button" class="pagePlusBtn" tabindex="0" aria-label="새 페이지"
+        style="position: absolute; user-select: none; transition: background 20ms ease-in 0s; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; border-radius: 4px; height: 24px; width: 24px; padding: 0px; left: 197px; top:7px"
+        onclick="document.location.href='/notion/createNewPage/'">
+        <svg role="graphics-symbol" viewBox="0 0 24 24" class="createPage"
+          style="width: 24px; height: 24px; display: block; fill: rgb(55, 53, 47); flex-shrink: 0;">
+          <g>
+            <path fill-rule="evenodd"
+              d="M9.944 14.721c.104.094.216.12.336.079l1.703-.688 6.844-6.844-1.406-1.398-6.836 6.836-.711 1.68c-.052.13-.029.242.07.335zm8.102-9.484l1.414 1.406.515-.523a.917.917 0 00.282-.633.76.76 0 00-.258-.61l-.25-.25a.702.702 0 00-.578-.187.975.975 0 00-.617.297l-.508.5zm-9.453.127a3.85 3.85 0 00-3.85 3.85v6.5a3.85 3.85 0 003.85 3.85h6.5a3.85 3.85 0 003.85-3.85V12.95a.85.85 0 10-1.7 0v2.764a2.15 2.15 0 01-2.15 2.15h-6.5a2.15 2.15 0 01-2.15-2.15v-6.5a2.15 2.15 0 012.15-2.15h3.395a.85.85 0 000-1.7H8.593z"
+              clip-rule="evenodd">
+            </path>
+          </g>
+        </svg>
+      </div>
+
+
+      <!-- 로그아웃 / 로그인 - 글자가 칸 벗어남, left: 160px -->
+      {% if user.is_active %}
+      <div id="loginBtn" class="logBtn" role="button"
+        style="font-size:12px; font-weight:500; width: auto; padding-left: 3px; padding-right: 3px; height: 24px; border-radius: 4px; display: flex; justify-content: center; align-items: center;  position: absolute; left: 151px; top:7px;"
+        onclick="document.location.href='/account/logout/'">Logout</div>
+      {% else %}
+      <div id="logoutBtn" class="logBtn" role="button"
+        style="font-size:12px; font-weight:500; width: auto; padding-left: 3px; padding-right: 3px; height: 24px; border-radius: 4px; display: flex; justify-content: center; align-items: center;  position: absolute; left: 151px; top:7px;"
+        onclick="document.location.href='/account/login/'">Login</div>
+      {% endif %}
     </div>
 
-
-    <!-- 로그아웃 / 로그인 - 글자가 칸 벗어남, left: 160px -->
-    {% if user.is_active %}
-    <div id="logBtn" role="button"
-      style="font-size:12px; font-weight:500; width: auto; height: 24px; border-radius: 4px; display: flex; justify-content: center; align-items: center;  position: absolute; left: 154px; top:7px;"
-      onclick="document.location.href='/account/logout/'">Logout</div>
-    {% else %}
-    <div id="logBtn" role="button"
-      style="font-size:12px; font-weight:500; width: auto; height: 24px; border-radius: 4px; display: flex; justify-content: center; align-items: center;  position: absolute; left: 154px; top:7px;"
-      onclick="document.location.href='/account/login/'">Login</div>
-    {% endif %}
   </div>
+
 
 
   <!-- 검색 -->
